@@ -75,6 +75,9 @@ def load_core_snapshots(db_path: Path = DB_PATH, snapshot_dir: Path = SNAPSHOT_D
                 df = pd.DataFrame()
             if not df.empty:
                 df = df.where(pd.notna(df), None)
+                if table == "standings":
+                    df = _valid_standings_rows(df)
+            if not df.empty:
                 df.to_sql(table, conn, if_exists="append", index=False)
             loaded[table] = len(df)
 
@@ -111,3 +114,12 @@ def _snapshot_id(snapshot_dir: Path) -> str:
         digest.update(table.encode("utf-8"))
         digest.update(path.read_bytes())
     return digest.hexdigest()
+
+
+def _valid_standings_rows(df: pd.DataFrame) -> pd.DataFrame:
+    if df.empty or "group_name" not in df.columns or "team_id" not in df.columns:
+        return pd.DataFrame(columns=df.columns)
+    clean = df.copy()
+    clean["group_name"] = clean["group_name"].fillna("").astype(str).str.strip()
+    clean = clean[(clean["group_name"] != "") & clean["team_id"].notna()]
+    return clean

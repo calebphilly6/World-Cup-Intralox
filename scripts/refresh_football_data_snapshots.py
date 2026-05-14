@@ -37,6 +37,9 @@ def main() -> None:
     print(f"Saved standings rows: {saved_standings}")
 
     clean_non_world_cup_teams()
+    repaired = repair_blank_standing_groups()
+    if repaired:
+        print(f"Repaired blank standing groups: {repaired}")
     counts = export_core_snapshots()
     print(f"Exported core data snapshots to {SNAPSHOT_DIR}")
     for table, count in counts.items():
@@ -91,6 +94,9 @@ def _save_standings(standings: pd.DataFrame) -> int:
             team = conn.execute("SELECT id FROM teams WHERE name = ?", (team_name,)).fetchone()
             if team is None:
                 continue
+            group_name = _group_name(row.get("group")) or _team_group(conn, int(team["id"]))
+            if not group_name:
+                continue
             conn.execute(
                 """
                 INSERT INTO standings (
@@ -109,7 +115,7 @@ def _save_standings(standings: pd.DataFrame) -> int:
                     updated_at = CURRENT_TIMESTAMP
                 """,
                 (
-                    _group_name(row.get("group")),
+                    group_name,
                     int(team["id"]),
                     _int(row.get("played")),
                     _int(row.get("won")),
@@ -137,6 +143,33 @@ def clean_non_world_cup_teams() -> None:
             conn.execute("DELETE FROM groups WHERE team_id = ?", (team_id,))
             conn.execute("DELETE FROM teams WHERE id = ?", (team_id,))
         conn.commit()
+
+
+def repair_blank_standing_groups() -> int:
+    count = 0
+    with get_connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT s.id, s.team_id, g.group_name
+            FROM standings s
+            LEFT JOIN groups g ON g.team_id = s.team_id
+            WHERE s.group_name IS NULL OR TRIM(s.group_name) = ''
+            """
+        ).fetchall()
+        for row in rows:
+            group_name = str(row["group_name"] or "").strip()
+            if not group_name:
+                conn.execute("DELETE FROM standings WHERE id = ?", (row["id"],))
+                continue
+            conn.execute("UPDATE standings SET group_name = ? WHERE id = ?", (group_name, row["id"]))
+            count += 1
+        conn.commit()
+    return count
+
+
+def _team_group(conn, team_id: int) -> str:
+    row = conn.execute("SELECT group_name FROM groups WHERE team_id = ? LIMIT 1", (team_id,)).fetchone()
+    return str(row["group_name"] or "").strip() if row else ""
 
 
 def _team_lookup() -> dict[str, str]:
