@@ -31,8 +31,12 @@ def render() -> None:
 
     for group_name in sorted(groups["group_name"].dropna().unique()):
         subset = _sort_group_subset(groups[groups["group_name"] == group_name].copy())
-        _group_banner(group_name, subset)
-        clicked_team_id = clickable_cards(_group_cards(subset), variant="groups", key=f"group_cards_{group_name}")
+        clicked_team_id = clickable_cards(
+            _group_cards(subset),
+            variant="groups",
+            key=f"group_cards_{group_name}",
+            title=str(group_name),
+        )
         if clicked_team_id:
             _open_team(int(clicked_team_id))
         with st.expander(f"Open Group {group_name} details", expanded=False):
@@ -163,20 +167,6 @@ def _daily_group_refresh_key(now: datetime | None = None) -> str:
     if local_now.time() < GROUP_REFRESH_TIME:
         refresh_day -= timedelta(days=1)
     return refresh_day.isoformat()
-
-
-def _group_banner(group_name: str, subset: pd.DataFrame) -> None:
-    st.markdown(
-        f"""
-        <section class="group-banner">
-            <div class="group-banner-copy">
-                <div class="group-kicker">Group</div>
-                <div class="group-title">{html.escape(str(group_name))}</div>
-            </div>
-        </section>
-        """,
-        unsafe_allow_html=True,
-    )
 
 
 def _group_details(group_name: str, subset: pd.DataFrame) -> None:

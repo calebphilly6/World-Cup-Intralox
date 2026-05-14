@@ -16,6 +16,35 @@
         display: grid;
         gap: 12px;
       }
+      .group-banner {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr);
+        gap: 18px;
+        align-items: center;
+        padding: 18px;
+        border: 1px solid rgba(214, 168, 58, 0.34);
+        border-radius: 10px;
+        background:
+          linear-gradient(135deg, rgba(5, 5, 5, 0.58), rgba(11, 16, 32, 0.54)),
+          radial-gradient(circle at 100% 0%, rgba(214, 168, 58, 0.18), transparent 34%);
+      }
+      .group-copy {
+        min-width: 0;
+      }
+      .group-kicker {
+        color: rgba(248, 250, 252, 0.7);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .group-title {
+        margin-top: 4px;
+        color: #d6a83a;
+        font-size: 2.25rem;
+        line-height: 1;
+        font-weight: 900;
+      }
       .grid.groups {
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
@@ -100,6 +129,12 @@
         .grid.rankings {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+        .group-banner {
+          grid-template-columns: 1fr;
+        }
+        .group-title {
+          font-size: 1.8rem;
+        }
         .ranking-card {
           grid-template-columns: 42px minmax(0, 1fr);
         }
@@ -180,9 +215,13 @@
         const args = event.data.args || {};
         const cards = Array.isArray(args.cards) ? args.cards : [];
         const variant = args.variant === "groups" ? "groups" : "rankings";
+        const title = args.title || "";
         const renderer = variant === "groups" ? renderGroupCard : renderRankingCard;
         const root = document.getElementById("root");
-        root.innerHTML = `<div class="grid ${variant}">${cards.map(renderer).join("")}</div>`;
+        const grid = `<div class="grid ${variant}">${cards.map(renderer).join("")}</div>`;
+        root.innerHTML = variant === "groups"
+          ? `<section class="group-banner"><div class="group-copy"><div class="group-kicker">Group</div><div class="group-title">${escapeHtml(title)}</div></div>${grid}</section>`
+          : grid;
         root.querySelectorAll("button[data-id]").forEach((button) => {
           button.addEventListener("click", () => {
             send(SET_VALUE, { value: Number(button.dataset.id), dataType: "json" });
