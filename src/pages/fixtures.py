@@ -8,6 +8,7 @@ import streamlit as st
 from data_sources.football_data_client import FootballDataError
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
+from src.fixture_display import enrich_fixture_participants
 from src.football_data_service import cached_matches, daily_fixture_refresh_key
 from src.official_match_reference import apply_official_match_reference
 from src.utils.formatting import format_local_time
@@ -94,7 +95,8 @@ def _local_fixture_fallback() -> pd.DataFrame:
     fixtures = fetch_df(
         """
         SELECT f.match_number, f.kickoff_utc, ht.name AS home_team, at.name AS away_team,
-               f.stage, f.group_name, COALESCE(m.city, f.city) AS venue, COALESCE(m.city, f.city) AS city,
+               f.stage, f.group_name, m.game_label,
+               COALESCE(m.city, f.city) AS venue, COALESCE(m.city, f.city) AS city,
                f.host_country,
                f.status, f.home_score, f.away_score, f.watch_priority, f.notes
         FROM fixtures f
@@ -106,6 +108,7 @@ def _local_fixture_fallback() -> pd.DataFrame:
     )
     if fixtures.empty:
         return fixtures
+    fixtures = enrich_fixture_participants(fixtures)
     fixtures["local_kickoff"] = fixtures["kickoff_utc"].apply(format_local_time)
     fixtures = fixtures.rename(
         columns={
@@ -182,8 +185,14 @@ def _render_fixture_days(fixtures: pd.DataFrame, backgrounds: dict[str, str]) ->
             f'<section class="fixture-day"><h2>{html.escape(day_label)}</h2></section>',
             unsafe_allow_html=True,
         )
-        cards = "".join(_fixture_card_link(row, backgrounds) for _, row in day_matches.iterrows())
-        st.markdown(f'<section class="fixture-grid">{cards}</section>', unsafe_allow_html=True)
+        for start in range(0, len(day_matches), 3):
+            columns = st.columns(3)
+            for column, (_, row) in zip(columns, day_matches.iloc[start:start + 3].iterrows()):
+                with column:
+                    st.markdown(_fixture_card(row, backgrounds), unsafe_allow_html=True)
+                    match_number = _match_number(row)
+                    if st.button("Open match", key=f"fixture_open_{_safe_key(match_number)}", use_container_width=True):
+                        _open_fixture_from_row(row)
 
 
 def _fixture_backgrounds(fixtures: pd.DataFrame) -> dict[str, str]:
@@ -198,13 +207,13 @@ def _fixture_backgrounds(fixtures: pd.DataFrame) -> dict[str, str]:
     return {city: city_background_card_data_uri(city) for city in cities}
 
 
-def _fixture_card_link(row, backgrounds: dict[str, str]) -> str:
-    match_number = _match_number(row)
-    return (
-        f'<a class="fixture-card-link" href="?page=fixtures&fixture={html.escape(match_number)}" target="_self" aria-label="Open match {html.escape(match_number)}">'
-        f'{_fixture_card(row, backgrounds)}'
-        '</a>'
-    )
+def _open_fixture_from_row(row) -> None:
+    st.session_state["selected_fixture_id"] = _match_number(row)
+    st.session_state["selected_fixture_row"] = row.to_dict()
+    st.query_params["page"] = "fixtures"
+    if "fixture" in st.query_params:
+        del st.query_params["fixture"]
+    st.rerun()
 
 
 def _fixture_card(row, backgrounds: dict[str, str] | None = None) -> str:
@@ -324,6 +333,10 @@ def _match_number(row) -> str:
         return "Match"
     text = str(value)
     return text if text.startswith("M") else f"M{int(float(text))}"
+
+
+def _safe_key(value: str) -> str:
+    return "".join(character.lower() if character.isalnum() else "_" for character in str(value)).strip("_")
 
 
 def _stage_label(row) -> str:

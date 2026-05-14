@@ -31,6 +31,7 @@ def render() -> None:
     for group_name in sorted(groups["group_name"].dropna().unique()):
         subset = _sort_group_subset(groups[groups["group_name"] == group_name].copy())
         _group_banner(group_name, subset)
+        _group_team_buttons(group_name, subset)
         with st.expander(f"Open Group {group_name} details", expanded=False):
             _group_details(group_name, subset)
 
@@ -199,13 +200,31 @@ def _group_details(group_name: str, subset: pd.DataFrame) -> None:
 def _flag_tile(row) -> str:
     flag_url = _flag_url(row)
     team = html.escape(str(row["team"]))
-    team_id = row.get("team_id")
-    href = f'?page=teams&team_id={int(team_id)}' if pd.notna(team_id) else "?page=teams"
     return (
-        f'<a class="group-flag-link" href="{href}" target="_self" title="{team}">'
-        f'<div class="group-flag-tile"><img src="{flag_url}" alt=""><span>{team}</span></div>'
-        '</a>'
+        f'<div class="group-flag-link" title="{team}">'
+        f'<div class="group-flag-tile"><img src="{flag_url}" alt=""><span>{team}</span></div></div>'
     )
+
+
+def _group_team_buttons(group_name: str, subset: pd.DataFrame) -> None:
+    columns = st.columns(len(subset))
+    for column, (_, row) in zip(columns, subset.iterrows()):
+        with column:
+            if st.button(str(row["team"]), key=f"group_{group_name}_{int(row['team_id'])}", use_container_width=True):
+                _open_team(int(row["team_id"]))
+
+
+def _open_team(team_id: int) -> None:
+    st.session_state["page_name"] = "Teams"
+    st.session_state["selected_team_id"] = team_id
+    st.session_state.pop("selected_match_id", None)
+    st.session_state.pop("selected_fixture_id", None)
+    st.session_state.pop("selected_fixture_row", None)
+    st.query_params["page"] = "teams"
+    st.query_params["team_id"] = str(team_id)
+    if "fixture" in st.query_params:
+        del st.query_params["fixture"]
+    st.rerun()
 
 
 def _team_card(row) -> str:

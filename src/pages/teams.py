@@ -9,6 +9,7 @@ import streamlit as st
 from src.city_backgrounds import city_background_data_uri
 from src.config import is_shared_core_read_only_mode
 from src.database import execute, fetch_df
+from src.fixture_display import enrich_fixture_participants
 from src.football_data_service import cached_matches
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.storage.storage import (
@@ -200,19 +201,27 @@ def _ranking_context_row(row, focus_team: str) -> str:
 def _fixtures_for_team(team) -> pd.DataFrame:
     local_fixtures = fetch_df(
         """
-        SELECT f.match_number AS match_id, f.kickoff_utc, ht.name AS home_team, at.name AS away_team,
-               f.stage, f.group_name, COALESCE(m.city, f.city) AS venue, COALESCE(m.city, f.city) AS city,
+        SELECT f.match_number AS match_id, f.kickoff_utc,
+               f.home_team_id, f.away_team_id,
+               ht.name AS home_team, at.name AS away_team,
+               f.stage, f.group_name, m.game_label,
+               COALESCE(m.city, f.city) AS venue, COALESCE(m.city, f.city) AS city,
                f.status,
                f.home_score, f.away_score
         FROM fixtures f
         LEFT JOIN teams ht ON ht.id = f.home_team_id
         LEFT JOIN teams at ON at.id = f.away_team_id
         LEFT JOIN match_city_reference m ON m.match_number = f.match_number
-        WHERE ht.id = ? OR at.id = ?
         ORDER BY datetime(f.kickoff_utc)
-        """,
-        [int(team["id"]), int(team["id"])],
+        """
     )
+    local_fixtures = enrich_fixture_participants(local_fixtures)
+    if not local_fixtures.empty:
+        team_key = normalize_team_key(team["team"])
+        local_fixtures = local_fixtures[
+            local_fixtures["home_team"].map(normalize_team_key).eq(team_key)
+            | local_fixtures["away_team"].map(normalize_team_key).eq(team_key)
+        ].copy()
     if not local_fixtures.empty:
         return local_fixtures
 

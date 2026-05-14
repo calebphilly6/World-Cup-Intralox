@@ -10,8 +10,9 @@ import streamlit as st
 from src.database import fetch_df
 from src.city_backgrounds import city_background_card_data_uri
 from src.config import is_shared_core_read_only_mode
+from src.fixture_display import enrich_fixture_participants
 from src.football_data_service import cached_matches
-from src.official_match_reference import apply_official_match_reference
+from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.pages.rankings import FLAG_CODES
 from src.storage.storage import load_favorite_teams, personal_preferences_use_browser_storage
 from src.utils.formatting import format_local_time
@@ -280,10 +281,11 @@ def _fixtures_from_api() -> pd.DataFrame:
 
 
 def _fixtures_from_database() -> pd.DataFrame:
-    return fetch_df(
+    fixtures = fetch_df(
         """
             SELECT f.match_number AS "#", f.kickoff_utc, ht.name AS Home, at.name AS Away,
                    COALESCE(f.group_name, f.stage) AS Stage, COALESCE(m.city, f.city) AS City,
+                   m.game_label,
                    f.watch_priority AS Priority, f.home_score, f.away_score
             FROM fixtures f
             LEFT JOIN teams ht ON ht.id = f.home_team_id
@@ -292,6 +294,7 @@ def _fixtures_from_database() -> pd.DataFrame:
             ORDER BY datetime(f.kickoff_utc), f.match_number
         """
     )
+    return enrich_fixture_participants(fixtures, home_column="Home", away_column="Away")
 
 
 def _stage_label(stage, group) -> str:
@@ -339,43 +342,25 @@ def _favorite_teams() -> pd.DataFrame:
     if favorites.empty:
         return favorites
 
-    if personal_preferences_use_browser_storage():
-        placeholders = ",".join("?" for _ in favorite_ids)
-        fixtures = fetch_df(
-            f"""
-            SELECT f.match_number, f.kickoff_utc, f.stage, f.status,
-                   f.home_score, f.away_score,
-                   ht.id AS home_team_id, ht.name AS home_team,
-                   at.id AS away_team_id, at.name AS away_team
-            FROM fixtures f
-            LEFT JOIN teams ht ON ht.id = f.home_team_id
-            LEFT JOIN teams at ON at.id = f.away_team_id
-            WHERE f.home_team_id IN ({placeholders})
-               OR f.away_team_id IN ({placeholders})
-            ORDER BY datetime(f.kickoff_utc), f.match_number
-            """,
-            [*favorite_ids, *favorite_ids],
-        )
-    else:
-        fixtures = fetch_df(
-            """
-            SELECT f.match_number, f.kickoff_utc, f.stage, f.status,
-                   f.home_score, f.away_score,
-                   ht.id AS home_team_id, ht.name AS home_team,
-                   at.id AS away_team_id, at.name AS away_team
-            FROM fixtures f
-            LEFT JOIN teams ht ON ht.id = f.home_team_id
-            LEFT JOIN teams at ON at.id = f.away_team_id
-            WHERE f.home_team_id IN (SELECT id FROM teams WHERE favorite = 1)
-               OR f.away_team_id IN (SELECT id FROM teams WHERE favorite = 1)
-            ORDER BY datetime(f.kickoff_utc), f.match_number
-            """
-        )
+    fixtures = fetch_df(
+        """
+        SELECT f.match_number, f.kickoff_utc, f.stage, f.status,
+               f.home_score, f.away_score, m.game_label,
+               ht.id AS home_team_id, ht.name AS home_team,
+               at.id AS away_team_id, at.name AS away_team
+        FROM fixtures f
+        LEFT JOIN teams ht ON ht.id = f.home_team_id
+        LEFT JOIN teams at ON at.id = f.away_team_id
+        LEFT JOIN match_city_reference m ON m.match_number = f.match_number
+        ORDER BY datetime(f.kickoff_utc), f.match_number
+        """
+    )
+    fixtures = enrich_fixture_participants(fixtures)
     now = datetime.now(timezone.utc)
     rows = []
     for _, team in favorites.iterrows():
         team_id = int(team["id"])
-        team_fixtures = _team_fixtures(fixtures, team_id)
+        team_fixtures = _team_fixtures(fixtures, team_id, str(team["Team"]))
         next_fixture = _next_fixture(team_fixtures, now)
         rows.append(
             {
@@ -383,7 +368,7 @@ def _favorite_teams() -> pd.DataFrame:
                 "Team": team["Team"],
                 "Group": team["Group"],
                 "country_code": team["country_code"],
-                "Next Game": _next_game_label(next_fixture, team_id),
+                "Next Game": _next_game_label(next_fixture, team_id, team["Team"]),
                 "Round": _current_round(team["qualification_status"], team_fixtures, now, team_id),
                 "_lost": _team_is_out_or_lost(team["qualification_status"], team_fixtures, now, team_id),
             }
@@ -404,12 +389,14 @@ def _flag_img(team: str, stored_code=None) -> str:
     )
 
 
-def _team_fixtures(fixtures: pd.DataFrame, team_id: int) -> pd.DataFrame:
+def _team_fixtures(fixtures: pd.DataFrame, team_id: int, team_name: str | None = None) -> pd.DataFrame:
     if fixtures.empty:
         return fixtures
-    return fixtures[
-        (fixtures["home_team_id"] == team_id) | (fixtures["away_team_id"] == team_id)
-    ].copy()
+    mask = (fixtures["home_team_id"] == team_id) | (fixtures["away_team_id"] == team_id)
+    if team_name:
+        team_key = normalize_team_key(team_name)
+        mask = mask | fixtures["home_team"].map(normalize_team_key).eq(team_key) | fixtures["away_team"].map(normalize_team_key).eq(team_key)
+    return fixtures[mask].copy()
 
 
 def _next_fixture(fixtures: pd.DataFrame, now: datetime):
@@ -422,10 +409,13 @@ def _next_fixture(fixtures: pd.DataFrame, now: datetime):
     return upcoming.sort_values(["_dt", "match_number"]).iloc[0]
 
 
-def _next_game_label(fixture, team_id: int) -> str:
+def _next_game_label(fixture, team_id: int, team_name: str = "") -> str:
     if fixture is None:
         return ""
-    opponent = fixture["away_team"] if fixture["home_team_id"] == team_id else fixture["home_team"]
+    if fixture["home_team_id"] == team_id or normalize_team_key(fixture["home_team"]) == normalize_team_key(team_name):
+        opponent = fixture["away_team"]
+    else:
+        opponent = fixture["home_team"]
     kickoff = format_local_time(fixture["kickoff_utc"])
     return f"{kickoff} vs {opponent}"
 

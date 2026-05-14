@@ -116,10 +116,7 @@ def _render_world_cup_rankings(rankings: pd.DataFrame) -> None:
     latest = rankings[rankings["ranking_date"] == latest_date].copy()
     latest = latest.sort_values(["rank", "team"], na_position="last")
     st.markdown(_section_title("World Cup Teams", latest_date), unsafe_allow_html=True)
-    st.markdown(
-        f'<div class="ranking-grid wc-grid">{_ranking_cards(latest, team_column="team", clickable=True)}</div>',
-        unsafe_allow_html=True,
-    )
+    _render_clickable_world_cup_rankings(latest)
 
 
 def _render_full_rankings(global_rankings: pd.DataFrame) -> None:
@@ -201,11 +198,30 @@ def _ranking_card(row, team_column: str, compact: bool, clickable: bool) -> str:
         '</div>'
         '</article>'
     )
-    team_id = row.get("team_id")
-    if clickable and pd.notna(team_id):
-        href = f"?page=teams&team_id={int(team_id)}"
-        return f'<a class="ranking-card-link" href="{href}" target="_self" aria-label="Open {html.escape(team)} team page">{card}</a>'
     return card
+
+
+def _render_clickable_world_cup_rankings(rows: pd.DataFrame) -> None:
+    for start in range(0, len(rows), 4):
+        columns = st.columns(4)
+        for column, (_, row) in zip(columns, rows.iloc[start:start + 4].iterrows()):
+            with column:
+                st.markdown(_ranking_card(row, "team", compact=False, clickable=False), unsafe_allow_html=True)
+                if st.button("Open team", key=f"ranking_team_{int(row['team_id'])}", use_container_width=True):
+                    _open_team(int(row["team_id"]))
+
+
+def _open_team(team_id: int) -> None:
+    st.session_state["page_name"] = "Teams"
+    st.session_state["selected_team_id"] = team_id
+    st.session_state.pop("selected_match_id", None)
+    st.session_state.pop("selected_fixture_id", None)
+    st.session_state.pop("selected_fixture_row", None)
+    st.query_params["page"] = "teams"
+    st.query_params["team_id"] = str(team_id)
+    if "fixture" in st.query_params:
+        del st.query_params["fixture"]
+    st.rerun()
 
 
 def _flag_code(team: str, stored_code=None) -> str:
