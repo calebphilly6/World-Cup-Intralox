@@ -153,6 +153,23 @@ Local/admin mode supports CSV or JSON imports for:
 
 In shared core read-only mode, upload/import controls are disabled.
 
+## Refresh Data For Streamlit Cloud Without Burning API Usage
+
+Streamlit Cloud should load committed data snapshots instead of calling APIs for every visitor. The local SQLite database at `data/worldcup.db` stays ignored by Git, but refreshed official/core data can be exported to CSV files in `data/snapshots/`.
+
+After refreshing data locally in admin mode:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\export_core_snapshots.py
+git add data\snapshots src\snapshots.py scripts\export_core_snapshots.py README.md app.py
+git commit -m "Refresh hosted World Cup data snapshots"
+git push
+```
+
+On Streamlit Cloud, the app creates its temporary SQLite database at startup and imports the committed CSV snapshots when the database is empty. This keeps shared viewers from consuming API quota. To refresh the hosted app later, refresh locally, export snapshots again, commit, and push.
+
+Snapshot files are official/core data only. Browser favorites, picks, notes, and other personal preferences are not exported.
+
 ## Project Structure
 
 ```text
@@ -164,10 +181,12 @@ world_cup_2026_dashboard/
         secrets.toml.example
     data/
         imports/
+        snapshots/
     src/
         config.py
         database.py
         data_loader.py
+        snapshots.py
         storage/
             browser_preferences.py
             browser_preferences_component/

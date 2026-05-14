@@ -307,4 +307,10 @@ CREATE TABLE IF NOT EXISTS intralox_competition_snapshots (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(snapshot_key, person_name)
 );
+
+CREATE TABLE IF NOT EXISTS app_metadata (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
 """

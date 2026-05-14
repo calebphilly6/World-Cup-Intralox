@@ -12,6 +12,7 @@ from src.database import fetch_df, initialize_database
 from src.pages import bracket, dashboard, fixtures, groups, imports, rankings, teams, work_competition
 from src.pages import odds
 from src.reference_data import seed_world_cup_2026_reference_data
+from src.snapshots import core_snapshots_available, load_core_snapshots
 from src.storage.browser_preferences import clear_browser_preferences, render_browser_preferences_bridge
 from src.storage.storage import preferences_are_session_only
 
@@ -496,6 +497,8 @@ def _prepare_local_data_store() -> None:
     try:
         ensure_app_directories()
         initialize_database()
+        if core_snapshots_available() and (is_shared_core_read_only_mode() or _core_data_is_empty()):
+            load_core_snapshots()
         if not is_shared_core_read_only_mode() or _core_data_is_empty():
             seed_world_cup_2026_reference_data()
     except Exception as exc:
