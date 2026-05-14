@@ -1,0 +1,2 @@
+team_name,market_type,odds_format,american_odds,decimal_odds,implied_probability,source,snapshot_ts,notes
+United States,tournament_winner,american,+2500,26.0,0.0385,manual,2026-01-01T00:00:00Z,Example only

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Browser preferences</title>
+  </head>
+  <body>
+    <script>
+      const READY = "streamlit:componentReady";
+      const RENDER = "streamlit:render";
+      const SET_VALUE = "streamlit:setComponentValue";
+      const SET_HEIGHT = "streamlit:setFrameHeight";
+
+      function send(type, data) {
+        window.parent.postMessage(
+          {
+            isStreamlitMessage: true,
+            type,
+            ...data,
+          },
+          "*"
+        );
+      }
+
+      function cleanPreferences(value, defaults) {
+        if (!value || typeof value !== "object" || Array.isArray(value)) {
+          return { ...defaults };
+        }
+        return { ...defaults, ...value };
+      }
+
+      function sendValue(value) {
+        send(SET_VALUE, { value, dataType: "json" });
+      }
+
+      function handleRender(event) {
+        if (!event.data || event.data.type !== RENDER) {
+          return;
+        }
+
+        const args = event.data.args || {};
+        const storageKey = args.storage_key;
+        const action = args.action || "load";
+        const defaults = args.defaults || {};
+        const preferences = cleanPreferences(args.preferences, defaults);
+
+        try {
+          if (!storageKey) {
+            throw new Error("Missing storage key");
+          }
+
+          if (action === "clear") {
+            window.localStorage.removeItem(storageKey);
+            sendValue({ ok: true, action, preferences: cleanPreferences({}, defaults) });
+            return;
+          }
+
+          if (action === "save") {
+            window.localStorage.setItem(storageKey, JSON.stringify(preferences));
+            sendValue({ ok: true, action, preferences });
+            return;
+          }
+
+          const stored = window.localStorage.getItem(storageKey);
+          const parsed = stored ? JSON.parse(stored) : {};
+          sendValue({ ok: true, action: "load", preferences: cleanPreferences(parsed, defaults) });
+        } catch (error) {
+          sendValue({
+            ok: false,
+            action,
+            error: error && error.message ? error.message : String(error),
+            preferences,
+          });
+        }
+      }
+
+      window.addEventListener("message", handleRender);
+      send(READY, { apiVersion: 1 });
+      send(SET_HEIGHT, { height: 0 });
+    </script>
+  </body>
+</html>
