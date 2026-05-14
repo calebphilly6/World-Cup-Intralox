@@ -207,7 +207,7 @@ def _render_clickable_world_cup_rankings(rows: pd.DataFrame) -> None:
         for column, (_, row) in zip(columns, rows.iloc[start:start + 4].iterrows()):
             with column:
                 st.markdown(_ranking_card(row, "team", compact=False, clickable=False), unsafe_allow_html=True)
-                if st.button("Open team", key=f"ranking_team_{int(row['team_id'])}", use_container_width=True):
+                if st.button(str(row["team"]), key=f"ranking_team_{int(row['team_id'])}", use_container_width=True):
                     _open_team(int(row["team_id"]))
 
 

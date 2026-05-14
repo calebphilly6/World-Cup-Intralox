@@ -202,7 +202,7 @@ def _flag_tile(row) -> str:
     team = html.escape(str(row["team"]))
     return (
         f'<div class="group-flag-link" title="{team}">'
-        f'<div class="group-flag-tile"><img src="{flag_url}" alt=""><span>{team}</span></div></div>'
+        f'<div class="group-flag-tile"><img src="{flag_url}" alt="{team} flag"></div></div>'
     )
 
 
@@ -210,7 +210,8 @@ def _group_team_buttons(group_name: str, subset: pd.DataFrame) -> None:
     columns = st.columns(len(subset))
     for column, (_, row) in zip(columns, subset.iterrows()):
         with column:
-            if st.button(str(row["team"]), key=f"group_{group_name}_{int(row['team_id'])}", use_container_width=True):
+            team_name = str(row["team"])
+            if st.button(team_name, key=f"group_{group_name}_{int(row['team_id'])}", use_container_width=True):
                 _open_team(int(row["team_id"]))
 
 
