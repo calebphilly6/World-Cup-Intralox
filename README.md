@@ -1,6 +1,6 @@
 # World Cup 2026 Dashboard
 
-A personal Streamlit dashboard for tracking the FIFA World Cup 2026. It is built for private World Cup planning and viewing only. It is not a betting app, sportsbook tool, or public gambling product.
+A personal Streamlit dashboard and Intralox World Cup Hub for tracking the FIFA World Cup 2026. It is built for private World Cup planning and viewing only. It is not a betting app, sportsbook tool, or public gambling product.
 
 The app is still local-first, but the project is prepared for later deployment on Streamlit Community Cloud with `app.py` as the entrypoint.
 
