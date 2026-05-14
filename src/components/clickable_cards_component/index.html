@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Clickable cards</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: "Segoe UI", Arial, sans-serif;
+      }
+      body {
+        margin: 0;
+        background: transparent;
+      }
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+      .grid.groups {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .grid.rankings {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      button {
+        width: 100%;
+        border: 1px solid rgba(214, 168, 58, 0.28);
+        border-radius: 8px;
+        background: rgba(5, 5, 5, 0.38);
+        color: #f8fafc;
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+        transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+      }
+      button:hover,
+      button:focus-visible {
+        transform: translateY(-1px);
+        border-color: rgba(214, 168, 58, 0.82);
+        background: rgba(214, 168, 58, 0.16);
+        outline: none;
+      }
+      .group-card {
+        min-height: 104px;
+        padding: 12px;
+        display: grid;
+        justify-items: center;
+        align-content: center;
+        gap: 9px;
+      }
+      .group-card img {
+        width: 62px;
+        aspect-ratio: 3 / 2;
+        object-fit: cover;
+        border-radius: 4px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.36);
+      }
+      .group-card strong {
+        font-size: 0.95rem;
+        text-align: center;
+      }
+      .ranking-card {
+        min-height: 108px;
+        padding: 12px;
+        display: grid;
+        grid-template-columns: 48px 52px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+      }
+      .rank {
+        color: #d6a83a;
+        font-size: 1.15rem;
+        font-weight: 800;
+      }
+      .ranking-card img,
+      .flag-fallback {
+        width: 46px;
+        aspect-ratio: 3 / 2;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .flag-fallback {
+        display: grid;
+        place-items: center;
+        background: rgba(214, 168, 58, 0.18);
+        border: 1px solid rgba(214, 168, 58, 0.36);
+        font-weight: 800;
+      }
+      .name {
+        font-weight: 800;
+        overflow-wrap: anywhere;
+      }
+      .meta {
+        margin-top: 4px;
+        color: rgba(248, 250, 252, 0.72);
+        font-size: 0.78rem;
+      }
+      @media (max-width: 720px) {
+        .grid.groups,
+        .grid.rankings {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .ranking-card {
+          grid-template-columns: 42px minmax(0, 1fr);
+        }
+        .ranking-card .rank {
+          grid-row: span 2;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const READY = "streamlit:componentReady";
+      const RENDER = "streamlit:render";
+      const SET_VALUE = "streamlit:setComponentValue";
+      const SET_HEIGHT = "streamlit:setFrameHeight";
+
+      function send(type, data) {
+        window.parent.postMessage({ isStreamlitMessage: true, type, ...data }, "*");
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;");
+      }
+
+      function initials(name) {
+        return String(name || "?")
+          .split(/\s+/)
+          .slice(0, 2)
+          .map((part) => part[0] || "")
+          .join("")
+          .toUpperCase() || "?";
+      }
+
+      function flagMarkup(card) {
+        if (card.flag_url) {
+          return `<img src="${escapeHtml(card.flag_url)}" alt="${escapeHtml(card.name)} flag" onerror="this.replaceWith(fallbackFlag('${escapeHtml(initials(card.name))}'));">`;
+        }
+        return `<span class="flag-fallback">${escapeHtml(initials(card.name))}</span>`;
+      }
+
+      function fallbackFlag(text) {
+        const span = document.createElement("span");
+        span.className = "flag-fallback";
+        span.textContent = text;
+        return span;
+      }
+
+      function renderGroupCard(card) {
+        return `
+          <button class="group-card" data-id="${escapeHtml(card.id)}" type="button" aria-label="Open ${escapeHtml(card.name)}">
+            ${flagMarkup(card)}
+            <strong>${escapeHtml(card.name)}</strong>
+          </button>
+        `;
+      }
+
+      function renderRankingCard(card) {
+        const meta = card.group ? `Group ${escapeHtml(card.group)}` : "World Cup";
+        return `
+          <button class="ranking-card" data-id="${escapeHtml(card.id)}" type="button" aria-label="Open ${escapeHtml(card.name)}">
+            <div class="rank">#${escapeHtml(card.rank || "TBD")}</div>
+            ${flagMarkup(card)}
+            <div>
+              <div class="name">${escapeHtml(card.name)}</div>
+              <div class="meta">${meta}</div>
+            </div>
+          </button>
+        `;
+      }
+
+      function handleRender(event) {
+        if (!event.data || event.data.type !== RENDER) return;
+        const args = event.data.args || {};
+        const cards = Array.isArray(args.cards) ? args.cards : [];
+        const variant = args.variant === "groups" ? "groups" : "rankings";
+        const renderer = variant === "groups" ? renderGroupCard : renderRankingCard;
+        const root = document.getElementById("root");
+        root.innerHTML = `<div class="grid ${variant}">${cards.map(renderer).join("")}</div>`;
+        root.querySelectorAll("button[data-id]").forEach((button) => {
+          button.addEventListener("click", () => {
+            send(SET_VALUE, { value: Number(button.dataset.id), dataType: "json" });
+          });
+        });
+        requestAnimationFrame(() => send(SET_HEIGHT, { height: document.body.scrollHeight }));
+      }
+
+      window.addEventListener("message", handleRender);
+      send(READY, { apiVersion: 1 });
+      send(SET_HEIGHT, { height: 0 });
+    </script>
+  </body>
+</html>

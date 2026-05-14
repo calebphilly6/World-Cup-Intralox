@@ -1,0 +1,14 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+import streamlit.components.v1 as components
+
+
+COMPONENT_DIR = Path(__file__).resolve().parent / "clickable_cards_component"
+_component = components.declare_component("clickable_cards", path=str(COMPONENT_DIR))
+
+
+def clickable_cards(cards: list[dict[str, Any]], *, variant: str, key: str):
+    return _component(cards=cards, variant=variant, key=key, default=None)

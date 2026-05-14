@@ -7,6 +7,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 import streamlit as st
 
+from src.components.clickable_cards import clickable_cards
 from src.database import fetch_df
 from src.football_data_service import cached_matches
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
@@ -31,7 +32,9 @@ def render() -> None:
     for group_name in sorted(groups["group_name"].dropna().unique()):
         subset = _sort_group_subset(groups[groups["group_name"] == group_name].copy())
         _group_banner(group_name, subset)
-        _group_team_buttons(group_name, subset)
+        clicked_team_id = clickable_cards(_group_cards(subset), variant="groups", key=f"group_cards_{group_name}")
+        if clicked_team_id:
+            _open_team(int(clicked_team_id))
         with st.expander(f"Open Group {group_name} details", expanded=False):
             _group_details(group_name, subset)
 
@@ -163,7 +166,6 @@ def _daily_group_refresh_key(now: datetime | None = None) -> str:
 
 
 def _group_banner(group_name: str, subset: pd.DataFrame) -> None:
-    flags = "".join(_flag_tile(row) for _, row in subset.iterrows())
     st.markdown(
         f"""
         <section class="group-banner">
@@ -171,7 +173,6 @@ def _group_banner(group_name: str, subset: pd.DataFrame) -> None:
                 <div class="group-kicker">Group</div>
                 <div class="group-title">{html.escape(str(group_name))}</div>
             </div>
-            <div class="group-flags">{flags}</div>
         </section>
         """,
         unsafe_allow_html=True,
@@ -197,22 +198,15 @@ def _group_details(group_name: str, subset: pd.DataFrame) -> None:
     st.markdown(markup, unsafe_allow_html=True)
 
 
-def _flag_tile(row) -> str:
-    flag_url = _flag_url(row)
-    team = html.escape(str(row["team"]))
-    return (
-        f'<div class="group-flag-link" title="{team}">'
-        f'<div class="group-flag-tile"><img src="{flag_url}" alt="{team} flag"></div></div>'
-    )
-
-
-def _group_team_buttons(group_name: str, subset: pd.DataFrame) -> None:
-    columns = st.columns(len(subset))
-    for column, (_, row) in zip(columns, subset.iterrows()):
-        with column:
-            team_name = str(row["team"])
-            if st.button(team_name, key=f"group_{group_name}_{int(row['team_id'])}", use_container_width=True):
-                _open_team(int(row["team_id"]))
+def _group_cards(subset: pd.DataFrame) -> list[dict]:
+    return [
+        {
+            "id": int(row["team_id"]),
+            "name": str(row["team"]),
+            "flag_url": _flag_url(row),
+        }
+        for _, row in subset.iterrows()
+    ]
 
 
 def _open_team(team_id: int) -> None:

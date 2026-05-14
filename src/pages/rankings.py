@@ -6,6 +6,7 @@ import re
 import pandas as pd
 import streamlit as st
 
+from src.components.clickable_cards import clickable_cards
 from src.database import fetch_df
 from src.official_match_reference import normalize_team_key
 
@@ -202,13 +203,26 @@ def _ranking_card(row, team_column: str, compact: bool, clickable: bool) -> str:
 
 
 def _render_clickable_world_cup_rankings(rows: pd.DataFrame) -> None:
-    for start in range(0, len(rows), 4):
-        columns = st.columns(4)
-        for column, (_, row) in zip(columns, rows.iloc[start:start + 4].iterrows()):
-            with column:
-                st.markdown(_ranking_card(row, "team", compact=False, clickable=False), unsafe_allow_html=True)
-                if st.button(str(row["team"]), key=f"ranking_team_{int(row['team_id'])}", use_container_width=True):
-                    _open_team(int(row["team_id"]))
+    clicked_team_id = clickable_cards(_ranking_click_cards(rows), variant="rankings", key="world_cup_ranking_cards")
+    if clicked_team_id:
+        _open_team(int(clicked_team_id))
+
+
+def _ranking_click_cards(rows: pd.DataFrame) -> list[dict]:
+    cards = []
+    for _, row in rows.iterrows():
+        team = str(row.get("team") or "")
+        code = _flag_code(team, row.get("country_code"))
+        cards.append(
+            {
+                "id": int(row["team_id"]),
+                "name": team,
+                "rank": _rank_text(row.get("rank")),
+                "group": str(row.get("group_name") or "").strip(),
+                "flag_url": f"https://flagcdn.com/w80/{code}.png" if code else "",
+            }
+        )
+    return cards
 
 
 def _open_team(team_id: int) -> None:
