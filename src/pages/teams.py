@@ -9,7 +9,7 @@ import streamlit as st
 from src.city_backgrounds import city_background_data_uri
 from src.config import is_shared_core_read_only_mode
 from src.database import execute, fetch_df
-from src.fixture_display import enrich_fixture_participants
+from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.storage.storage import (
@@ -359,14 +359,16 @@ def _flag_url(team) -> str:
 def _flag_image_for_team_name(team_name: str | None) -> str:
     if not team_name:
         return ""
-    row = fetch_df("SELECT country_code FROM teams WHERE name = ?", [team_name])
-    if row.empty:
-        return ""
-    code = str(row.iloc[0]["country_code"] or "").strip().lower()
-    code = FALLBACK_FLAGS.get(team_name, code)
+    code = flag_code_for_team(team_name, _team_flag_lookup())
     if not code:
         return ""
     return f'<img class="match-flag" src="https://flagcdn.com/w160/{html.escape(code)}.png" alt="">'
+
+
+@st.cache_data(show_spinner=False)
+def _team_flag_lookup() -> dict[str, str]:
+    teams = fetch_df("SELECT name, country_code FROM teams")
+    return flag_lookup_with_aliases(teams)
 
 
 def _display_rank(value) -> str:

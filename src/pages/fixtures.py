@@ -8,7 +8,7 @@ import streamlit as st
 from data_sources.football_data_client import FootballDataError
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
-from src.fixture_display import enrich_fixture_participants
+from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches, daily_fixture_refresh_key
 from src.official_match_reference import apply_official_match_reference
 from src.utils.formatting import format_local_time
@@ -84,7 +84,7 @@ def render() -> None:
 @st.cache_data(show_spinner=False)
 def _fixture_data(refresh_key: str) -> tuple[pd.DataFrame, str]:
     try:
-        return apply_official_match_reference(cached_matches()), ""
+        return enrich_fixture_participants(apply_official_match_reference(cached_matches())), ""
     except FootballDataError as exc:
         return _local_fixture_fallback(), f"{exc} Using fallback fixture data. Scores and standings may not be current."
     except Exception as exc:
@@ -303,8 +303,7 @@ def _fixture_by_id(fixtures: pd.DataFrame, fixture_id: str):
 
 
 def _flag_img(team_name) -> str:
-    team = str(team_name or "")
-    code = _team_flag_lookup().get(team)
+    code = flag_code_for_team(team_name, _team_flag_lookup())
     if not code:
         return ""
     return f'<img class="fixture-focus-flag" src="https://flagcdn.com/w160/{html.escape(code)}.png" alt="">'
@@ -313,16 +312,7 @@ def _flag_img(team_name) -> str:
 @st.cache_data(show_spinner=False)
 def _team_flag_lookup() -> dict[str, str]:
     teams = fetch_df("SELECT name, country_code FROM teams")
-    if teams.empty:
-        return {}
-    flags = {}
-    for _, row in teams.iterrows():
-        code = str(row.get("country_code") or "").strip().lower()
-        if code:
-            flags[str(row["name"])] = code
-    flags["England"] = "gb-eng"
-    flags["Scotland"] = "gb-sct"
-    return flags
+    return flag_lookup_with_aliases(teams)
 
 
 def _match_number(row) -> str:
