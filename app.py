@@ -9,7 +9,7 @@ import streamlit.components.v1 as components
 
 from src.config import ensure_app_directories, get_app_config, get_secret, is_deployed, is_shared_core_read_only_mode
 from src.database import fetch_df, initialize_database
-from src.pages import bracket, dashboard, fixtures, groups, imports, rankings, teams, work_competition
+from src.pages import bracket, dashboard, fixtures, groups, rankings, teams, work_competition
 from src.pages import odds
 from src.reference_data import seed_world_cup_2026_reference_data
 from src.snapshots import core_snapshots_available, load_core_snapshots
@@ -39,11 +39,7 @@ NAV_PAGES = {
     "Work Competition": work_competition.render,
 }
 
-HIDDEN_PAGES = {
-    "Data Imports": imports.render,
-}
-
-PAGES = NAV_PAGES | HIDDEN_PAGES
+PAGES = NAV_PAGES
 
 PAGE_SLUGS = {
     "Home": "home",
@@ -54,7 +50,6 @@ PAGE_SLUGS = {
     "FIFA Rankings": "fifa-rankings",
     "Odds": "odds",
     "Work Competition": "work-competition",
-    "Data Imports": "data-imports",
 }
 
 SLUG_TO_PAGE = {slug: page_name for page_name, slug in PAGE_SLUGS.items()}
@@ -66,7 +61,6 @@ NAV_LABELS = {
 PAGE_ALIASES = {
     "Home Dashboard": "Home",
     "Knockout Round": "Bracket",
-    "football-data.org Setup": "Data Imports",
 }
 
 
@@ -455,16 +449,6 @@ def _render_sidebar_brand(logo_uri: str | None) -> None:
     )
 
 
-def _render_hidden_tools() -> None:
-    if is_shared_core_read_only_mode():
-        return
-    with st.sidebar.expander("Data tools"):
-        if st.button("Open Data Imports", use_container_width=True):
-            st.session_state["page_name"] = "Data Imports"
-            st.query_params["page"] = PAGE_SLUGS["Data Imports"]
-            st.rerun()
-
-
 def _require_password() -> None:
     password = get_secret("APP_PASSWORD", default="")
     if not password:
@@ -582,25 +566,15 @@ elif query_page in PAGES:
     st.session_state["page_name"] = query_page
 if "page_name" not in st.session_state or st.session_state["page_name"] not in PAGES:
     st.session_state["page_name"] = list(PAGES.keys())[0]
-if is_shared_core_read_only_mode() and st.session_state["page_name"] in HIDDEN_PAGES:
-    st.session_state["page_name"] = "Home"
-    st.query_params["page"] = PAGE_SLUGS["Home"]
-    st.warning("Shared mode protects official World Cup data, so data imports are disabled.")
 page_name = st.session_state["page_name"]
 
 _render_app_header(logo_uri)
 _render_header_nav()
 _render_mode_status()
 page_name = st.session_state["page_name"]
-if page_name in HIDDEN_PAGES and st.button("Back to World Cup Hub"):
-    st.session_state["page_name"] = "Home"
-    st.query_params["page"] = PAGE_SLUGS["Home"]
-    st.rerun()
-
 _render_sidebar_brand(logo_uri)
 _render_logout_control()
 _render_browser_preference_controls()
-_render_hidden_tools()
 previous_page_name = st.session_state.get("_previous_page_name")
 if page_name == "Teams" and previous_page_name not in (None, "Teams"):
     st.session_state.pop("selected_team_id", None)

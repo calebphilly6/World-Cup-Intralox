@@ -131,9 +131,11 @@ All API keys are optional. Missing keys should show friendly warnings instead of
 
 The app still supports older local key names such as `FOOTBALL_DATA_TOKEN` and `[api_keys].odds_provider`, but new deployments should use the top-level names above.
 
-## Data Imports
+## Owner Data Refresh
 
-Starter import templates live in:
+The app does not expose an in-app Data Imports page. Shared users and local viewers use the same dashboard UI, and official/core data updates are handled by the owner from the local project with scripts and Git.
+
+Starter/reference import files live in:
 
 ```text
 data/imports/teams.csv
@@ -143,15 +145,7 @@ data/imports/fifa_rankings.csv
 data/imports/odds.csv
 ```
 
-Local/admin mode supports CSV or JSON imports for:
-
-- `teams`
-- `groups`
-- `fixtures`
-- `fifa_rankings`
-- `odds`
-
-In shared core read-only mode, upload/import controls are disabled.
+Those files are for local maintenance and initial data workflows. They are not uploaded through the hosted app.
 
 ## Refresh Data For Streamlit Cloud Without Burning API Usage
 
