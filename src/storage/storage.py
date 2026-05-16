@@ -4,17 +4,16 @@ from typing import Any
 
 import pandas as pd
 
-from src.config import is_deployed, is_shared_core_read_only_mode
 from src.database import fetch_df
 from src.odds_service import latest_tournament_winner_odds
 from src.storage import browser_preferences
 
 
 # Core World Cup data remains SQLite/API-backed. Personal preferences use
-# browser/device storage in shared or deployed mode so no account, name, PIN, or
-# hosted user database is required yet. TODO: if cross-device persistence becomes
-# necessary, move preferences to a hosted database such as Supabase, Neon
-# Postgres, Firebase, or similar.
+# browser/device storage so the UI cannot accidentally mutate shared official
+# data because of a deployment-mode misconfiguration. TODO: if cross-device
+# persistence becomes necessary, move preferences to a hosted database such as
+# Supabase, Neon Postgres, Firebase, or similar.
 
 
 def load_teams() -> pd.DataFrame:
@@ -55,7 +54,7 @@ def load_odds() -> pd.DataFrame:
 
 
 def personal_preferences_use_browser_storage() -> bool:
-    return is_shared_core_read_only_mode() or is_deployed()
+    return True
 
 
 def load_user_preferences() -> dict[str, Any]:

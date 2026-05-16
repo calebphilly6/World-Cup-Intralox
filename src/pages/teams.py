@@ -7,8 +7,7 @@ import pandas as pd
 import streamlit as st
 
 from src.city_backgrounds import city_background_data_uri
-from src.config import is_shared_core_read_only_mode
-from src.database import execute, fetch_df
+from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
@@ -30,9 +29,8 @@ FALLBACK_FLAGS = {
 def render() -> None:
     st.title("Teams")
     _styles()
-    if personal_preferences_use_browser_storage():
-        scope = "this session only" if preferences_are_session_only() else "this browser"
-        st.caption(f"Shared mode: favorite teams are personal and saved on {scope}.")
+    scope = "this session only" if preferences_are_session_only() else "this browser"
+    st.caption(f"Favorite teams are personal and saved on {scope}.")
 
     teams = _teams()
     if teams.empty:
@@ -333,19 +331,12 @@ def _match_focus(fixture, team) -> None:
 
 
 def _toggle_favorite(team_id: int, current: int) -> None:
-    if personal_preferences_use_browser_storage():
-        favorite_ids = set(load_favorite_teams())
-        if current:
-            favorite_ids.discard(team_id)
-        else:
-            favorite_ids.add(team_id)
-        save_favorite_teams(favorite_ids)
-        return
-    execute(
-        "UPDATE teams SET favorite = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
-        [0 if current else 1, team_id],
-    )
-    st.cache_data.clear()
+    favorite_ids = set(load_favorite_teams())
+    if current:
+        favorite_ids.discard(team_id)
+    else:
+        favorite_ids.add(team_id)
+    save_favorite_teams(favorite_ids)
 
 
 def _flag_url(team) -> str:

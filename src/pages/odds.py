@@ -20,10 +20,13 @@ from src.config import get_secret, get_section, is_shared_core_read_only_mode
 from src.database import fetch_df, get_connection
 from src.odds_service import latest_tournament_winner_odds, odds_source_text
 from src.pages.rankings import FLAG_CODES
+from src.refresh_gate import mark_refresh_completed, refresh_was_completed
 
 
 APP_TIMEZONE = ZoneInfo("America/Chicago")
 ODDS_REFRESH_TIME = time(3, 0)
+ODDS_PROVIDER = "the_odds_api"
+ODDS_REFRESH_RESOURCE = "world_cup_winner_odds"
 
 
 def render() -> None:
@@ -88,6 +91,8 @@ def _auto_refresh_odds(
 ) -> dict:
     if not api_key:
         return {"saved": 0}
+    if refresh_was_completed(ODDS_PROVIDER, ODDS_REFRESH_RESOURCE, refresh_key):
+        return {"saved": 0, "skipped": True}
     try:
         resolved_key = sport_key or find_world_cup_sport_key(api_key)
         if not resolved_key:
@@ -114,6 +119,7 @@ def _auto_refresh_odds(
         rows = flatten_outrights(payload, odds_format=odds_format)
         saved = save_odds_rows(rows)
         save_api_usage(quota)
+        mark_refresh_completed(ODDS_PROVIDER, ODDS_REFRESH_RESOURCE, refresh_key)
         return {"saved": saved}
     except Exception as exc:
         return {"saved": 0, "error": f"Automatic odds refresh failed: {exc}"}

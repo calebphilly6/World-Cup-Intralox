@@ -14,7 +14,7 @@ from src.fixture_display import enrich_fixture_participants
 from src.football_data_service import cached_matches
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.pages.rankings import FLAG_CODES
-from src.storage.storage import load_favorite_teams, personal_preferences_use_browser_storage
+from src.storage.storage import load_favorite_teams
 from src.utils.formatting import format_local_time
 from src.world_cup_scoring import daily_score_refresh_key
 from src.pages.work_competition import _daily_competition_state, _ensure_results_for_world_cup_teams
@@ -310,35 +310,22 @@ def _stage_label(stage, group) -> str:
 
 
 def _favorite_teams() -> pd.DataFrame:
-    favorite_ids = load_favorite_teams() if personal_preferences_use_browser_storage() else []
-    if personal_preferences_use_browser_storage():
-        if not favorite_ids:
-            return pd.DataFrame()
-        placeholders = ",".join("?" for _ in favorite_ids)
-        favorites = fetch_df(
-            f"""
-            SELECT t.id, t.name AS Team, COALESCE(g.group_name, '') AS "Group",
-                   t.country_code,
-                   COALESCE(g.qualification_status, '') AS qualification_status
-            FROM teams t
-            LEFT JOIN groups g ON g.team_id = t.id
-            WHERE t.id IN ({placeholders})
-            ORDER BY t.name
-            """,
-            favorite_ids,
-        )
-    else:
-        favorites = fetch_df(
-            """
-            SELECT t.id, t.name AS Team, COALESCE(g.group_name, '') AS "Group",
-                   t.country_code,
-                   COALESCE(g.qualification_status, '') AS qualification_status
-            FROM teams t
-            LEFT JOIN groups g ON g.team_id = t.id
-            WHERE t.favorite = 1
-            ORDER BY t.name
-            """
-        )
+    favorite_ids = load_favorite_teams()
+    if not favorite_ids:
+        return pd.DataFrame()
+    placeholders = ",".join("?" for _ in favorite_ids)
+    favorites = fetch_df(
+        f"""
+        SELECT t.id, t.name AS Team, COALESCE(g.group_name, '') AS "Group",
+               t.country_code,
+               COALESCE(g.qualification_status, '') AS qualification_status
+        FROM teams t
+        LEFT JOIN groups g ON g.team_id = t.id
+        WHERE t.id IN ({placeholders})
+        ORDER BY t.name
+        """,
+        favorite_ids,
+    )
     if favorites.empty:
         return favorites
 
