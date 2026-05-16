@@ -37,10 +37,10 @@ STAGE_LABELS = {
     "roundof32": "Round of 32",
     "last16": "Round of 16",
     "roundof16": "Round of 16",
-    "quarterfinals": "Quarter Finals",
-    "quarterfinal": "Quarter Finals",
-    "semifinals": "Semi Finals",
-    "semifinal": "Semi Finals",
+    "quarterfinals": "Quarterfinals",
+    "quarterfinal": "Quarterfinals",
+    "semifinals": "Semifinals",
+    "semifinal": "Semifinals",
     "thirdplace": "Third Place",
     "thirdplacematch": "Third Place",
     "final": "Final",
@@ -224,10 +224,11 @@ def _fixture_card(row, backgrounds: dict[str, str] | None = None) -> str:
         if background
         else "linear-gradient(135deg, #0B1020, #111111)"
     )
-    home = html.escape(str(row.get("home_team") or "TBD"))
-    away = html.escape(str(row.get("away_team") or "TBD"))
+    home = _card_team_label(str(row.get("home_team") or "TBD"))
+    away = _card_team_label(str(row.get("away_team") or "TBD"))
     match_number = _match_number(row)
     stage = _stage_label(row)
+    round_stage = _round_stage_label(row.get("stage") or stage)
     time = html.escape(_kickoff_time(row.get("utc_date"), row.get("local_time")))
     center = _scoreline(row) if _has_score(row) else time
     return (
@@ -240,7 +241,7 @@ def _fixture_card(row, backgrounds: dict[str, str] | None = None) -> str:
         f'<div class="fixture-score">{html.escape(center)}</div>'
         '</div>'
         '<div class="fixture-card-bottom">'
-        f'<span>{html.escape(stage)}</span><span>{html.escape(city)}</span>'
+        f'<span>{html.escape(round_stage)}</span><span>{html.escape(city)}</span>'
         '</div>'
         '</article>'
     )
@@ -269,6 +270,7 @@ def _render_fixture_focus(row) -> None:
     away_flag = _flag_img(row.get("away_team"))
     match_number = html.escape(_match_number(row))
     stage = html.escape(_stage_label(row))
+    round_stage = html.escape(_round_stage_label(row.get("stage") or stage))
     time = html.escape(_kickoff_time(row.get("utc_date"), row.get("local_time")))
     center = html.escape(_scoreline(row) if _has_score(row) else time)
     markup = (
@@ -279,7 +281,7 @@ def _render_fixture_focus(row) -> None:
         f'<div class="fixture-focus-center"><div class="fixture-focus-vs">vs</div><div class="fixture-focus-time">{center}</div></div>'
         f'<div class="fixture-focus-team right">{away_flag}<div>{away}</div></div>'
         '</div>'
-        f'<div class="fixture-focus-bottom"><span>{stage}</span><span>{html.escape(city)}</span></div>'
+        f'<div class="fixture-focus-bottom"><span>{round_stage}</span><span>{html.escape(city)}</span></div>'
         '</section>'
     )
     st.markdown(markup, unsafe_allow_html=True)
@@ -307,6 +309,26 @@ def _flag_img(team_name) -> str:
     if not code:
         return ""
     return f'<img class="fixture-focus-flag" src="https://flagcdn.com/w160/{html.escape(code)}.png" alt="">'
+
+
+def _card_team_label(team_name: str) -> str:
+    return (
+        '<div class="fixture-team-label">'
+        f'{_card_flag_img(team_name)}'
+        f'<span>{html.escape(team_name)}</span>'
+        '</div>'
+    )
+
+
+def _card_flag_img(team_name: str) -> str:
+    code = flag_code_for_team(team_name, _team_flag_lookup())
+    if not code:
+        initials = "".join(part[0] for part in str(team_name).replace("-", " ").split()[:2]).upper() or "?"
+        return f'<span class="fixture-card-flag flag-fallback">{html.escape(initials)}</span>'
+    return (
+        f'<img class="fixture-card-flag" src="https://flagcdn.com/w80/{html.escape(code)}.png" '
+        f'alt="{html.escape(team_name)} flag">'
+    )
 
 
 @st.cache_data(show_spinner=False)
@@ -339,6 +361,16 @@ def _stage_label(row) -> str:
     if stage == "Last 16":
         return "Round of 16"
     return stage if stage and stage.lower() != "nan" else "Stage TBD"
+
+
+def _round_stage_label(value) -> str:
+    key = _stage_key(value)
+    if key in STAGE_LABELS:
+        return STAGE_LABELS[key]
+    text = str(value or "").replace("_", " ").strip()
+    if text.lower().startswith("group "):
+        return "Group Stage"
+    return text.title() if text else "Stage TBD"
 
 
 def _kickoff_time(utc_date, local_time) -> str:
@@ -495,6 +527,27 @@ def _styles() -> None:
             display: block;
             text-decoration: none !important;
         }
+        [class*="st-key-fixture_open_"] {
+            height: 245px;
+            margin-top: -245px;
+            margin-bottom: .9rem;
+            position: relative;
+            z-index: 2;
+        }
+        [class*="st-key-fixture_open_"] button {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            color: transparent !important;
+            cursor: pointer;
+            height: 245px;
+            min-height: 245px;
+            opacity: 0;
+            padding: 0 !important;
+        }
+        [class*="st-key-fixture_open_"] button p {
+            color: transparent !important;
+        }
         .fixture-card {
             min-height: 245px;
             border: 1px solid rgba(255,255,255,.18);
@@ -537,6 +590,36 @@ def _styles() -> None:
         .fixture-teams strong {
             color: #D6A83A;
             font-size: .82rem;
+        }
+        .fixture-team-label {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: .42rem;
+            min-width: 0;
+        }
+        .fixture-team-label span:last-child {
+            overflow-wrap: anywhere;
+        }
+        .fixture-card-flag {
+            aspect-ratio: 3 / 2;
+            border: 1px solid rgba(255,255,255,.70);
+            border-radius: 4px;
+            box-shadow: 0 8px 16px rgba(0,0,0,.34);
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            width: 34px;
+        }
+        .fixture-card-flag.flag-fallback {
+            align-items: center;
+            background: linear-gradient(135deg, rgba(214,168,58,.50), rgba(36,88,255,.28));
+            color: #FFFFFF;
+            display: grid;
+            font-size: .58rem;
+            font-weight: 950;
+            justify-content: center;
+            line-height: 1;
         }
         .fixture-score {
             margin-top: .8rem;
@@ -588,6 +671,8 @@ def _styles() -> None:
             width: clamp(92px, 12vw, 170px);
             aspect-ratio: 3 / 2;
             object-fit: cover;
+            object-position: center;
+            display: block;
             border: 2px solid rgba(255,255,255,.78);
             border-radius: 8px;
             box-shadow: 0 14px 30px rgba(0,0,0,.46);

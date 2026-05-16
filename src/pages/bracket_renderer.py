@@ -21,31 +21,33 @@ from src.pages.bracket_data import (
 from src.pages.rankings import FLAG_CODES
 
 
-CARD_W = 252
-CARD_H = 118
-FINAL_W = 276
-FINAL_H = 138
-CANVAS_W = 2932
-CANVAS_H = 1460
+CARD_W = 276
+CARD_H = 142
+FINAL_W = 350
+FINAL_H = 180
+THIRD_W = 350
+THIRD_H = 126
+CANVAS_W = 2790
+CANVAS_H = 1420
 
 COL_X = {
-    "r32_left": 70,
-    "r16_left": 392,
-    "qf_left": 714,
-    "sf_left": 1036,
-    "final": 1328,
-    "sf_right": 1644,
-    "qf_right": 1966,
-    "r16_right": 2288,
-    "r32_right": 2610,
+    "r32_left": 46,
+    "r16_left": 336,
+    "qf_left": 626,
+    "sf_left": 916,
+    "final": 1220,
+    "sf_right": 1598,
+    "qf_right": 1888,
+    "r16_right": 2178,
+    "r32_right": 2468,
 }
 
-R32_Y = [150, 290, 430, 570, 730, 870, 1010, 1150]
-R16_Y = [220, 500, 800, 1080]
-QF_Y = [360, 940]
-SF_Y = [650]
-FINAL_Y = 640
-THIRD_PLACE_Y = 1294
+R32_Y = [124, 274, 424, 574, 724, 874, 1024, 1174]
+R16_Y = [199, 499, 799, 1099]
+QF_Y = [349, 949]
+SF_Y = [649]
+FINAL_Y = 630
+THIRD_PLACE_Y = 1250
 
 
 def render_live_bracket_html(fixtures: pd.DataFrame, flag_lookup: dict[str, str], background_uri: str | None = None) -> str:
@@ -130,15 +132,7 @@ def render_live_bracket_html(fixtures: pd.DataFrame, flag_lookup: dict[str, str]
 
 
 def _background_layer(background_uri: str | None) -> str:
-    if not background_uri:
-        return ""
-    image = html.escape(background_uri, quote=True)
-    return (
-        '<div class="bracket-bg" '
-        f'style="background-image: linear-gradient(180deg, rgba(5,5,5,.28), rgba(5,5,5,.54)), '
-        f'radial-gradient(circle at 50% 30%, rgba(214,168,58,.14), transparent 34%), url(&quot;{image}&quot;);">'
-        '</div>'
-    )
+    return '<div class="bracket-bg"></div>'
 
 
 def _build_match_models(fixtures: pd.DataFrame, flag_lookup: dict[str, str]) -> dict[int, dict]:
@@ -267,8 +261,11 @@ def _cards_for(match_numbers: list[int], x: int, ys: list[int], models: dict[int
 def _card_html(match_number: int, x: int, y: int, model: dict, side: str, final: bool = False, third: bool = False) -> str:
     size_class = " final-card" if final else " third-card" if third else ""
     style = f"left:{x}px;top:{y}px;"
-    if final or third:
+    if final:
         style += f"width:{FINAL_W}px;"
+    elif third:
+        style += f"width:{THIRD_W}px;"
+    badge = "Final" if final else "Third Place" if third else _round_badge(model["round"])
     rows = "".join(
         _team_row(participant, model["scores"][idx], model["winner_index"] == idx, model["winner_index"] is not None)
         for idx, participant in enumerate(model["participants"])
@@ -277,6 +274,7 @@ def _card_html(match_number: int, x: int, y: int, model: dict, side: str, final:
         f'<article class="bracket-card {side}{size_class}" style="{style}">'
         '<div class="match-head">'
         f'<span>M{match_number}</span>'
+        f'<strong>{html.escape(badge)}</strong>'
         '</div>'
         f'<div class="match-meta">{html.escape(model["date"])} | {html.escape(model["venue"])}</div>'
         f'<div class="team-stack">{rows}</div>'
@@ -327,6 +325,23 @@ def _slot_abbrev(value: str) -> str:
     return text[:6]
 
 
+def _round_badge(value: str) -> str:
+    text = str(value or "").strip().lower()
+    if "round of 32" in text:
+        return "R32"
+    if "round of 16" in text:
+        return "R16"
+    if "quarter" in text:
+        return "QF"
+    if "semi" in text:
+        return "SF"
+    if "third" in text:
+        return "3rd"
+    if "final" in text:
+        return "Final"
+    return str(value or "")
+
+
 def _connector_svg() -> str:
     paths = []
     paths.extend(_pair_connectors_left(COL_X["r32_left"] + CARD_W, COL_X["r16_left"], R32_Y, R16_Y, "left-blue"))
@@ -375,19 +390,19 @@ def _center_y(y: int) -> float:
 def _column_headers() -> str:
     headers = [
         (COL_X["r32_left"], "Round of 32"), (COL_X["r16_left"], "Round of 16"),
-        (COL_X["qf_left"], "Quarter Finals"), (COL_X["sf_left"], "Semi Finals"),
+        (COL_X["qf_left"], "Quarterfinals"), (COL_X["sf_left"], "Semifinals"),
         (COL_X["final"], "Final"),
-        (COL_X["sf_right"], "Semi Finals"), (COL_X["qf_right"], "Quarter Finals"),
+        (COL_X["sf_right"], "Semifinals"), (COL_X["qf_right"], "Quarterfinals"),
         (COL_X["r16_right"], "Round of 16"), (COL_X["r32_right"], "Round of 32"),
     ]
     return "".join(
-        f'<div class="round-header" style="left:{x}px;top:96px;width:{FINAL_W if label == "Final" else CARD_W}px;">{html.escape(label)}</div>'
+        f'<div class="round-header" style="left:{x}px;top:80px;width:{FINAL_W if label == "Final" else CARD_W}px;">{html.escape(label)}</div>'
         for x, label in headers
     )
 
 
 def _final_glow() -> str:
-    return '<div class="final-halo"></div><div class="trophy-mark">2026</div>'
+    return ""
 
 
 def _display_date(value: str) -> str:
@@ -410,43 +425,43 @@ def _styles() -> str:
     .bracket-shell {{
         min-height: 100vh;
         overflow: hidden;
-        padding: 14px;
+        padding: 12px;
         position: relative;
         background:
-            radial-gradient(circle at 50% 4%, rgba(214,168,58,.25), transparent 24%),
-            radial-gradient(circle at 18% 36%, rgba(35,215,215,.14), transparent 24%),
-            radial-gradient(circle at 82% 40%, rgba(255,59,31,.16), transparent 24%),
-            linear-gradient(135deg, #050505, #0B1020 48%, #111111);
+            radial-gradient(circle at 50% 8%, rgba(214,168,58,.18), transparent 26%),
+            radial-gradient(circle at 18% 40%, rgba(35,215,215,.09), transparent 22%),
+            radial-gradient(circle at 82% 42%, rgba(255,59,31,.10), transparent 22%),
+            linear-gradient(135deg, #030712, #0B1020 48%, #050505);
     }}
     .bracket-bg {{
-        background-color: #050505;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 100% auto;
-        filter: saturate(1.08) contrast(1.04);
+        background:
+            radial-gradient(circle at 50% 42%, rgba(214,168,58,.10), transparent 22%),
+            radial-gradient(circle at 28% 36%, rgba(35,215,215,.08), transparent 24%),
+            radial-gradient(circle at 72% 38%, rgba(255,59,31,.08), transparent 24%);
         inset: 0;
         position: absolute;
         z-index: 0;
     }}
     .bracket-viewport {{
-        border: 1px solid rgba(214,168,58,.26);
+        border: 1px solid rgba(214,168,58,.34);
         border-radius: 8px;
-        height: 800px;
+        height: calc(100vh - 24px);
+        min-height: 780px;
         overflow: auto;
         background:
-            linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
-            linear-gradient(180deg, rgba(5,5,5,.28), rgba(5,5,5,.46));
-        background-size: 78px 78px;
-        box-shadow: inset 0 0 80px rgba(0,0,0,.42);
+            linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+            linear-gradient(180deg, rgba(5,5,5,.42), rgba(5,5,5,.64));
+        background-size: 92px 92px;
+        box-shadow: inset 0 0 90px rgba(0,0,0,.54), 0 18px 40px rgba(0,0,0,.34);
         position: relative;
         z-index: 2;
     }}
     .zoom-controls {{
         align-items: center;
-        border: 1px solid rgba(214,168,58,.34);
+        border: 1px solid rgba(214,168,58,.28);
         border-radius: 999px;
-        background: rgba(5,5,5,.76);
+        background: rgba(5,5,5,.84);
         box-shadow: 0 12px 28px rgba(0,0,0,.34);
         display: flex;
         gap: 6px;
@@ -459,7 +474,7 @@ def _styles() -> str:
     }}
     .zoom-controls button,
     .zoom-controls span {{
-        border: 1px solid rgba(214,168,58,.34);
+        border: 1px solid rgba(214,168,58,.30);
         border-radius: 999px;
         background: rgba(11,16,32,.88);
         color: #D6A83A;
@@ -498,57 +513,87 @@ def _styles() -> str:
         z-index: 1;
     }}
     .connector {{
-        stroke-width: 3;
+        stroke-width: 2.5;
         stroke-linecap: round;
         stroke-linejoin: round;
-        opacity: .78;
-        filter: drop-shadow(0 0 7px rgba(214,168,58,.13));
+        opacity: .44;
+        filter: drop-shadow(0 0 8px rgba(214,168,58,.10));
     }}
-    .connector.left-blue {{ stroke: #23D7D7; }}
-    .connector.right-red {{ stroke: #FF3B1F; }}
+    .connector.left-blue {{ stroke: #5CE8F0; }}
+    .connector.right-red {{ stroke: #FF6652; }}
     .connector.gold {{ stroke: #D6A83A; }}
-    .connector.strong {{ stroke-width: 5; opacity: .92; }}
+    .connector.strong {{ stroke-width: 4.5; opacity: .78; }}
     .round-header {{
-        border: 1px solid rgba(214,168,58,.35);
-        border-radius: 999px;
-        background: rgba(5,5,5,.72);
+        border: 1px solid rgba(214,168,58,.28);
+        border-radius: 8px;
+        background:
+            linear-gradient(180deg, rgba(214,168,58,.16), rgba(5,5,5,.72)),
+            rgba(5,5,5,.78);
+        box-shadow: 0 12px 26px rgba(0,0,0,.28);
         color: #D6A83A;
-        font-size: 11px;
+        font-size: 15px;
         font-weight: 950;
-        letter-spacing: .06em;
-        padding: 7px 10px;
+        letter-spacing: .02em;
+        padding: 10px 10px;
         position: absolute;
         text-align: center;
+        text-shadow: 0 2px 10px rgba(0,0,0,.72);
         text-transform: uppercase;
         z-index: 3;
     }}
     .bracket-card {{
-        border: 1px solid rgba(255,255,255,.16);
+        border: 1px solid rgba(255,255,255,.20);
         border-radius: 8px;
         background:
-            linear-gradient(135deg, rgba(5,5,5,.88), rgba(11,16,32,.78)),
-            radial-gradient(circle at 100% 0%, rgba(36,88,255,.22), transparent 35%);
-        box-shadow: 0 18px 36px rgba(0,0,0,.38);
+            linear-gradient(180deg, rgba(8,13,25,.94), rgba(3,5,12,.91)),
+            radial-gradient(circle at 100% 0%, rgba(36,88,255,.24), transparent 36%);
+        box-shadow: 0 18px 36px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.06);
         min-height: {CARD_H}px;
-        padding: 10px;
+        overflow: hidden;
+        padding: 11px;
         position: absolute;
         width: {CARD_W}px;
         z-index: 4;
     }}
+    .bracket-card::before {{
+        background: linear-gradient(90deg, rgba(35,215,215,.92), rgba(214,168,58,.42));
+        border-radius: 999px;
+        content: "";
+        height: 3px;
+        left: 12px;
+        position: absolute;
+        right: 12px;
+        top: 0;
+    }}
     .bracket-card.right {{
         background:
-            linear-gradient(225deg, rgba(5,5,5,.88), rgba(11,16,32,.78)),
-            radial-gradient(circle at 0% 0%, rgba(255,59,31,.20), transparent 34%);
+            linear-gradient(180deg, rgba(8,13,25,.94), rgba(3,5,12,.91)),
+            radial-gradient(circle at 0% 0%, rgba(255,59,31,.22), transparent 34%);
+    }}
+    .bracket-card.right::before {{
+        background: linear-gradient(90deg, rgba(214,168,58,.42), rgba(255,59,31,.92));
     }}
     .bracket-card.final-card {{
-        border-color: rgba(214,168,58,.62);
+        border-color: rgba(214,168,58,.74);
+        background:
+            linear-gradient(180deg, rgba(39,28,9,.96), rgba(5,5,5,.94)),
+            radial-gradient(circle at 50% 0%, rgba(214,168,58,.30), transparent 52%);
+        box-shadow: 0 24px 58px rgba(0,0,0,.54), 0 0 44px rgba(214,168,58,.14), inset 0 1px 0 rgba(255,255,255,.08);
         min-height: {FINAL_H}px;
-        padding: 12px;
+        padding: 14px;
         z-index: 6;
     }}
+    .bracket-card.final-card::before {{
+        background: linear-gradient(90deg, transparent, #D6A83A, transparent);
+        height: 4px;
+    }}
     .bracket-card.third-card {{
-        background: rgba(5,5,5,.72);
-        min-height: 104px;
+        border-color: rgba(255,255,255,.20);
+        background:
+            linear-gradient(180deg, rgba(8,13,25,.88), rgba(5,5,5,.86)),
+            radial-gradient(circle at 50% 0%, rgba(214,168,58,.12), transparent 44%);
+        min-height: {THIRD_H}px;
+        padding: 11px;
     }}
     .match-head {{
         align-items: center;
@@ -558,44 +603,56 @@ def _styles() -> str:
     }}
     .match-head span {{
         color: #D6A83A;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 950;
+    }}
+    .match-head strong {{
+        border: 1px solid rgba(214,168,58,.28);
+        border-radius: 999px;
+        color: #F8FAFC;
+        font-size: 10px;
+        font-weight: 950;
+        letter-spacing: .04em;
+        line-height: 1;
+        padding: 4px 7px;
+        text-transform: uppercase;
     }}
     .match-meta {{
         color: #CBD5E1;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 800;
-        margin: 4px 0 7px;
-        min-height: 12px;
+        margin: 5px 0 8px;
+        min-height: 14px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }}
     .team-stack {{
         display: grid;
-        gap: 5px;
+        gap: 6px;
     }}
     .team-row {{
         align-items: center;
-        border: 1px solid rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.15);
         border-radius: 7px;
-        background: rgba(255,255,255,.055);
+        background: rgba(255,255,255,.065);
         display: grid;
-        grid-template-columns: 32px 1fr 28px;
-        gap: 8px;
-        min-height: 34px;
-        padding: 4px 6px;
+        grid-template-columns: 38px 1fr 32px;
+        gap: 9px;
+        min-height: 40px;
+        padding: 5px 7px;
     }}
     .team-row.winner {{
-        border-color: rgba(214,168,58,.66);
-        background: rgba(214,168,58,.14);
+        border-color: rgba(214,168,58,.72);
+        background: rgba(214,168,58,.17);
+        box-shadow: inset 0 0 0 1px rgba(214,168,58,.10);
     }}
     .team-row.loser {{
-        opacity: .62;
+        opacity: .58;
     }}
     .team-row.placeholder {{
         border-color: rgba(214,168,58,.20);
-        background: rgba(5,5,5,.35);
+        background: rgba(5,5,5,.42);
     }}
     .team-flag, .slot-emblem {{
         align-items: center;
@@ -604,13 +661,15 @@ def _styles() -> str:
         display: grid;
         font-size: 10px;
         font-weight: 950;
-        height: 22px;
+        height: 25px;
         justify-content: center;
         object-fit: cover;
-        width: 32px;
+        object-position: center;
+        width: 38px;
     }}
-    .team-flag {{
+    .team-flag:not(.flag-fallback) {{
         border: 1px solid rgba(255,255,255,.52);
+        display: block;
     }}
     .slot-emblem, .flag-fallback {{
         border: 1px solid rgba(214,168,58,.42);
@@ -624,7 +683,7 @@ def _styles() -> str:
     .team-copy span {{
         color: #FFFFFF;
         display: block;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 950;
         line-height: 1;
         overflow: hidden;
@@ -634,7 +693,7 @@ def _styles() -> str:
     .team-copy small {{
         color: #D6A83A;
         display: block;
-        font-size: 9px;
+        font-size: 9.5px;
         font-weight: 850;
         line-height: 1.05;
         margin-top: 2px;
@@ -644,28 +703,35 @@ def _styles() -> str:
     }}
     .team-score {{
         color: #FFFFFF;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: 950;
         text-align: right;
     }}
-    .final-halo {{
-        border: 1px solid rgba(214,168,58,.18);
-        border-radius: 999px;
-        box-shadow: 0 0 80px rgba(214,168,58,.12);
-        height: 430px;
-        left: 1251px;
-        position: absolute;
-        top: 494px;
-        width: 430px;
-        z-index: 0;
+    .final-card .match-head span {{
+        font-size: 15px;
     }}
-    .trophy-mark {{
-        color: rgba(214,168,58,.08);
-        font-size: 118px;
-        font-weight: 950;
-        left: 1324px;
-        position: absolute;
-        top: 500px;
-        z-index: 0;
+    .final-card .match-head strong {{
+        background: rgba(214,168,58,.18);
+        color: #D6A83A;
+        font-size: 11px;
+    }}
+    .final-card .match-meta {{
+        font-size: 12px;
+        margin-bottom: 10px;
+    }}
+    .final-card .team-row {{
+        grid-template-columns: 44px 1fr 38px;
+        min-height: 46px;
+    }}
+    .final-card .team-flag,
+    .final-card .slot-emblem {{
+        height: 29px;
+        width: 44px;
+    }}
+    .final-card .team-copy span {{
+        font-size: 15px;
+    }}
+    .final-card .team-score {{
+        font-size: 25px;
     }}
     """

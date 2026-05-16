@@ -27,7 +27,7 @@ def render() -> None:
 
     components.html(
         render_live_bracket_html(fixtures, _flag_lookup(), _bracket_background_uri()),
-        height=910,
+        height=960,
         scrolling=False,
     )
 

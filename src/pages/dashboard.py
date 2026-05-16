@@ -73,17 +73,19 @@ def _render_match_strip(matches: pd.DataFrame) -> None:
 
 
 def _home_fixture_card(row) -> str:
+    stage = str(row["Stage"])
+    round_stage = str(row.get("Round") or _round_stage_label(stage))
     return (
         f'<article class="home-match-card" style="background-image: {_match_background(row)};">'
         '<div class="home-match-card-top">'
-        f'<span>{html.escape(_match_number_label(row.get("#")))}</span><span>{html.escape(str(row["Stage"]))}</span>'
+        f'<span>{html.escape(_match_number_label(row.get("#")))}</span><span>{html.escape(stage)}</span>'
         '</div>'
         '<div class="home-match-card-body">'
-        f'<div class="home-fixture-teams"><div>{html.escape(_team_text(row.get("Home")))}</div><strong>vs</strong><div>{html.escape(_team_text(row.get("Away")))}</div></div>'
+        f'<div class="home-fixture-teams">{_home_fixture_team(row.get("Home"))}<strong>vs</strong>{_home_fixture_team(row.get("Away"))}</div>'
         f'<div class="home-fixture-score">{html.escape(_match_center(row))}</div>'
         '</div>'
         '<div class="home-match-card-bottom">'
-        f'<span>{html.escape(str(row["Stage"]))}</span><span>{html.escape(str(row.get("City") or "Host City TBD"))}</span>'
+        f'<span>{html.escape(round_stage)}</span><span>{html.escape(str(row.get("City") or "Host City TBD"))}</span>'
         '</div>'
         '</article>'
     )
@@ -111,8 +113,8 @@ def _fixture_focus_row(row) -> dict:
         "local_time": row.get("Kickoff"),
         "home_team": row.get("Home"),
         "away_team": row.get("Away"),
-        "stage": row.get("Stage"),
-        "group": "",
+        "stage": row.get("Round", row.get("Stage")),
+        "group": row.get("Stage") if _round_stage_label(row.get("Stage")) == "Group Stage" else "",
         "venue": row.get("City"),
         "city": row.get("City"),
         "home_score": row.get("home_score"),
@@ -148,6 +150,28 @@ def _team_text(value) -> str:
     if pd.isna(value) or not str(value).strip():
         return "TBD"
     return str(value)
+
+
+def _home_fixture_team(value) -> str:
+    team = _team_text(value)
+    return (
+        '<div class="home-fixture-team">'
+        f'{_home_fixture_flag(team)}'
+        f'<span>{html.escape(team)}</span>'
+        '</div>'
+    )
+
+
+def _home_fixture_flag(team: str) -> str:
+    code = FLAG_CODES.get(str(team), "")
+    initials = "".join(part[0] for part in str(team).replace("-", " ").split()[:2]).upper() or "?"
+    if not code:
+        return f'<div class="home-fixture-flag flag-fallback">{html.escape(initials)}</div>'
+    return (
+        f'<img class="home-fixture-flag" src="https://flagcdn.com/w80/{html.escape(str(code).lower())}.png" alt="{html.escape(str(team))} flag" '
+        f'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\';">'
+        f'<div class="home-fixture-flag flag-fallback hidden">{html.escape(initials)}</div>'
+    )
 
 
 def _safe_key(value: str) -> str:
@@ -246,7 +270,9 @@ def _display_matches(matches: pd.DataFrame) -> pd.DataFrame:
     display = matches.copy()
     display["Kickoff"] = display["kickoff_utc"].apply(format_local_time)
     display["Score"] = display.apply(_score_text, axis=1)
-    return display[["#", "kickoff_utc", "Kickoff", "Home", "Away", "Stage", "City", "Priority", "Score", "home_score", "away_score"]]
+    stage_source = display["stage"] if "stage" in display else display["Stage"]
+    display["Round"] = stage_source.map(_round_stage_label)
+    return display[["#", "kickoff_utc", "Kickoff", "Home", "Away", "Stage", "Round", "City", "Priority", "Score", "home_score", "away_score"]]
 
 
 def _has_score(row) -> bool:
@@ -277,14 +303,15 @@ def _fixtures_from_api() -> pd.DataFrame:
     for column in ("home_score", "away_score"):
         if column not in mapped:
             mapped[column] = pd.NA
-    return mapped[["#", "kickoff_utc", "Home", "Away", "Stage", "City", "Priority", "home_score", "away_score"]].sort_values(["kickoff_utc", "#"])
+    return mapped[["#", "kickoff_utc", "Home", "Away", "Stage", "stage", "City", "Priority", "home_score", "away_score"]].sort_values(["kickoff_utc", "#"])
 
 
 def _fixtures_from_database() -> pd.DataFrame:
     fixtures = fetch_df(
         """
             SELECT f.match_number AS "#", f.kickoff_utc, ht.name AS Home, at.name AS Away,
-                   COALESCE(f.group_name, f.stage) AS Stage, COALESCE(m.city, f.city) AS City,
+                   COALESCE(f.group_name, f.stage) AS Stage, f.stage,
+                   COALESCE(m.city, f.city) AS City,
                    m.game_label,
                    f.watch_priority AS Priority, f.home_score, f.away_score
             FROM fixtures f
@@ -307,6 +334,31 @@ def _stage_label(stage, group) -> str:
     if stage_text == "Last 16":
         return "Round of 16"
     return stage_text
+
+
+def _round_stage_label(value) -> str:
+    text = str(value or "").replace("_", " ").strip()
+    key = "".join(character for character in text.lower() if character.isalnum())
+    labels = {
+        "groupstage": "Group Stage",
+        "group": "Group Stage",
+        "last32": "Round of 32",
+        "roundof32": "Round of 32",
+        "last16": "Round of 16",
+        "roundof16": "Round of 16",
+        "quarterfinals": "Quarterfinals",
+        "quarterfinal": "Quarterfinals",
+        "semifinals": "Semifinals",
+        "semifinal": "Semifinals",
+        "thirdplace": "Third Place",
+        "thirdplacematch": "Third Place",
+        "final": "Final",
+    }
+    if key in labels:
+        return labels[key]
+    if text.lower().startswith("group "):
+        return "Group Stage"
+    return text.title() if text else "Stage TBD"
 
 
 def _favorite_teams() -> pd.DataFrame:
@@ -580,7 +632,7 @@ def _styles() -> None:
             gap: .65rem;
         }
         .home-match-card {
-            border: 1px solid rgba(255,255,255,.13);
+            border: 1px solid rgba(255,255,255,.18);
             border-radius: 8px;
             background-size: cover;
             background-position: center;
@@ -588,16 +640,18 @@ def _styles() -> None:
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 210px;
+            min-height: 245px;
             overflow: hidden;
-            padding: .85rem;
+            padding: .95rem;
+            cursor: pointer;
+            transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
         }
         .home-match-card-top, .home-match-card-bottom {
             display: flex;
             justify-content: space-between;
             gap: .75rem;
             color: #D6A83A;
-            font-size: .74rem;
+            font-size: .78rem;
             font-weight: 900;
             text-transform: uppercase;
             text-shadow: 0 2px 10px rgba(0,0,0,.75);
@@ -609,27 +663,57 @@ def _styles() -> None:
         .home-fixture-teams {
             align-items: center;
             display: grid;
-            gap: .5rem;
+            gap: .55rem;
             grid-template-columns: 1fr auto 1fr;
-            font-size: 1.08rem;
+            font-size: 1.28rem;
             font-weight: 950;
             line-height: 1.05;
             text-align: center;
         }
+        .home-fixture-team {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: .42rem;
+            min-width: 0;
+        }
+        .home-fixture-team span {
+            overflow-wrap: anywhere;
+        }
+        .home-fixture-flag {
+            aspect-ratio: 3 / 2;
+            border: 1px solid rgba(255,255,255,.70);
+            border-radius: 4px;
+            box-shadow: 0 8px 16px rgba(0,0,0,.34);
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            width: 34px;
+        }
+        .home-fixture-flag.flag-fallback {
+            align-items: center;
+            background: linear-gradient(135deg, rgba(214,168,58,.50), rgba(36,88,255,.28));
+            color: #FFFFFF;
+            display: grid;
+            font-size: .58rem;
+            font-weight: 950;
+            justify-content: center;
+            line-height: 1;
+        }
         .home-fixture-teams strong {
             color: #D6A83A;
-            font-size: .8rem;
+            font-size: .82rem;
         }
         .home-fixture-score {
             color: #f8fafc;
-            font-weight: 950;
-            margin-top: .72rem;
+            font-weight: 900;
+            margin-top: .8rem;
             text-align: center;
         }
         [class*="st-key-home_fixture_open_"] {
-            height: 210px;
-            margin-top: -210px;
-            margin-bottom: .65rem;
+            height: 245px;
+            margin-top: -245px;
+            margin-bottom: .9rem;
             position: relative;
             z-index: 2;
         }
@@ -644,8 +728,8 @@ def _styles() -> None:
             padding: 0 !important;
         }
         [class*="st-key-home_fixture_open_"] button {
-            height: 210px;
-            min-height: 210px;
+            height: 245px;
+            min-height: 245px;
         }
         [class*="st-key-home_fixture_open_"] button p,
         [class*="st-key-home_favorite_open_"] button p {
@@ -722,8 +806,10 @@ def _styles() -> None:
             border: 1px solid rgba(255,255,255,.52);
             border-radius: 5px;
             box-shadow: 0 7px 15px rgba(0,0,0,.30);
+            display: block;
             flex: 0 0 42px;
             object-fit: cover;
+            object-position: center;
             width: 42px;
         }
         .flag-fallback {
