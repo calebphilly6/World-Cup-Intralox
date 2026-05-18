@@ -1,0 +1,22 @@
+Please import the CONMEBOL WCQ data pack into the existing Streamlit WCQ feature.
+
+Use the files in data/wcq/CONMEBOL/ or copy them into the existing data/wcq/ structure, depending on how the app is organized.
+
+Implementation expectations:
+1. Add CONMEBOL as a top-level WCQ confederation tab.
+2. Use conmebol_style.json for the CONMEBOL visual theme.
+3. Render CONMEBOL_R1 as a league_table round.
+4. Render CONMEBOL_ICPO as a single_match_playoff/bracket round.
+5. In the league table, highlight:
+   - Positions 1-6 as qualified for the World Cup.
+   - Position 7, Bolivia, as playoff_loss / inter-confederation playoff.
+   - Positions 8-10 as eliminated.
+6. Show the eliminated list at the bottom of each round tab.
+7. Show the CONMEBOL Qualified tab with Argentina, Ecuador, Colombia, Uruguay, Brazil, and Paraguay.
+8. Handle blank match dates gracefully because most league match rows contain scores but not full date/venue data.
+9. Keep all UI consistent with the rest of the WCQ feature.
+
+Important notes:
+- Ecuador has a note about a three-point deduction.
+- Bolivia should appear as advanced to inter-confederation playoff after the league table but eliminated in the playoff final.
+- Iraq qualified from the playoff final, but Iraq belongs to AFC, so do not list Iraq as a CONMEBOL qualifier.

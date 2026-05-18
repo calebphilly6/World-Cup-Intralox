@@ -1,0 +1,42 @@
+I have a CONCACAF WCQ data pack for the 2026 World Cup qualification tab. Please import it into my existing Streamlit World Cup app.
+
+Expected location:
+- Copy the folder contents into data/wcq/concacaf/
+
+Files included:
+- wcq_confederations.csv
+- wcq_concacaf_teams.csv
+- wcq_rounds.csv
+- wcq_groups.csv
+- wcq_group_standings.csv
+- wcq_playoff_ties.csv
+- wcq_matches.csv
+- wcq_eliminated_by_round.csv
+- wcq_qualified_teams.csv
+- wcq_sources.csv
+- concacaf_style.json
+- concacaf_wcq_data.json
+
+Please wire this data into the WCQ -> CONCACAF tab.
+
+UI requirements for CONCACAF:
+1. Show a CONCACAF-styled hero section using concacaf_style.json.
+2. Show summary cards: 35 FIFA-affiliated teams involved including hosts, 6 qualified teams, 29 eliminated teams, 3 hosts, 3 direct qualifiers, 2 playoff teams.
+3. Create inner round tabs:
+   - Overview
+   - Host Qualification
+   - First Round
+   - Second Round
+   - Third Round
+   - Inter-confederation Play-offs
+   - Qualified
+4. First Round should render as two two-leg playoff ties from wcq_playoff_ties.csv.
+5. Second Round should render six group tables from wcq_group_standings.csv, Groups A-F. Top two teams should be highlighted as advanced. Bottom three should be marked eliminated. Add an “Eliminated in this round” card grid using wcq_eliminated_by_round.csv.
+6. Third Round should render three group tables from wcq_group_standings.csv, Groups A-C. Group winners should be highlighted as World Cup qualified. Jamaica and Suriname should be highlighted as playoff teams. Honduras should be shown as eliminated in the runner-up ranking because only the top two runners-up advanced.
+7. Inter-confederation Play-offs should show Suriname losing to Bolivia and Jamaica beating New Caledonia before losing to DR Congo. No CONCACAF team qualified through this playoff.
+8. Qualified tab should show Canada, Mexico, United States, Panama, Curaçao, and Haiti. Hosts should have a special host badge. Direct qualifiers should have a gold qualification badge.
+9. Everywhere a team appears, display flag, team name, FIFA code, and FIFA rank. If rank is missing, show “Rank unavailable.”
+10. Handle blank match dates gracefully. Do not crash if exact match date is blank.
+11. Keep the code modular and do not hardcode CONCACAF standings directly in the UI.
+
+Important: Use standings CSV as the primary source for group tables, playoff_ties CSV as the primary source for bracket/tie UI, and eliminated_by_round CSV for eliminated team cards.

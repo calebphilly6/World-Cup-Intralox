@@ -12,6 +12,13 @@
         margin: 0;
         background: transparent;
       }
+      img[src*="flagcdn.com"] {
+        background: #ffffff;
+        box-sizing: border-box;
+        display: block;
+        object-fit: cover;
+        object-position: center;
+      }
       .grid {
         display: grid;
         gap: 12px;
@@ -50,6 +57,11 @@
       }
       .grid.rankings {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .grid.ranking-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.55rem;
       }
       button {
         width: 100%;
@@ -96,6 +108,87 @@
         gap: 10px;
         align-items: center;
       }
+      .ranking-row-button {
+        align-items: center;
+        border: 1px solid rgba(214,168,58,.22);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(5,5,5,.58), rgba(11,16,32,.54)),
+          radial-gradient(circle at 100% 0%, rgba(214,168,58,.14), transparent 34%);
+        box-shadow: 0 12px 30px rgba(0,0,0,.16);
+        display: grid;
+        grid-template-columns: 58px 58px 1fr;
+        gap: 0.85rem;
+        min-height: 76px;
+        padding: 0.58rem;
+        transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+      }
+      .ranking-row-button:hover,
+      .ranking-row-button:focus-visible {
+        background:
+          linear-gradient(135deg, rgba(5,5,5,.58), rgba(11,16,32,.54)),
+          radial-gradient(circle at 100% 0%, rgba(214,168,58,.14), transparent 34%);
+        border-color: rgba(214,168,58,.68);
+        box-shadow: 0 16px 38px rgba(0,0,0,.24);
+      }
+      .ranking-position {
+        color: #D6A83A;
+        font-size: 1.55rem;
+        font-weight: 950;
+        text-align: center;
+      }
+      .ranking-row-button .ranking-position {
+        font-size: 1.55rem;
+      }
+      .ranking-flag img,
+      .ranking-flag .flag-fallback,
+      .ranking-flag-fallback {
+        aspect-ratio: 3 / 2;
+        border: 1px solid rgba(255,255,255,.52);
+        border-radius: 6px;
+        box-shadow: 0 8px 18px rgba(0,0,0,.34);
+        display: block;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+      }
+      .ranking-flag .flag-fallback {
+        width: 100%;
+      }
+      .ranking-flag-fallback {
+        align-items: center;
+        background: linear-gradient(135deg, rgba(214,168,58,.35), rgba(36,88,255,.22));
+        color: #FFFFFF;
+        display: grid;
+        font-weight: 950;
+        justify-content: center;
+      }
+      .ranking-flag-fallback.hidden {
+        display: none;
+      }
+      .ranking-name {
+        color: #FFFFFF;
+        font-size: 1.08rem;
+        font-weight: 950;
+        line-height: 1.05;
+      }
+      .ranking-meta {
+        align-items: center;
+        color: #CBD5E1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .35rem .55rem;
+        font-size: .76rem;
+        font-weight: 800;
+        margin-top: .4rem;
+        text-transform: uppercase;
+      }
+      .ranking-badge {
+        border: 1px solid rgba(214,168,58,.42);
+        border-radius: 999px;
+        color: #D6A83A;
+        padding: .1rem .45rem;
+      }
       .rank {
         color: #d6a83a;
         font-size: 1.15rem;
@@ -129,6 +222,9 @@
         .grid.rankings {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+        .grid.ranking-list {
+          grid-template-columns: 1fr;
+        }
         .group-banner {
           grid-template-columns: 1fr;
         }
@@ -140,6 +236,12 @@
         }
         .ranking-card .rank {
           grid-row: span 2;
+        }
+        .ranking-row-button {
+          grid-template-columns: 52px 54px 1fr;
+        }
+        .ranking-row-button .ranking-position {
+          font-size: 1.2rem;
         }
       }
     </style>
@@ -210,13 +312,27 @@
         `;
       }
 
+      function renderRankingRow(card) {
+        const badge = card.badge ? `<span class="ranking-badge">${escapeHtml(card.badge)}</span>` : "";
+        return `
+          <button class="ranking-row-button" data-id="${escapeHtml(card.id)}" type="button" aria-label="Open ${escapeHtml(card.name)}">
+            <div class="ranking-position">#${escapeHtml(card.rank || "TBD")}</div>
+            <div class="ranking-flag">${flagMarkup(card)}</div>
+            <div class="ranking-main">
+              <div class="ranking-name">${escapeHtml(card.name)}</div>
+              <div class="ranking-meta">${badge}</div>
+            </div>
+          </button>
+        `;
+      }
+
       function handleRender(event) {
         if (!event.data || event.data.type !== RENDER) return;
         const args = event.data.args || {};
         const cards = Array.isArray(args.cards) ? args.cards : [];
-        const variant = args.variant === "groups" ? "groups" : "rankings";
+        const variant = ["groups", "ranking-list"].includes(args.variant) ? args.variant : "rankings";
         const title = args.title || "";
-        const renderer = variant === "groups" ? renderGroupCard : renderRankingCard;
+        const renderer = variant === "groups" ? renderGroupCard : variant === "ranking-list" ? renderRankingRow : renderRankingCard;
         const root = document.getElementById("root");
         const grid = `<div class="grid ${variant}">${cards.map(renderer).join("")}</div>`;
         root.innerHTML = variant === "groups"
@@ -224,7 +340,7 @@
           : grid;
         root.querySelectorAll("button[data-id]").forEach((button) => {
           button.addEventListener("click", () => {
-            send(SET_VALUE, { value: Number(button.dataset.id), dataType: "json" });
+            send(SET_VALUE, { value: button.dataset.id, dataType: "json" });
           });
         });
         requestAnimationFrame(() => send(SET_HEIGHT, { height: document.body.scrollHeight }));

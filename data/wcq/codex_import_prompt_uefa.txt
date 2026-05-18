@@ -1,0 +1,71 @@
+I have a UEFA World Cup Qualification data pack for my 2026 World Cup Streamlit program.
+
+Please import this data into my existing WCQ tab system.
+
+Data folder:
+data/wcq/uefa/
+
+Files:
+- wcq_confederations.csv
+- wcq_uefa_teams.csv
+- wcq_rounds.csv
+- wcq_groups.csv
+- wcq_group_standings.csv
+- wcq_matches.csv
+- wcq_brackets.csv
+- wcq_playoff_ties.csv
+- wcq_eliminated_by_round.csv
+- wcq_qualified_teams.csv
+- wcq_sources.csv
+- uefa_style.json
+- uefa_wcq_data.json
+
+Implementation goals:
+1. Add/complete the UEFA tab inside the top-level WCQ tab.
+2. Use `uefa_style.json` to give UEFA a distinct visual identity:
+   - Deep royal blue background
+   - Silver/white text and borders
+   - Gold highlights for World Cup qualified teams
+   - Sky-blue/amber highlights for teams advancing to playoffs
+   - Slate/gray for eliminated teams
+3. Inside UEFA, show nested round tabs:
+   - Overview
+   - First Round - Group Stage
+   - Second Round - UEFA Play-offs
+   - Qualified
+   - Sources
+
+First Round UI:
+- Read `wcq_groups.csv` and `wcq_group_standings.csv`.
+- Render Groups A-L.
+- Each group should show flag, team name, FIFA code, FIFA rank, position, P/W/D/L/GF/GA/GD/Pts, status.
+- Highlight group winners as qualified.
+- Highlight group runners-up and Nations League-route teams as playoff/advanced.
+- Highlight eliminated teams in muted style.
+- At the bottom of First Round, show teams eliminated in UEFA_R1 from `wcq_eliminated_by_round.csv`.
+
+Second Round UI:
+- Read `wcq_brackets.csv`, `wcq_playoff_ties.csv`, and UEFA_R2 rows from `wcq_matches.csv`.
+- Render four bracket paths:
+  - Path A: Bosnia and Herzegovina qualified.
+  - Path B: Sweden qualified.
+  - Path C: Turkey qualified.
+  - Path D: Czech Republic qualified.
+- Show scores, extra time, and penalty notes where applicable.
+- Highlight path winners as World Cup qualified.
+- At the bottom of Second Round, show teams eliminated in UEFA_R2.
+
+Qualified UI:
+- Read `wcq_qualified_teams.csv`.
+- Show all 16 UEFA World Cup teams.
+- Group by qualification method:
+  - Direct group winners
+  - Play-off path winners
+- Cards should show flag, team name, FIFA code, FIFA rank, qualification method, qualification date, and notes.
+
+Important:
+- Do not hardcode results directly into the UI.
+- The UI must gracefully handle blank dates/venues.
+- The app should not scrape websites at runtime.
+- Use local CSV/JSON files only.
+- Keep code modular and consistent with the rest of the World Cup program.

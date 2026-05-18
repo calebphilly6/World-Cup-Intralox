@@ -93,6 +93,20 @@ CREATE TABLE IF NOT EXISTS groups (
     FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS roster_players (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    team_id INTEGER NOT NULL,
+    player_name TEXT NOT NULL,
+    shirt_number INTEGER,
+    position TEXT,
+    club TEXT,
+    source TEXT DEFAULT 'manual',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(team_id, player_name),
+    FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS venues (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     stadium_name TEXT NOT NULL UNIQUE,
@@ -180,6 +194,29 @@ CREATE TABLE IF NOT EXISTS odds_snapshots (
     notes TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(team_id) REFERENCES teams(id),
+    FOREIGN KEY(fixture_id) REFERENCES fixtures(id)
+);
+
+CREATE TABLE IF NOT EXISTS fixture_odds_snapshots (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fixture_id INTEGER,
+    external_event_id TEXT,
+    commence_time TEXT,
+    home_team TEXT,
+    away_team TEXT,
+    bookmaker_key TEXT,
+    bookmaker_title TEXT,
+    market_type TEXT NOT NULL,
+    outcome_name TEXT NOT NULL,
+    odds_format TEXT,
+    american_odds TEXT,
+    decimal_odds REAL,
+    implied_probability REAL,
+    point REAL,
+    source TEXT DEFAULT 'the_odds_api',
+    snapshot_ts TEXT NOT NULL,
+    notes TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(fixture_id) REFERENCES fixtures(id)
 );
 

@@ -67,6 +67,8 @@ def import_dataframe(kind: str, df: pd.DataFrame, db_path: Path = DB_PATH) -> tu
         return upsert_teams(clean, db_path), []
     if kind == "groups":
         return upsert_groups(clean, db_path), []
+    if kind == "rosters":
+        return upsert_rosters(clean, db_path), []
     if kind == "fixtures":
         return upsert_fixtures(clean, db_path), []
     if kind == "fifa_rankings":
@@ -180,6 +182,43 @@ def upsert_groups(df: pd.DataFrame, db_path: Path = DB_PATH) -> int:
                     updated_at = CURRENT_TIMESTAMP
                 """,
                 (str(row["group_name"]).strip(), team_id, _clean(row.get("qualification_status"))),
+            )
+            count += 1
+        conn.commit()
+    return count
+
+
+def upsert_rosters(df: pd.DataFrame, db_path: Path = DB_PATH) -> int:
+    count = 0
+    with get_connection(db_path) as conn:
+        for _, row in df.iterrows():
+            player_name = _clean(row.get("player_name"))
+            if not player_name:
+                continue
+            team_id = ensure_team(conn, row.get("team_name"))
+            if team_id is None:
+                continue
+            conn.execute(
+                """
+                INSERT INTO roster_players (
+                    team_id, player_name, shirt_number, position, club, source
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+                ON CONFLICT(team_id, player_name) DO UPDATE SET
+                    shirt_number = excluded.shirt_number,
+                    position = excluded.position,
+                    club = excluded.club,
+                    source = excluded.source,
+                    updated_at = CURRENT_TIMESTAMP
+                """,
+                (
+                    team_id,
+                    player_name,
+                    _int(row.get("shirt_number")),
+                    _clean(row.get("position")),
+                    _clean(row.get("club")),
+                    _clean(row.get("source")) or "manual",
+                ),
             )
             count += 1
         conn.commit()

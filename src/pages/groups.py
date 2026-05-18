@@ -10,6 +10,7 @@ import streamlit as st
 from src.components.clickable_cards import clickable_cards
 from src.database import fetch_df
 from src.football_data_service import cached_matches
+from src.navigation import remember_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 
 FALLBACK_FLAGS = {
@@ -200,6 +201,7 @@ def _group_cards(subset: pd.DataFrame) -> list[dict]:
 
 
 def _open_team(team_id: int) -> None:
+    remember_detail_origin("team_return_origin")
     st.session_state["page_name"] = "Teams"
     st.session_state["selected_team_id"] = team_id
     st.session_state.pop("selected_match_id", None)
@@ -366,7 +368,9 @@ def _styles() -> None:
         .group-flag-tile img {
             width: 78px;
             height: 52px;
+            display: block;
             object-fit: cover;
+            object-position: center;
             border-radius: 5px;
             box-shadow: 0 8px 18px rgba(0,0,0,.32);
         }
@@ -420,7 +424,9 @@ def _styles() -> None:
         .group-team-card img, .table-team img {
             width: 42px;
             height: 28px;
+            display: block;
             object-fit: cover;
+            object-position: center;
             border-radius: 4px;
         }
         .group-team-name {

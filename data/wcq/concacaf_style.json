@@ -1,0 +1,43 @@
+{
+  "confederation_id": "CONCACAF",
+  "display_name": "CONCACAF",
+  "style_key": "concacaf",
+  "theme_name": "Continental Lights",
+  "primary": "#0067B1",
+  "secondary": "#F8D000",
+  "accent": "#E31B23",
+  "dark": "#061B3A",
+  "light": "#F7FBFF",
+  "muted": "#6B7280",
+  "gradient": "linear-gradient(135deg, #0067B1 0%, #009FE3 45%, #F8D000 100%)",
+  "hero_title": "Road through North America, Central America & the Caribbean",
+  "font_suggestion": "Use the app default; pair bold geometric headings with clean sans-serif body text.",
+  "badge_styles": {
+    "qualified": {
+      "bg": "#F8D000",
+      "text": "#061B3A",
+      "border": "#FFE76A"
+    },
+    "host_qualified": {
+      "bg": "#6D28D9",
+      "text": "#FFFFFF",
+      "border": "#C4B5FD"
+    },
+    "advanced": {
+      "bg": "#0067B1",
+      "text": "#FFFFFF",
+      "border": "#66B3E7"
+    },
+    "playoff": {
+      "bg": "#F97316",
+      "text": "#FFFFFF",
+      "border": "#FDBA74"
+    },
+    "eliminated": {
+      "bg": "#374151",
+      "text": "#FFFFFF",
+      "border": "#9CA3AF"
+    }
+  },
+  "notes": "Inspired by CONCACAF blue/yellow/red tournament branding and Caribbean/North American brightness. Colors are app-safe and adjustable."
+}

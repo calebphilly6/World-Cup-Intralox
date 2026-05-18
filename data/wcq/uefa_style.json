@@ -1,0 +1,37 @@
+{
+  "style_key": "uefa",
+  "display_name": "UEFA",
+  "theme_name": "European Nights",
+  "design_notes": "Clean, premium, stadium-at-night European qualifier style. Use deep royal blue as the base, silver/white for structure, and gold for qualified-team accents.",
+  "colors": {
+    "background": "#071A3D",
+    "background_soft": "#0F2E66",
+    "card": "#102A56",
+    "card_alt": "#142F63",
+    "primary": "#1D4ED8",
+    "secondary": "#60A5FA",
+    "accent": "#FACC15",
+    "qualified": "#FACC15",
+    "advanced": "#38BDF8",
+    "playoff": "#F59E0B",
+    "eliminated": "#94A3B8",
+    "suspended": "#64748B",
+    "text": "#F8FAFC",
+    "muted_text": "#CBD5E1",
+    "border": "#93C5FD"
+  },
+  "badges": {
+    "qualified": "Gold badge with subtle glow",
+    "advanced": "Sky-blue badge",
+    "playoff": "Amber badge",
+    "eliminated": "Slate/gray badge",
+    "suspended": "Neutral gray badge"
+  },
+  "font_suggestions": [
+    "Inter",
+    "Aptos",
+    "Segoe UI"
+  ],
+  "header_emoji": "\ud83c\udfc6",
+  "fallback_logo_text": "UEFA"
+}

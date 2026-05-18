@@ -1,0 +1,58 @@
+{
+  "style_key": "caf",
+  "display_name": "CAF",
+  "design_intent": "Warm African tournament style inspired by CAF/AFCON energy: green, gold, black, red accents, patterned hero sections, and premium trophy-like highlights.",
+  "colors": {
+    "primary": "#0B6B3A",
+    "primary_dark": "#063D24",
+    "secondary": "#F4B000",
+    "accent_red": "#C1121F",
+    "accent_orange": "#E76F1E",
+    "background": "#07130C",
+    "surface": "#10251A",
+    "surface_alt": "#173822",
+    "text": "#F7F4E8",
+    "muted_text": "#C9C2A5",
+    "border": "#D6A733"
+  },
+  "status_colors": {
+    "qualified": {
+      "background": "#F4B000",
+      "text": "#07130C",
+      "border": "#FFE08A"
+    },
+    "advanced": {
+      "background": "#0B6B3A",
+      "text": "#FFFFFF",
+      "border": "#6DD99A"
+    },
+    "eliminated": {
+      "background": "#3A2F2F",
+      "text": "#F2D5D5",
+      "border": "#8E4A4A"
+    },
+    "playoff": {
+      "background": "#E76F1E",
+      "text": "#FFFFFF",
+      "border": "#FFB06E"
+    },
+    "withdrew": {
+      "background": "#5B5B5B",
+      "text": "#FFFFFF",
+      "border": "#A8A8A8"
+    }
+  },
+  "typography": {
+    "headline_font": "system-ui or app default",
+    "body_font": "system-ui or app default",
+    "headline_style": "bold uppercase labels with warm gold accent lines",
+    "card_radius": "18px",
+    "shadow": "0 10px 30px rgba(0,0,0,0.30)"
+  },
+  "ui_notes": [
+    "Use gold glow/border for World Cup qualified teams.",
+    "Use green badges for advanced teams and muted red/gray for eliminated teams.",
+    "Add subtle geometric/pan-African pattern overlays in hero areas if the app supports CSS background patterns.",
+    "Avoid official CAF logo unless the asset is provided locally and permitted for this personal project."
+  ]
+}

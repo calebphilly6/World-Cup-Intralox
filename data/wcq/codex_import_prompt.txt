@@ -1,0 +1,63 @@
+I am giving you an AFC World Cup Qualification data pack for my 2026 World Cup Streamlit app.
+
+Please add this data into the WCQ feature we discussed.
+
+Data folder target:
+data/wcq/
+
+Copy these files into that folder:
+- wcq_confederations.csv
+- wcq_afc_teams.csv
+- wcq_rounds.csv
+- wcq_groups.csv
+- wcq_group_standings.csv
+- wcq_playoff_ties.csv
+- wcq_matches.csv
+- wcq_eliminated_by_round.csv
+- wcq_qualified_teams.csv
+- wcq_sources.csv
+- afc_style.json
+
+Important behavior:
+1. In the top-level WCQ tab, create/open the AFC tab.
+2. The AFC tab should use afc_style.json for the AFC visual theme.
+3. Show an AFC hero/header with the qualification summary, slots, last updated date, and source info.
+4. Create inner AFC tabs dynamically from wcq_rounds.csv where confederation_id == AFC.
+5. For AFC_R1 and AFC_R5, render the data from wcq_playoff_ties.csv as two-leg playoff cards.
+6. For AFC_R2, AFC_R3, and AFC_R4, render standings from wcq_group_standings.csv grouped by group_name.
+7. In each group table/card:
+   - show flag, team name, FIFA code, and FIFA rank.
+   - show position, played, wins, draws, losses, goal difference, and points.
+   - highlight status == qualified strongest.
+   - highlight status == advanced positively.
+   - highlight status == eliminated in a muted eliminated style.
+8. At the bottom of each round tab, show teams from wcq_eliminated_by_round.csv for that round_id.
+9. Add a Qualified tab inside AFC using wcq_qualified_teams.csv filtered to confederation_id == AFC.
+10. Add Iraq’s inter-confederation playoff final as the last AFC path step. Treat Iraq as qualified because it beat Bolivia 2-1 on 2026-03-31.
+11. Do not label FIFA ranks as live/current. In the UI, label them as “FIFA rank snapshot: July 2023 draw rank” or similar.
+12. Missing columns or missing optional data should not crash the app. Show a clean warning.
+13. Keep the code modular and easy to reuse for CAF, CONCACAF, CONMEBOL, OFC, and UEFA later.
+
+Suggested functions:
+- load_wcq_data()
+- load_confederation_style(confederation_id)
+- render_wcq_tab()
+- render_confederation_tab(confederation_id)
+- render_round_selector_or_tabs(confederation_id)
+- render_playoff_ties(round_id)
+- render_group_standings(round_id)
+- render_eliminated_by_round(round_id)
+- render_qualified_teams(confederation_id)
+- get_status_badge(status)
+- get_flag_display(flag_code, fifa_code)
+
+Acceptance criteria for this AFC import:
+- AFC appears inside WCQ.
+- AFC has its own theme.
+- Round 1 shows two-leg playoff matchups and winners.
+- Round 2 shows all nine groups and advancing/eliminated teams.
+- Round 3 shows all three groups, six direct qualifiers, six fourth-round teams, and eliminated teams.
+- Round 4 shows two groups, Qatar and Saudi Arabia as qualifiers, UAE and Iraq advancing to Round 5, Oman and Indonesia eliminated.
+- Round 5 shows Iraq defeating UAE 3-2 on aggregate and advancing to the inter-confederation playoff.
+- Inter-confederation playoff shows Iraq 2-1 Bolivia and Iraq qualified for the World Cup.
+- AFC Qualified tab shows Japan, Iran, Uzbekistan, South Korea, Jordan, Australia, Qatar, Saudi Arabia, and Iraq.

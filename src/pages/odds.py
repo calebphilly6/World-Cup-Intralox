@@ -1,32 +1,19 @@
 from __future__ import annotations
 
-from datetime import datetime, time, timedelta
-from zoneinfo import ZoneInfo
+from datetime import datetime
 import html
 
 import pandas as pd
 import streamlit as st
 
-from src.api_clients.odds_client import (
-    fetch_outrights,
-    find_world_cup_sport_key,
-    flatten_outrights,
-    get_api_key,
-    merge_duplicate_odds_teams,
-    save_api_usage,
-    save_odds_rows,
-)
+from src.api_clients.odds_client import get_api_key, merge_duplicate_odds_teams
 from src.config import get_secret, get_section, is_shared_core_read_only_mode
 from src.database import fetch_df, get_connection
+from src.match_odds_service import refresh_match_odds_if_available
 from src.odds_service import latest_tournament_winner_odds, odds_source_text
+from src.odds_refresh import APP_TIMEZONE, daily_odds_refresh_key
 from src.pages.rankings import FLAG_CODES
-from src.refresh_gate import mark_refresh_completed, refresh_was_completed
-
-
-APP_TIMEZONE = ZoneInfo("America/Chicago")
-ODDS_REFRESH_TIME = time(3, 0)
-ODDS_PROVIDER = "the_odds_api"
-ODDS_REFRESH_RESOURCE = "world_cup_winner_odds"
+from src.tournament_odds_service import refresh_tournament_odds_if_available
 
 
 def render() -> None:
@@ -41,22 +28,19 @@ def render() -> None:
             merge_duplicate_odds_teams(conn)
             conn.commit()
 
-    _, api_key, odds_config = _odds_config()
+    _, api_key, _ = _odds_config()
+    refresh_key = _daily_odds_refresh_key()
     refresh_result = (
         {"saved": 0}
         if read_only
-        else _auto_refresh_odds(
-            api_key=api_key,
-            sport_key=str(odds_config.get("sport_key", "") or "").strip(),
-            regions=odds_config.get("regions", "us") or "us",
-            odds_format="american",
-            bookmakers="draftkings",
-            refresh_key=_daily_odds_refresh_key(),
-        )
+        else refresh_tournament_odds_if_available(refresh_key)
     )
+    match_refresh_result = {"saved": 0} if read_only else refresh_match_odds_if_available(refresh_key)
 
     if refresh_result.get("error"):
         st.warning(refresh_result["error"])
+    if match_refresh_result.get("error"):
+        st.warning(match_refresh_result["error"])
     elif not api_key and not read_only:
         st.info("Add an Odds API key to `.streamlit/secrets.toml` to refresh tournament odds automatically.")
 
@@ -78,51 +62,6 @@ def _odds_config() -> tuple[dict, str | None, dict]:
     api_key = get_secret("THE_ODDS_API_KEY") or get_api_key(None)
     odds_config = get_section("odds")
     return secrets, api_key, odds_config
-
-
-@st.cache_data(show_spinner=False)
-def _auto_refresh_odds(
-    api_key: str | None,
-    sport_key: str,
-    regions: str,
-    odds_format: str,
-    bookmakers: str,
-    refresh_key: str,
-) -> dict:
-    if not api_key:
-        return {"saved": 0}
-    if refresh_was_completed(ODDS_PROVIDER, ODDS_REFRESH_RESOURCE, refresh_key):
-        return {"saved": 0, "skipped": True}
-    try:
-        resolved_key = sport_key or find_world_cup_sport_key(api_key)
-        if not resolved_key:
-            return {"saved": 0, "error": "Could not find a World Cup odds market. Set [odds].sport_key in secrets.toml."}
-        try:
-            payload, quota = fetch_outrights(
-                api_key,
-                resolved_key,
-                regions=regions,
-                odds_format=odds_format,
-                bookmakers=bookmakers,
-            )
-        except Exception as first_exc:
-            fallback_key = find_world_cup_sport_key(api_key)
-            if not fallback_key or fallback_key == resolved_key:
-                raise first_exc
-            payload, quota = fetch_outrights(
-                api_key,
-                fallback_key,
-                regions=regions,
-                odds_format=odds_format,
-                bookmakers=bookmakers,
-            )
-        rows = flatten_outrights(payload, odds_format=odds_format)
-        saved = save_odds_rows(rows)
-        save_api_usage(quota)
-        mark_refresh_completed(ODDS_PROVIDER, ODDS_REFRESH_RESOURCE, refresh_key)
-        return {"saved": saved}
-    except Exception as exc:
-        return {"saved": 0, "error": f"Automatic odds refresh failed: {exc}"}
 
 
 def _latest_usage() -> pd.DataFrame:
@@ -192,11 +131,7 @@ def _flag_img(code: str, team: str) -> str:
 
 
 def _daily_odds_refresh_key(now: datetime | None = None) -> str:
-    local_now = now.astimezone(APP_TIMEZONE) if now else datetime.now(APP_TIMEZONE)
-    refresh_day = local_now.date()
-    if local_now.time() < ODDS_REFRESH_TIME:
-        refresh_day -= timedelta(days=1)
-    return refresh_day.isoformat()
+    return daily_odds_refresh_key(now)
 
 
 def _snapshot_text(value) -> str:
@@ -304,7 +239,9 @@ def _styles() -> None:
             border: 1px solid rgba(255,255,255,.52);
             border-radius: 6px;
             box-shadow: 0 8px 18px rgba(0,0,0,.34);
+            display: block;
             object-fit: cover;
+            object-position: center;
             width: 100%;
         }
         .odds-flag-fallback {

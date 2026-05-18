@@ -1,20 +1,19 @@
 from __future__ import annotations
 
 import html
-from datetime import datetime
-
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
-from src.city_backgrounds import city_background_data_uri
+from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches
+from src.navigation import remember_detail_origin, return_to_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.storage.storage import (
     load_favorite_teams,
     personal_preferences_use_browser_storage,
-    preferences_are_session_only,
     save_favorite_teams,
 )
 from src.utils.formatting import format_local_time
@@ -29,8 +28,6 @@ FALLBACK_FLAGS = {
 def render() -> None:
     st.title("Teams")
     _styles()
-    scope = "this session only" if preferences_are_session_only() else "this browser"
-    st.caption(f"Favorite teams are personal and saved on {scope}.")
 
     teams = _teams()
     if teams.empty:
@@ -134,6 +131,7 @@ def _team_focus(team) -> None:
     if c1.button("Close", key="close_team_focus"):
         st.session_state.pop("selected_team_id", None)
         st.session_state.pop("selected_match_id", None)
+        return_to_detail_origin("team_return_origin", "Teams")
         if "team_id" in st.query_params:
             del st.query_params["team_id"]
         st.rerun()
@@ -143,9 +141,8 @@ def _team_focus(team) -> None:
         st.info("No fixtures stored for this team yet.")
     else:
         st.subheader("Fixtures")
-        for _, fixture in fixtures.iterrows():
-            if st.button(_fixture_button_label(fixture, team["team"]), key=f"fixture_{team['id']}_{fixture['match_id']}", use_container_width=True):
-                _open_fixture_in_fixtures_tab(fixture)
+        _render_team_fixture_cards(team, fixtures)
+    _roster_section(int(team["id"]))
 
 
 def _ranking_context(team_name: str) -> None:
@@ -194,6 +191,242 @@ def _ranking_context_row(row, focus_team: str) -> str:
     rank = "" if pd.isna(row["rank"]) else str(int(row["rank"]))
     focus_class = " ranking-context-focus" if row["team"] == focus_team else ""
     return f'<tr class="{focus_class}"><td>{team}</td><td>#{rank}</td></tr>'
+
+
+def _roster_section(team_id: int) -> None:
+    roster = fetch_df(
+        """
+        SELECT player_name, shirt_number, position, club, source, updated_at
+        FROM roster_players
+        WHERE team_id = ?
+        ORDER BY
+            CASE position
+                WHEN 'GK' THEN 1
+                WHEN 'Goalkeeper' THEN 1
+                WHEN 'DF' THEN 2
+                WHEN 'Defender' THEN 2
+                WHEN 'Defence' THEN 2
+                WHEN 'MF' THEN 3
+                WHEN 'Midfielder' THEN 3
+                WHEN 'Midfield' THEN 3
+                WHEN 'FW' THEN 4
+                WHEN 'Forward' THEN 4
+                WHEN 'Attacker' THEN 4
+                ELSE 5
+            END,
+            shirt_number IS NULL,
+            shirt_number,
+            player_name
+        """,
+        [team_id],
+    )
+    if roster.empty:
+        st.markdown(
+            """
+            <section class="team-roster-shell team-roster-empty">
+                <div class="team-roster-header">
+                    <div>
+                        <h3>Roster</h3>
+                    </div>
+                </div>
+                <div class="team-roster-empty-message">No roster has been imported for this team yet.</div>
+            </section>
+            """,
+            unsafe_allow_html=True,
+        )
+        return
+
+    sort_key = "position"
+    roster = _sort_roster(roster, sort_key)
+    st.markdown(_roster_markup(roster, sort_key), unsafe_allow_html=True)
+    _roster_sort_script()
+
+
+def _roster_markup(roster: pd.DataFrame, sort_key: str) -> str:
+    rows = "".join(_roster_row(row) for _, row in roster.iterrows())
+    return f"""
+    <section class="team-roster-shell">
+        <div class="team-roster-header">
+            <div>
+                <h3>Roster</h3>
+            </div>
+            <div class="team-roster-total">{len(roster)} players</div>
+        </div>
+        <div class="team-roster-table" role="table" aria-label="Team roster">
+            <div class="team-roster-table-head" role="row">
+                {_roster_header_cell("no", "No.", sort_key)}
+                {_roster_header_cell("player", "Player", sort_key)}
+                {_roster_header_cell("position", "Pos", sort_key)}
+                {_roster_header_cell("club", "Club", sort_key)}
+            </div>
+            {rows}
+        </div>
+    </section>
+    """
+
+
+def _roster_header_cell(key: str, label: str, active_sort: str) -> str:
+    active_class = " active" if key == active_sort else ""
+    return (
+        f'<button class="team-roster-sort{active_class}" type="button" data-roster-sort="{html.escape(key, quote=True)}" '
+        f'aria-label="Sort roster by {html.escape(label)}">{html.escape(label)}</button>'
+    )
+
+
+def _sort_roster(roster: pd.DataFrame, sort_key: str) -> pd.DataFrame:
+    sorted_roster = roster.copy()
+    sorted_roster["_number_sort"] = sorted_roster["shirt_number"].map(_roster_number_sort_value)
+    sorted_roster["_position_sort"] = sorted_roster["position"].map(_roster_position_sort_value)
+    sorted_roster["_player_sort"] = sorted_roster["player_name"].map(lambda value: _clean_roster_value(value, "").casefold())
+    sorted_roster["_club_sort"] = sorted_roster["club"].map(lambda value: _clean_roster_value(value, "").casefold())
+    sort_columns = {
+        "no": ["_number_sort", "_player_sort"],
+        "player": ["_player_sort", "_number_sort"],
+        "position": ["_position_sort", "_number_sort", "_player_sort"],
+        "club": ["_club_sort", "_player_sort", "_number_sort"],
+    }[sort_key]
+    return sorted_roster.sort_values(sort_columns, na_position="last").drop(
+        columns=["_number_sort", "_position_sort", "_player_sort", "_club_sort"]
+    )
+
+
+def _roster_row(row) -> str:
+    number = _roster_number(row.get("shirt_number"))
+    player = _clean_roster_value(row.get("player_name"), "Player TBD")
+    position = _roster_position_label(row.get("position"))
+    club = _clean_roster_value(row.get("club"), "Club TBD")
+    number_sort = _roster_number_sort_value(row.get("shirt_number"))
+    number_sort_text = "9999" if number_sort == float("inf") else str(number_sort)
+    position_sort = str(_roster_position_sort_value(row.get("position")))
+    player_sort = _clean_roster_value(row.get("player_name"), "").casefold()
+    club_sort = _clean_roster_value(row.get("club"), "").casefold()
+    return (
+        '<div class="team-roster-row" role="row" '
+        f'data-no="{html.escape(number_sort_text, quote=True)}" '
+        f'data-player="{html.escape(player_sort, quote=True)}" '
+        f'data-position="{html.escape(position_sort, quote=True)}" '
+        f'data-club="{html.escape(club_sort, quote=True)}">'
+        f'<span class="team-roster-number">{html.escape(number)}</span>'
+        f'<span class="team-roster-player">{html.escape(player)}</span>'
+        f'<span class="team-roster-position">{html.escape(position)}</span>'
+        f'<span class="team-roster-club">{html.escape(club)}</span>'
+        '</div>'
+    )
+
+
+def _roster_sort_script() -> None:
+    components.html(
+        """
+        <script>
+        (() => {
+          const doc = window.parent.document;
+          const numericSorts = new Set(["no", "position"]);
+
+          function valueFor(row, key) {
+            const value = row.dataset[key] || "";
+            return numericSorts.has(key) ? Number(value || 9999) : value;
+          }
+
+          function compareRows(key, left, right) {
+            const primaryLeft = valueFor(left, key);
+            const primaryRight = valueFor(right, key);
+            if (typeof primaryLeft === "number" || typeof primaryRight === "number") {
+              const difference = Number(primaryLeft) - Number(primaryRight);
+              if (difference !== 0) return difference;
+            } else {
+              const difference = String(primaryLeft).localeCompare(String(primaryRight));
+              if (difference !== 0) return difference;
+            }
+
+            const numberDifference = Number(left.dataset.no || 9999) - Number(right.dataset.no || 9999);
+            if (numberDifference !== 0) return numberDifference;
+            return String(left.dataset.player || "").localeCompare(String(right.dataset.player || ""));
+          }
+
+          function sortTable(table, key) {
+            const rows = Array.from(table.querySelectorAll(".team-roster-row"));
+            rows.sort((left, right) => compareRows(key, left, right));
+            rows.forEach(row => table.appendChild(row));
+            table.querySelectorAll(".team-roster-sort").forEach(button => {
+              button.classList.toggle("active", button.dataset.rosterSort === key);
+            });
+          }
+
+          function bindRosterSorts() {
+            doc.querySelectorAll(".team-roster-table").forEach(table => {
+              if (table.dataset.rosterSortBound === "true") return;
+              table.dataset.rosterSortBound = "true";
+              table.querySelectorAll(".team-roster-sort").forEach(button => {
+                button.addEventListener("click", event => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  sortTable(table, button.dataset.rosterSort);
+                });
+              });
+            });
+          }
+
+          bindRosterSorts();
+          setTimeout(bindRosterSorts, 250);
+        })();
+        </script>
+        """,
+        height=0,
+    )
+
+
+def _roster_position_group(value) -> str:
+    text = _clean_roster_value(value, "").lower()
+    if text in {"gk", "goalkeeper"}:
+        return "GK"
+    if text in {"df", "defender", "defence", "defense"}:
+        return "DF"
+    if text in {"mf", "midfielder", "midfield"}:
+        return "MF"
+    if text in {"fw", "forward", "attacker"}:
+        return "FW"
+    return "Other"
+
+
+def _roster_position_sort_value(value) -> int:
+    return {
+        "GK": 1,
+        "DF": 2,
+        "MF": 3,
+        "FW": 4,
+        "Other": 5,
+    }[_roster_position_group(value)]
+
+
+def _roster_number_sort_value(value) -> float:
+    if value is None or pd.isna(value) or str(value).strip() == "":
+        return float("inf")
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return float("inf")
+
+
+def _roster_position_label(value) -> str:
+    group = _roster_position_group(value)
+    if group != "Other":
+        return group
+    return _clean_roster_value(value, "-")
+
+
+def _roster_number(value) -> str:
+    if value is None or pd.isna(value) or str(value).strip() == "":
+        return "-"
+    try:
+        return str(int(float(value)))
+    except (TypeError, ValueError):
+        return str(value).strip()
+
+
+def _clean_roster_value(value, fallback: str) -> str:
+    if value is None or pd.isna(value) or str(value).strip() == "":
+        return fallback
+    return str(value).strip()
 
 
 def _fixtures_for_team(team) -> pd.DataFrame:
@@ -247,6 +480,130 @@ def _fixtures_for_team(team) -> pd.DataFrame:
     return provider_matches
 
 
+def _render_team_fixture_cards(team, fixtures: pd.DataFrame) -> None:
+    for start in range(0, len(fixtures), 3):
+        columns = st.columns(3)
+        for column, (_, fixture) in zip(columns, fixtures.iloc[start:start + 3].iterrows()):
+            with column:
+                st.markdown(_team_fixture_card(fixture), unsafe_allow_html=True)
+                key = f"team_fixture_open_{int(team['id'])}_{_safe_key(_fixture_match_id(fixture))}"
+                if st.button("Open match", key=key, use_container_width=True):
+                    _open_fixture_in_fixtures_tab(fixture)
+
+
+def _team_fixture_card(fixture) -> str:
+    match_id = _fixture_match_id(fixture)
+    stage = _fixture_stage_label(fixture)
+    round_stage = _fixture_round_label(stage)
+    city = _fixture_city(fixture)
+    bottom_markup = _team_fixture_bottom_markup(round_stage, stage)
+    return (
+        f'<article class="team-fixture-card" style="background-image: {_team_fixture_background(city)};">'
+        '<div class="team-fixture-card-top">'
+        f'<span>{html.escape(match_id)}</span><span>{html.escape(city)}</span>'
+        '</div>'
+        '<div class="team-fixture-card-body">'
+        f'<div class="team-fixture-teams">{_team_fixture_team(fixture.get("home_team"))}<strong>vs</strong>{_team_fixture_team(fixture.get("away_team"))}</div>'
+        f'<div class="team-fixture-score">{html.escape(_team_fixture_center(fixture))}</div>'
+        '</div>'
+        f'{bottom_markup}'
+        '</article>'
+    )
+
+
+def _team_fixture_background(city: str) -> str:
+    background = city_background_card_data_uri(city)
+    if background:
+        return f"linear-gradient(180deg, rgba(5,5,5,.18), rgba(5,5,5,.88)), url('{background}')"
+    return "linear-gradient(135deg, #0B1020, #111111)"
+
+
+def _team_fixture_team(value) -> str:
+    team = _team_text(value)
+    return (
+        '<div class="team-fixture-team">'
+        f'{_team_fixture_flag(team)}'
+        f'<span>{html.escape(team)}</span>'
+        '</div>'
+    )
+
+
+def _team_fixture_flag(team: str) -> str:
+    code = flag_code_for_team(team, _team_flag_lookup())
+    initials = "".join(part[0] for part in str(team).replace("-", " ").split()[:2]).upper() or "?"
+    if not code:
+        return f'<div class="team-fixture-flag flag-fallback">{html.escape(initials)}</div>'
+    return (
+        f'<img class="team-fixture-flag" src="https://flagcdn.com/w80/{html.escape(str(code).lower())}.png" alt="{html.escape(str(team))} flag" '
+        f'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\';">'
+        f'<div class="team-fixture-flag flag-fallback hidden">{html.escape(initials)}</div>'
+    )
+
+
+def _team_fixture_center(fixture) -> str:
+    if pd.notna(fixture.get("home_score")) and pd.notna(fixture.get("away_score")):
+        return f"{int(fixture['home_score'])} - {int(fixture['away_score'])}"
+    return format_local_time(fixture.get("kickoff_utc"))
+
+
+def _fixture_stage_label(fixture) -> str:
+    group = str(fixture.get("group_name", fixture.get("group", "")) or "").strip()
+    if group:
+        return f"Group {group}" if len(group) == 1 else group
+    stage = str(fixture.get("stage") or "").replace("_", " ").strip().title()
+    return stage or "Stage TBD"
+
+
+def _fixture_round_label(stage: str) -> str:
+    text = str(stage or "").replace("_", " ").strip()
+    key = "".join(character for character in text.lower() if character.isalnum())
+    labels = {
+        "groupstage": "Group Stage",
+        "group": "Group Stage",
+        "last32": "Round of 32",
+        "roundof32": "Round of 32",
+        "last16": "Round of 16",
+        "roundof16": "Round of 16",
+        "quarterfinals": "Quarterfinals",
+        "quarterfinal": "Quarterfinals",
+        "semifinals": "Semifinals",
+        "semifinal": "Semifinals",
+        "thirdplace": "Third Place",
+        "thirdplacematch": "Third Place",
+        "final": "Final",
+    }
+    if key in labels:
+        return labels[key]
+    if text.lower().startswith("group "):
+        return "Group Stage"
+    return text.title() if text else "Stage TBD"
+
+
+def _team_fixture_bottom_markup(round_stage: str, stage: str) -> str:
+    if _is_group_stage_label(round_stage) and stage != round_stage:
+        return (
+            '<div class="team-fixture-card-bottom">'
+            f'<span>{html.escape(round_stage)}</span><span>{html.escape(stage)}</span>'
+            '</div>'
+        )
+    return (
+        '<div class="team-fixture-card-bottom is-centered">'
+        f'<span>{html.escape(round_stage)}</span>'
+        '</div>'
+    )
+
+
+def _is_group_stage_label(value: str) -> bool:
+    return str(value or "").strip().lower() == "group stage"
+
+
+def _fixture_city(fixture) -> str:
+    value = fixture.get("city", fixture.get("venue"))
+    if pd.isna(value) or not str(value).strip():
+        return "Host City TBD"
+    return str(value)
+
+
 def _fixture_button_label(fixture, team_name: str) -> str:
     opponent = fixture["away_team"] if fixture["home_team"] == team_name else fixture["home_team"]
     opponent = opponent if pd.notna(opponent) and str(opponent).strip() else "TBD"
@@ -259,6 +616,7 @@ def _fixture_button_label(fixture, team_name: str) -> str:
 
 def _open_fixture_in_fixtures_tab(fixture) -> None:
     match_id = _fixture_match_id(fixture)
+    remember_detail_origin("fixture_return_origin")
     st.session_state["page_name"] = "Fixtures"
     st.session_state["selected_fixture_id"] = match_id
     st.session_state["selected_fixture_row"] = _fixture_focus_row(fixture, match_id)
@@ -297,6 +655,16 @@ def _fixture_match_id(fixture) -> str:
     return text if text.startswith("M") else f"M{int(float(text))}"
 
 
+def _team_text(value) -> str:
+    if pd.isna(value) or not str(value).strip():
+        return "TBD"
+    return str(value)
+
+
+def _safe_key(value: str) -> str:
+    return "".join(character.lower() if character.isalnum() else "_" for character in str(value)).strip("_")
+
+
 def _match_focus(fixture, team) -> None:
     venue = fixture["venue"] or "Venue TBD"
     background = city_background_data_uri(venue)
@@ -311,10 +679,12 @@ def _match_focus(fixture, team) -> None:
         if played
         else format_local_time(fixture["kickoff_utc"])
     )
+    stage = _fixture_stage_label(fixture)
     st.markdown(
         f"""
         <div class="match-focus" style="background-image: {background_style};">
           <div class="stadium-bg"></div>
+          <div class="match-stage-badge">{html.escape(stage)}</div>
           <div class="match-team">{_flag_image_for_team_name(fixture['home_team'])}<br>{html.escape(str(fixture['home_team'] or 'TBD'))}</div>
           <div class="match-center">
             <div class="match-time">{html.escape(str(center))}</div>
@@ -483,6 +853,179 @@ def _styles() -> None:
         .ranking-context-table .ranking-context-focus td:last-child {
             color: #FFFFFF;
         }
+        .team-roster-shell {
+            background:
+                linear-gradient(135deg, rgba(5,5,5,.50), rgba(11,16,32,.42)),
+                radial-gradient(circle at 12% 0%, rgba(214,168,58,.14), transparent 30%);
+            border: 1px solid rgba(214,168,58,.26);
+            border-radius: 8px;
+            box-shadow: 0 14px 34px rgba(0,0,0,.20);
+            margin: 1.15rem 0 1.35rem;
+            overflow: hidden;
+            padding: 1rem;
+        }
+        .team-roster-header {
+            align-items: flex-end;
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-bottom: .8rem;
+        }
+        .team-roster-header h3 {
+            color: #D6A83A;
+            font-size: 1.55rem;
+            font-weight: 950;
+            margin: .1rem 0 0;
+        }
+        .team-roster-total {
+            background: rgba(214,168,58,.16);
+            border: 1px solid rgba(214,168,58,.32);
+            border-radius: 999px;
+            color: #F8FAFC;
+            flex: 0 0 auto;
+            font-size: .82rem;
+            font-weight: 900;
+            padding: .42rem .7rem;
+        }
+        .team-roster-table {
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: .8rem;
+        }
+        .team-roster-table-head,
+        .team-roster-row {
+            align-items: center;
+            display: grid;
+            gap: .75rem;
+            grid-template-columns: 3.6rem minmax(9rem, 1.45fr) 4rem minmax(8rem, 1fr);
+        }
+        .team-roster-table-head {
+            background: linear-gradient(135deg, #D6A83A, #9E7420);
+            font-size: .78rem;
+            font-weight: 950;
+            padding: .54rem .68rem;
+            text-transform: uppercase;
+        }
+        .team-roster-sort {
+            appearance: none;
+            align-items: center;
+            background: rgba(5,5,5,.08);
+            border: 1px solid rgba(5,5,5,.12);
+            border-radius: 6px;
+            color: #111827 !important;
+            cursor: pointer;
+            display: inline-flex;
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: 950;
+            gap: .32rem;
+            justify-content: space-between;
+            letter-spacing: 0;
+            line-height: 1;
+            min-height: 1.75rem;
+            min-width: 3.15rem;
+            padding: .42rem .48rem;
+            text-decoration: none !important;
+            transition: background .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+            width: fit-content;
+        }
+        .team-roster-sort:hover {
+            background: rgba(255,255,255,.20);
+            border-color: rgba(5,5,5,.24);
+            box-shadow: 0 5px 12px rgba(5,5,5,.12);
+            color: #050505 !important;
+            transform: translateY(-1px);
+            text-decoration: none !important;
+        }
+        .team-roster-sort:focus-visible {
+            outline: 2px solid rgba(255,255,255,.88);
+            outline-offset: 2px;
+        }
+        .team-roster-sort.active {
+            background: #050505;
+            border-color: rgba(5,5,5,.72);
+            box-shadow: 0 5px 14px rgba(5,5,5,.18);
+            color: #D6A83A !important;
+        }
+        .team-roster-sort.active::after {
+            content: "↑";
+            align-items: center;
+            background: rgba(214,168,58,.18);
+            border-radius: 999px;
+            color: #F8FAFC;
+            display: inline-flex;
+            font-size: .68rem;
+            height: 1rem;
+            justify-content: center;
+            line-height: 1;
+            width: 1rem;
+        }
+        .team-roster-row {
+            background: rgba(255,255,255,.052);
+            border-top: 1px solid rgba(255,255,255,.08);
+            color: #F8FAFC;
+            min-height: 3rem;
+            padding: .64rem .8rem;
+        }
+        .team-roster-row:nth-child(odd) {
+            background: rgba(255,255,255,.075);
+        }
+        .team-roster-number {
+            color: #D6A83A;
+            font-weight: 950;
+        }
+        .team-roster-player {
+            color: #FFFFFF;
+            font-weight: 900;
+            overflow-wrap: anywhere;
+        }
+        .team-roster-position {
+            background: rgba(214,168,58,.14);
+            border: 1px solid rgba(214,168,58,.24);
+            border-radius: 999px;
+            color: #F8FAFC;
+            font-size: .76rem;
+            font-weight: 950;
+            justify-self: start;
+            min-width: 2.4rem;
+            padding: .2rem .45rem;
+            text-align: center;
+        }
+        .team-roster-club {
+            color: #CBD5E1;
+            font-weight: 800;
+            overflow-wrap: anywhere;
+        }
+        .team-roster-empty-message {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 8px;
+            color: #CBD5E1;
+            font-weight: 850;
+            padding: .9rem 1rem;
+        }
+        @media (max-width: 760px) {
+            .team-roster-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .team-roster-table {
+                border: 0;
+            }
+            .team-roster-table-head {
+                display: none;
+            }
+            .team-roster-row {
+                border: 1px solid rgba(255,255,255,.10);
+                border-radius: 8px;
+                grid-template-columns: 3.4rem 1fr auto;
+                margin-bottom: .55rem;
+            }
+            .team-roster-club {
+                grid-column: 2 / -1;
+            }
+        }
         [class*="st-key-favorite_star_"] button {
             background: #050505;
             border: 2px solid #D6A83A;
@@ -506,6 +1049,113 @@ def _styles() -> None:
             color: #D6A83A;
             font-weight: 950;
         }
+        .team-fixture-card {
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 16px 38px rgba(0,0,0,.24);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 245px;
+            overflow: hidden;
+            padding: .95rem;
+            transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+        }
+        .team-fixture-card-top, .team-fixture-card-bottom {
+            color: #D6A83A;
+            display: flex;
+            font-size: .78rem;
+            font-weight: 900;
+            gap: .75rem;
+            justify-content: space-between;
+            text-shadow: 0 2px 10px rgba(0,0,0,.75);
+            text-transform: uppercase;
+        }
+        .team-fixture-card-bottom.is-centered {
+            justify-content: center;
+            text-align: center;
+        }
+        .team-fixture-card-body {
+            color: #FFFFFF;
+            text-shadow: 0 3px 16px rgba(0,0,0,.9);
+        }
+        .team-fixture-teams {
+            align-items: center;
+            display: grid;
+            font-size: 1.28rem;
+            font-weight: 950;
+            gap: .55rem;
+            grid-template-columns: 1fr auto 1fr;
+            line-height: 1.05;
+            text-align: center;
+        }
+        .team-fixture-team {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: .42rem;
+            min-width: 0;
+        }
+        .team-fixture-team span {
+            overflow-wrap: anywhere;
+        }
+        .team-fixture-flag {
+            aspect-ratio: 3 / 2;
+            border: 1px solid rgba(255,255,255,.70);
+            border-radius: 4px;
+            box-shadow: 0 8px 16px rgba(0,0,0,.34);
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            width: 34px;
+        }
+        .team-fixture-flag.flag-fallback {
+            align-items: center;
+            background: linear-gradient(135deg, rgba(214,168,58,.50), rgba(36,88,255,.28));
+            color: #FFFFFF;
+            display: grid;
+            font-size: .58rem;
+            font-weight: 950;
+            justify-content: center;
+            line-height: 1;
+        }
+        .team-fixture-teams strong {
+            color: #D6A83A;
+            font-size: .82rem;
+        }
+        .team-fixture-score {
+            color: #f8fafc;
+            font-weight: 900;
+            margin-top: .8rem;
+            text-align: center;
+        }
+        [class*="st-key-team_fixture_open_"] {
+            height: 245px;
+            margin-bottom: .9rem;
+            margin-top: -245px;
+            position: relative;
+            z-index: 2;
+        }
+        [class*="st-key-team_fixture_open_"] button {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            color: transparent !important;
+            cursor: pointer;
+            height: 245px;
+            min-height: 245px;
+            opacity: 0;
+            padding: 0 !important;
+        }
+        [class*="st-key-team_fixture_open_"] button p {
+            color: transparent !important;
+        }
+        .flag-fallback.hidden {
+            display: none;
+        }
         .match-focus {
             min-height: 520px;
             border-radius: 22px;
@@ -527,6 +1177,21 @@ def _styles() -> None:
               repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 2px, transparent 2px 90px);
             opacity: .32;
         }
+        .match-stage-badge {
+            position: absolute;
+            right: 1.25rem;
+            top: 1.15rem;
+            z-index: 1;
+            background: rgba(5,5,5,.62);
+            border: 1px solid rgba(214,168,58,.58);
+            border-radius: 999px;
+            color: #D6A83A;
+            font-size: .82rem;
+            font-weight: 950;
+            padding: .42rem .72rem;
+            text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0,0,0,.75);
+        }
         .match-team, .match-center {
             position: relative;
             color: white;
@@ -540,7 +1205,9 @@ def _styles() -> None:
         .match-flag {
             width: 96px;
             height: 64px;
+            display: block;
             object-fit: cover;
+            object-position: center;
             border-radius: 6px;
             box-shadow: 0 8px 24px rgba(0,0,0,.36);
             margin-bottom: .75rem;

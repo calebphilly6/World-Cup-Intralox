@@ -1,0 +1,235 @@
+id,team_id,player_name,shirt_number,position,club,source,created_at,updated_at
+1,18,Nikola Vasilj,,GK,FC St. Pauli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+2,18,Martin Zlomislić,,GK,Rijeka,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+3,18,Osman Hadžikić,,GK,Slaven Belupo,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+4,18,Sead Kolašinac,,DF,Atalanta,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+5,18,Dennis Hadžikadunić,,DF,Sampdoria,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+6,18,Amar Dedić,,DF,Benfica,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+7,18,Nikola Katić,,DF,Schalke 04,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+8,18,Tarik Muharemović,,DF,Sassuolo,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+9,18,Nihad Mujakić,,DF,Gaziantep,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+10,18,Stjepan Radeljić,,DF,Rijeka,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+11,18,Nidal Čelik,,DF,Lens,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+12,18,Amir Hadžiahmetović,,MF,Hull City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+13,18,Benjamin Tahirović,,MF,Brøndby,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+14,18,Armin Gigović,,MF,Young Boys,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+15,18,Dženis Burnić,,MF,Karlsruher SC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+16,18,Ivan Bašić,,MF,Astana,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+17,18,Esmir Bajraktarević,,MF,PSV Eindhoven,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+18,18,Amar Memić,,MF,Viktoria Plzeň,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+19,18,Ivan Šunjić,,MF,Pafos,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+20,18,Kerim Alajbegović,,MF,Red Bull Salzburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+21,18,Ermin Mahmić,,MF,Slovan Liberec,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+22,18,Edin Džeko,,FW,Schalke 04,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+23,18,Ermedin Demirović,,FW,VfB Stuttgart,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+24,18,Samed Baždar,,FW,Jagiellonia Białystok,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+25,18,Haris Tabaković,,FW,Borussia Mönchengladbach,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+26,18,Jovo Lukić,,FW,Universitatea Cluj,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+27,21,Johny Placide,,GK,Bastia,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+28,21,Alexandre Pierre,,GK,Sochaux,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+29,21,Josué Duverger,,GK,Cosmos Koblenz,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+30,21,Ricardo Adé,,DF,LDU Quito,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+31,21,Carlens Arcus,,DF,Angers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+32,21,Martin Expérience,,DF,Nancy,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+33,21,Jean-Kévin Duverne,,DF,Gent,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+34,21,Duke Lacroix,,DF,Colorado Springs Switchbacks FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+35,21,Wilguens Paugain,,DF,Zulte Waregem,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+36,21,Hannes Delcroix,,DF,Lugano,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+37,21,Keeto Thermoncy,,DF,Young Boys,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+38,21,Leverton Pierre,,MF,Vizela,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+39,21,Danley Jean Jacques,,MF,Philadelphia Union,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+40,21,Carl Sainté,,MF,El Paso Locomotive FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+41,21,Jean-Ricner Bellegarde,,MF,Wolverhampton Wanderers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+42,21,Woodensky Pierre,,MF,Violette,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+43,21,Dominique Simon,,MF,Tatran Prešov,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+44,21,Duckens Nazon,,FW,Esteghlal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+45,21,Frantzdy Pierrot,,FW,Çaykur Rizespor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+46,21,Derrick Etienne Jr.,,FW,Toronto FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+47,21,Louicius Deedson,,FW,FC Dallas,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+48,21,Ruben Providence,,FW,Almere City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+49,21,Josué Casimir,,FW,Auxerre,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+50,21,Yassin Fortuné,,FW,Vizela,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+51,21,Wilson Isidor,,FW,Sunderland,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+52,21,Lenny Joseph,,FW,Ferencváros,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+53,29,Yahia Fofana,,GK,Çaykur Rizespor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+54,29,Alban Lafont,,GK,Panathinaikos,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+55,29,Mohamed Koné,,GK,Charleroi,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+56,29,Ghislain Konan,,DF,Gil Vicente,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+57,29,Odilon Kossounou,,DF,Atalanta,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+58,29,Wilfried Singo,,DF,Galatasaray,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+59,29,Evan Ndicka,,DF,Roma,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+60,29,Emmanuel Agbadou,,DF,Beşiktaş,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+61,29,Guéla Doué,,DF,Strasbourg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+62,29,Ousmane Diomande,,DF,Sporting CP,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+63,29,Clément Akpa,,DF,Auxerre,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+64,29,Franck Kessié,,MF,Al-Ahli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+65,29,Jean Michaël Seri,,MF,Maribor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+66,29,Ibrahim Sangaré,,MF,Nottingham Forest,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+67,29,Seko Fofana,,MF,Porto,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+68,29,Christ Inao Oulaï,,MF,Trabzonspor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+69,29,Parfait Guiagon,,MF,Charleroi,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+70,29,Nicolas Pépé,,FW,Villarreal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+71,29,Oumar Diakité,,FW,Cercle Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+72,29,Simon Adingra,,FW,Monaco,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+73,29,Evann Guessand,,FW,Crystal Palace,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+74,29,Amad Diallo,,FW,Manchester United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+75,29,Yan Diomande,,FW,RB Leipzig,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+76,29,Bazoumana Touré,,FW,TSG Hoffenheim,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+77,29,Elye Wahi,,FW,Nice,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+78,29,Ange-Yoan Bonny,,FW,Inter Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+79,32,Zion Suzuki,,GK,Parma,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+80,32,Keisuke Ōsako,,GK,Sanfrecce Hiroshima,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+81,32,Tomoki Hayakawa,,GK,Kashima Antlers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+82,32,Yūto Nagatomo,,DF,FC Tokyo,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+83,32,Takehiro Tomiyasu,,DF,Ajax,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+84,32,Kō Itakura,,DF,Ajax,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+85,32,Shōgo Taniguchi,,DF,Sint-Truiden,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+86,32,Hiroki Itō,,DF,Bayern Munich,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+87,32,Yukinari Sugawara,,DF,Werder Bremen,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+88,32,Ayumu Seko,,DF,Le Havre,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+89,32,Tsuyoshi Watanabe,,DF,Feyenoord,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+90,32,Junnosuke Suzuki,,DF,Copenhagen,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+91,32,Wataru Endo,,MF,Liverpool,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+92,32,Junya Itō,,MF,Genk,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+93,32,Ritsu Dōan,,MF,Eintracht Frankfurt,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+94,32,Daichi Kamada,,MF,Crystal Palace,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+95,32,Takefusa Kubo,,MF,Real Sociedad,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+96,32,Ao Tanaka,,MF,Leeds United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+97,32,Keito Nakamura,,MF,Reims,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+98,32,Kaishū Sano,,MF,Mainz 05,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+99,32,Ayase Ueda,,FW,Feyenoord,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+100,32,Daizen Maeda,,FW,Celtic,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+101,32,Kōki Ogawa,,FW,NEC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+102,32,Yuito Suzuki,,FW,SC Freiburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+103,32,Keisuke Gotō,,FW,Sint-Truiden,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+104,32,Kento Shiogai,,FW,VfL Wolfsburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+105,33,Kristoffer Nordfeldt,,GK,AIK,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+106,33,Viktor Johansson,,GK,Stoke City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+107,33,Jacob Widell Zetterström,,GK,Derby County,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+108,33,Victor Lindelöf,,DF,Aston Villa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+109,33,Isak Hien,,DF,Atalanta,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+110,33,Gabriel Gudmundsson,,DF,Leeds United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+111,33,Carl Starfelt,,DF,Celta Vigo,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+112,33,Emil Holm,,DF,Juventus,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+113,33,Hjalmar Ekdal,,DF,Burnley,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+114,33,Daniel Svensson,,DF,Borussia Dortmund,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+115,33,Gustaf Lagerbielke,,DF,Braga,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+116,33,Eric Smith,,DF,FC St. Pauli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+117,33,Elliot Stroud,,DF,Mjällby AIF,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+118,33,Mattias Svanberg,,MF,VfL Wolfsburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+119,33,Jesper Karlström,,MF,Udinese,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+120,33,Yasin Ayari,,MF,Brighton & Hove Albion,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+121,33,Lucas Bergvall,,MF,Tottenham Hotspur,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+122,33,Besfort Zeneli,,MF,Union Saint-Gilloise,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+123,33,Alexander Isak,,FW,Liverpool,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+124,33,Viktor Gyökeres,,FW,Arsenal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+125,33,Ken Sema,,FW,Pafos,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+126,33,Anthony Elanga,,FW,Newcastle United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+127,33,Benjamin Nygren,,FW,Celtic,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+128,33,Alexander Bernhardsson,,FW,Holstein Kiel,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+129,33,Gustaf Nilsson,,FW,Club Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+130,33,Taha Ali,,FW,Malmö FF,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+131,34,Aymen Dahmen,,GK,CS Sfaxien,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+132,34,Sabri Ben Hessen,,GK,Étoile du Sahel,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+133,34,Mouhib Chamakh,,GK,Club Africain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+134,34,Montassar Talbi,,DF,Lorient,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+135,34,Dylan Bronn,,DF,Servette,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+136,34,Ali Abdi,,DF,Nice,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+137,34,Yan Valery,,DF,Young Boys,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+138,34,Mohamed Amine Ben Hamida,,DF,Espérance de Tunis,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+139,34,Moutaz Neffati,,DF,IFK Norrköping,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+140,34,Omar Rekik,,DF,Maribor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+141,34,Adem Arous,,DF,Kasımpaşa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+142,34,Raed Chikhaoui,,DF,US Monastir,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+143,34,Ellyes Skhiri,,MF,Eintracht Frankfurt,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+144,34,Hannibal Mejbri,,MF,Burnley,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+145,34,Anis Ben Slimane,,MF,Norwich City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+146,34,Mortadha Ben Ouanes,,MF,Kasımpaşa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+147,34,Ismaël Gharbi,,MF,FC Augsburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+148,34,Hadj Mahmoud,,MF,Lugano,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+149,34,Rani Khedira,,MF,Union Berlin,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+150,34,Elias Achouri,,FW,Copenhagen,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+151,34,Firas Chaouat,,FW,Club Africain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+152,34,Hazem Mastouri,,FW,Dynamo Makhachkala,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+153,34,Elias Saad,,FW,Hannover 96,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+154,34,Sebastian Tounekti,,FW,Celtic,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+155,34,Khalil Ayari,,FW,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+156,34,Rayan Elloumi,,FW,Vancouver Whitecaps FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+157,35,Thibaut Courtois,,GK,Real Madrid,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+158,35,Senne Lammens,,GK,Manchester United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+159,35,Mike Penders,,GK,Strasbourg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+160,35,Thomas Meunier,,DF,Lille,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+161,35,Timothy Castagne,,DF,Fulham,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+162,35,Arthur Theate,,DF,Eintracht Frankfurt,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+163,35,Zeno Debast,,DF,Sporting CP,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+164,35,Maxim De Cuyper,,DF,Brighton & Hove Albion,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+165,35,Brandon Mechele,,DF,Club Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+166,35,Koni De Winter,,DF,Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+167,35,Joaquin Seys,,DF,Club Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+168,35,Nathan Ngoy,,DF,Lille,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+169,35,Axel Witsel,,MF,Girona,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+170,35,Kevin De Bruyne,,MF,Napoli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+171,35,Youri Tielemans,,MF,Aston Villa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+172,35,Hans Vanaken,,MF,Club Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+173,35,Amadou Onana,,MF,Aston Villa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+174,35,Nicolas Raskin,,MF,Rangers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+175,35,Romelu Lukaku,,FW,Napoli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+176,35,Leandro Trossard,,FW,Arsenal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+177,35,Jérémy Doku,,FW,Manchester City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+178,35,Dodi Lukébakio,,FW,Benfica,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+179,35,Charles De Ketelaere,,FW,Atalanta,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+180,35,Alexis Saelemaekers,,FW,Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+181,35,Diego Moreira,,FW,Strasbourg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+182,35,Matias Fernandez-Pardo,,FW,Lille,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+183,38,Max Crocombe,1.0,GK,Millwall,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+184,38,Tim Payne,2.0,DF,Wellington Phoenix,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+185,38,Francis de Vries,3.0,DF,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+186,38,Tyler Bindon,4.0,DF,Sheffield United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+187,38,Michael Boxall,5.0,DF,Minnesota United FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+188,38,Joe Bell,6.0,MF,Viking,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+189,38,Matthew Garbett,7.0,MF,Peterborough United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+190,38,Marko Stamenić,8.0,MF,Swansea City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+191,38,Chris Wood,9.0,FW,Nottingham Forest,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+192,38,Sarpreet Singh,10.0,MF,Wellington Phoenix,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+193,38,Elijah Just,11.0,MF,Motherwell,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+194,38,Alex Paulsen,12.0,GK,Lechia Gdańsk,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+195,38,Liberato Cacace,13.0,DF,Wrexham,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+196,38,Alex Rufer,14.0,MF,Wellington Phoenix,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+197,38,Nando Pijnaker,15.0,DF,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+198,38,Finn Surman,16.0,DF,Portland Timbers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+199,38,Kosta Barbarouses,17.0,FW,Western Sydney Wanderers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+200,38,Ben Waine,18.0,FW,Port Vale,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+201,38,Ben Old,19.0,MF,Saint-Étienne,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+202,38,Callum McCowatt,20.0,MF,Silkeborg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+203,38,Jesse Randall,21.0,FW,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+204,38,Michael Woud,22.0,GK,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+205,38,Ryan Thomas,23.0,MF,PEC Zwolle,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+206,38,Callan Elliot,24.0,DF,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+207,38,Lachlan Bayliss,25.0,MF,Newcastle Jets,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+208,38,Tommy Smith,26.0,DF,Braintree Town,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+209,43,Mike Maignan,,GK,Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+210,43,Brice Samba,,GK,Rennes,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+211,43,Robin Risser,,GK,Lens,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+212,43,Lucas Digne,,DF,Aston Villa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+213,43,Jules Koundé,,DF,Barcelona,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+214,43,Théo Hernandez,,DF,Al-Hilal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+215,43,Lucas Hernandez,,DF,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+216,43,Dayot Upamecano,,DF,Bayern Munich,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+217,43,William Saliba,,DF,Arsenal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+218,43,Ibrahima Konaté,,DF,Liverpool,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+219,43,Malo Gusto,,DF,Chelsea,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+220,43,Maxence Lacroix,,DF,Crystal Palace,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+221,43,N'Golo Kanté,,MF,Fenerbahçe,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+222,43,Adrien Rabiot,,MF,Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+223,43,Aurélien Tchouaméni,,MF,Real Madrid,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+224,43,Manu Koné,,MF,Roma,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+225,43,Warren Zaïre-Emery,,MF,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+226,43,Kylian Mbappé,,FW,Real Madrid,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+227,43,Ousmane Dembélé,,FW,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+228,43,Marcus Thuram,,FW,Inter Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+229,43,Bradley Barcola,,FW,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+230,43,Michael Olise,,FW,Bayern Munich,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+231,43,Maghnes Akliouche,,FW,Monaco,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+232,43,Désiré Doué,,FW,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+233,43,Rayan Cherki,,FW,Manchester City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+234,43,Jean-Philippe Mateta,,FW,Crystal Palace,manual,2026-05-16 04:21:27,2026-05-16 04:21:27

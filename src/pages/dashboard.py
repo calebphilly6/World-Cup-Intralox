@@ -12,6 +12,7 @@ from src.city_backgrounds import city_background_card_data_uri
 from src.config import is_shared_core_read_only_mode
 from src.fixture_display import enrich_fixture_participants
 from src.football_data_service import cached_matches
+from src.navigation import remember_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.pages.rankings import FLAG_CODES
 from src.storage.storage import load_favorite_teams
@@ -75,23 +76,24 @@ def _render_match_strip(matches: pd.DataFrame) -> None:
 def _home_fixture_card(row) -> str:
     stage = str(row["Stage"])
     round_stage = str(row.get("Round") or _round_stage_label(stage))
+    city = str(row.get("City") or "Host City TBD")
+    bottom_markup = _home_fixture_bottom_markup(round_stage, stage)
     return (
         f'<article class="home-match-card" style="background-image: {_match_background(row)};">'
         '<div class="home-match-card-top">'
-        f'<span>{html.escape(_match_number_label(row.get("#")))}</span><span>{html.escape(stage)}</span>'
+        f'<span>{html.escape(_match_number_label(row.get("#")))}</span><span>{html.escape(city)}</span>'
         '</div>'
         '<div class="home-match-card-body">'
         f'<div class="home-fixture-teams">{_home_fixture_team(row.get("Home"))}<strong>vs</strong>{_home_fixture_team(row.get("Away"))}</div>'
         f'<div class="home-fixture-score">{html.escape(_match_center(row))}</div>'
         '</div>'
-        '<div class="home-match-card-bottom">'
-        f'<span>{html.escape(round_stage)}</span><span>{html.escape(str(row.get("City") or "Host City TBD"))}</span>'
-        '</div>'
+        f'{bottom_markup}'
         '</article>'
     )
 
 
 def _open_fixture_from_home(row) -> None:
+    remember_detail_origin("fixture_return_origin")
     st.session_state["page_name"] = "Fixtures"
     st.session_state["selected_fixture_id"] = _match_number_label(row.get("#"))
     st.session_state["selected_fixture_row"] = _fixture_focus_row(row)
@@ -137,6 +139,24 @@ def _match_number_label(value) -> str:
         return f"M{int(value)}"
     except (TypeError, ValueError):
         return f"M{value}"
+
+
+def _home_fixture_bottom_markup(round_stage: str, stage: str) -> str:
+    if _is_group_stage_label(round_stage) and stage != round_stage:
+        return (
+            '<div class="home-match-card-bottom">'
+            f'<span>{html.escape(round_stage)}</span><span>{html.escape(stage)}</span>'
+            '</div>'
+        )
+    return (
+        '<div class="home-match-card-bottom is-centered">'
+        f'<span>{html.escape(round_stage)}</span>'
+        '</div>'
+    )
+
+
+def _is_group_stage_label(value: str) -> bool:
+    return str(value or "").strip().lower() == "group stage"
 
 
 def _match_center(row) -> str:
@@ -208,6 +228,7 @@ def _favorite_card(row) -> str:
 
 
 def _open_team_from_home(team_id: int) -> None:
+    remember_detail_origin("team_return_origin")
     st.session_state["page_name"] = "Teams"
     st.session_state["selected_team_id"] = team_id
     st.session_state.pop("selected_match_id", None)
@@ -655,6 +676,10 @@ def _styles() -> None:
             font-weight: 900;
             text-transform: uppercase;
             text-shadow: 0 2px 10px rgba(0,0,0,.75);
+        }
+        .home-match-card-bottom.is-centered {
+            justify-content: center;
+            text-align: center;
         }
         .home-match-card-body {
             color: #FFFFFF;

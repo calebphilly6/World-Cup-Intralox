@@ -10,6 +10,7 @@ from src.pages import football_data_setup
 IMPORT_TYPES = {
     "teams": "Teams",
     "groups": "Groups",
+    "rosters": "Rosters",
     "fixtures": "Fixtures",
     "fifa_rankings": "FIFA Rankings",
     "odds": "Odds",
@@ -33,6 +34,8 @@ def render() -> None:
                 "Rows matching World Cup teams also update the tournament rankings table. "
                 "Required columns: team, ranking_date, rank. Recommended: points, previous_rank, source, notes."
             )
+        if kind == "rosters":
+            st.info("Required columns: team_name, player_name. Recommended: shirt_number, position, club, source.")
         tab_upload, tab_template = st.tabs(["Upload", "Template"])
 
         with tab_upload:

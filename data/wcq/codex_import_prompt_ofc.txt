@@ -1,0 +1,36 @@
+I have added an OFC World Cup Qualification data pack for the WCQ tab.
+
+Please import the files from this folder into the existing Streamlit WCQ feature:
+
+data/wcq/ofc/
+
+Files included:
+- wcq_confederations.csv
+- wcq_ofc_teams.csv
+- wcq_rounds.csv
+- wcq_groups.csv
+- wcq_group_standings.csv
+- wcq_matches.csv
+- wcq_brackets.csv
+- wcq_eliminated_by_round.csv
+- wcq_qualified_teams.csv
+- wcq_sources.csv
+- ofc_style.json
+- ofc_wcq_data.json
+
+Requirements:
+1. Add OFC as one of the main WCQ confederation tabs.
+2. Use ofc_style.json to style the OFC tab with ocean blue, teal, sand, and Pacific island styling.
+3. Render Round One as a knockout bracket.
+4. Render Round Two as two group-stage standings tables: Group A and Group B.
+5. Highlight New Caledonia, Fiji, New Zealand, and Tahiti as teams that advanced from Round Two.
+6. Render Round Three as a knockout bracket with semifinals and final.
+7. Highlight New Zealand as qualified for the World Cup after the Third Round final.
+8. Mark New Caledonia as the OFC runner-up that advanced to the inter-confederation playoff, then show its 0-1 loss to Jamaica as the end of its journey.
+9. At the bottom of each round, show the teams eliminated in that round using wcq_eliminated_by_round.csv.
+10. Every team listing should display flag, team name, FIFA code, and FIFA rank.
+11. Do not crash if a field is blank. Use fallback labels such as "Rank unavailable" or "Details unavailable".
+12. Keep this read-only and do not scrape websites at runtime.
+13. Add New Zealand to the global Qualified Teams tab from wcq_qualified_teams.csv.
+
+Please keep the implementation modular and consistent with the existing WCQ tab structure.

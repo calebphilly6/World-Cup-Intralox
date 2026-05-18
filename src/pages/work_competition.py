@@ -621,7 +621,9 @@ def _styles() -> None:
             border: 1px solid rgba(255,255,255,.52);
             border-radius: 5px;
             box-shadow: 0 7px 15px rgba(0,0,0,.30);
+            display: block;
             object-fit: cover;
+            object-position: center;
         }
         .intralox-pot-flag {
             width: 34px;
@@ -786,8 +788,10 @@ def _styles() -> None:
             aspect-ratio: 3 / 2;
             border: 1px solid rgba(255,255,255,.46);
             border-radius: 4px;
+            display: block;
             flex: 0 0 34px;
             object-fit: cover;
+            object-position: center;
             width: 34px;
         }
         .championship-odds-board {
@@ -853,8 +857,10 @@ def _styles() -> None:
             border: 1px solid rgba(255,255,255,.48);
             border-radius: 4px;
             box-shadow: 0 7px 16px rgba(0,0,0,.28);
+            display: block;
             flex: 0 0 38px;
             object-fit: cover;
+            object-position: center;
             width: 38px;
         }
         .championship-odds-percent {

@@ -19,6 +19,7 @@ METADATA_KEY = "core_snapshot_id"
 # browser preferences are intentionally excluded.
 CORE_SNAPSHOT_TABLES = (
     "teams",
+    "roster_players",
     "venues",
     "groups",
     "fixtures",
@@ -27,6 +28,7 @@ CORE_SNAPSHOT_TABLES = (
     "global_fifa_rankings",
     "standings",
     "odds_snapshots",
+    "fixture_odds_snapshots",
 )
 
 

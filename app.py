@@ -9,12 +9,17 @@ import streamlit.components.v1 as components
 
 from src.config import ensure_app_directories, get_app_config, get_secret, is_deployed, is_shared_core_read_only_mode
 from src.database import fetch_df, initialize_database
-from src.pages import bracket, dashboard, fixtures, groups, rankings, teams, work_competition
+from src.pages import bracket, dashboard, fixtures, groups, rankings, teams, wcq, work_competition
 from src.pages import odds
 from src.reference_data import seed_world_cup_2026_reference_data
 from src.snapshots import core_snapshots_available, load_core_snapshots
 from src.storage.browser_preferences import clear_browser_preferences, render_browser_preferences_bridge
 from src.storage.storage import preferences_are_session_only
+from src.match_odds_service import refresh_match_odds_if_available
+from src.navigation import clear_detail_origins
+from src.odds_refresh import daily_odds_refresh_key
+from src.odds_service import latest_tournament_winner_odds
+from src.tournament_odds_service import refresh_tournament_odds_if_available
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -33,6 +38,7 @@ NAV_PAGES = {
     "Teams": teams.render,
     "Fixtures": fixtures.render,
     "Groups": groups.render,
+    "WCQ": wcq.render,
     "Bracket": bracket.render,
     "FIFA Rankings": rankings.render,
     "Odds": odds.render,
@@ -46,6 +52,7 @@ PAGE_SLUGS = {
     "Teams": "teams",
     "Fixtures": "fixtures",
     "Groups": "groups",
+    "WCQ": "wcq",
     "Bracket": "bracket",
     "FIFA Rankings": "fifa-rankings",
     "Odds": "odds",
@@ -359,6 +366,14 @@ def _apply_theme() -> None:
             box-shadow: 0 10px 26px rgba(0, 0, 0, .14);
         }
 
+        img[src*="flagcdn.com"] {
+            background: #FFFFFF;
+            box-sizing: border-box;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+        }
+
         .stTabs [data-baseweb="tab-list"] {
             gap: .35rem;
             border-bottom: 1px solid rgba(214, 168, 58, .22);
@@ -414,12 +429,13 @@ def _render_app_header(logo_uri: str | None) -> None:
 
 def _render_header_nav() -> None:
     with st.container(key="header_nav"):
-        columns = st.columns([.62, .72, .82, .7, .78, 1.16, .52, .92], gap="small")
+        columns = st.columns([.62, .72, .82, .7, .56, .78, 1.16, .52, .92], gap="small")
         for index, page_name in enumerate(NAV_PAGES):
             with columns[index]:
                 label = NAV_LABELS.get(page_name, page_name)
                 if st.button(label, key=f"nav_{PAGE_SLUGS[page_name]}", use_container_width=False):
                     st.session_state["page_name"] = page_name
+                    clear_detail_origins()
                     st.session_state.pop("selected_team_id", None)
                     st.session_state.pop("selected_match_id", None)
                     st.session_state.pop("selected_fixture_id", None)
@@ -485,9 +501,24 @@ def _prepare_local_data_store() -> None:
             load_core_snapshots()
         if not is_shared_core_read_only_mode() or _core_data_is_empty():
             seed_world_cup_2026_reference_data()
+        _refresh_daily_odds_on_app_entry()
     except Exception as exc:
         st.error(f"Could not prepare the local data store: {exc}")
         st.stop()
+
+
+def _refresh_daily_odds_on_app_entry() -> None:
+    if is_shared_core_read_only_mode():
+        return
+    refresh_key = daily_odds_refresh_key()
+    tournament_result = refresh_tournament_odds_if_available(refresh_key)
+    match_result = refresh_match_odds_if_available(refresh_key)
+    if tournament_result.get("saved"):
+        latest_tournament_winner_odds.clear()
+    if tournament_result.get("error"):
+        st.sidebar.warning(tournament_result["error"])
+    if match_result.get("error"):
+        st.sidebar.warning(match_result["error"])
 
 
 def _core_data_is_empty() -> bool:

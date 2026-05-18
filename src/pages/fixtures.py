@@ -5,12 +5,16 @@ import html
 import pandas as pd
 import streamlit as st
 
+from src.api_clients.odds_client import get_api_key
 from data_sources.football_data_client import FootballDataError
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches, daily_fixture_refresh_key
-from src.official_match_reference import apply_official_match_reference
+from src.match_odds_service import refresh_match_odds_if_available
+from src.navigation import remember_detail_origin, return_to_detail_origin
+from src.odds_service import american_odds_text, latest_fixture_odds
+from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.utils.formatting import format_local_time
 
 
@@ -208,6 +212,7 @@ def _fixture_backgrounds(fixtures: pd.DataFrame) -> dict[str, str]:
 
 
 def _open_fixture_from_row(row) -> None:
+    remember_detail_origin("fixture_return_origin")
     st.session_state["selected_fixture_id"] = _match_number(row)
     st.session_state["selected_fixture_row"] = row.to_dict()
     st.query_params["page"] = "fixtures"
@@ -231,18 +236,17 @@ def _fixture_card(row, backgrounds: dict[str, str] | None = None) -> str:
     round_stage = _round_stage_label(row.get("stage") or stage)
     time = html.escape(_kickoff_time(row.get("utc_date"), row.get("local_time")))
     center = _scoreline(row) if _has_score(row) else time
+    bottom_markup = _fixture_card_bottom_markup(round_stage, stage)
     return (
         f'<article class="fixture-card" style="background-image: {background_style};">'
         '<div class="fixture-card-top">'
-        f'<span>{html.escape(match_number)}</span><span>{html.escape(stage)}</span>'
+        f'<span>{html.escape(match_number)}</span><span>{html.escape(city)}</span>'
         '</div>'
         '<div class="fixture-card-body">'
         f'<div class="fixture-teams"><div>{home}</div><strong>vs</strong><div>{away}</div></div>'
         f'<div class="fixture-score">{html.escape(center)}</div>'
         '</div>'
-        '<div class="fixture-card-bottom">'
-        f'<span>{html.escape(round_stage)}</span><span>{html.escape(city)}</span>'
-        '</div>'
+        f'{bottom_markup}'
         '</article>'
     )
 
@@ -251,7 +255,7 @@ def _render_fixture_focus(row) -> None:
     if st.button("Close Match View", key="close_fixture_focus"):
         st.session_state.pop("selected_fixture_id", None)
         st.session_state.pop("selected_fixture_row", None)
-        st.query_params["page"] = "fixtures"
+        return_to_detail_origin("fixture_return_origin", "Fixtures")
         if "fixture" in st.query_params:
             del st.query_params["fixture"]
         st.rerun()
@@ -269,22 +273,157 @@ def _render_fixture_focus(row) -> None:
     home_flag = _flag_img(row.get("home_team"))
     away_flag = _flag_img(row.get("away_team"))
     match_number = html.escape(_match_number(row))
-    stage = html.escape(_stage_label(row))
-    round_stage = html.escape(_round_stage_label(row.get("stage") or stage))
+    stage_label = _stage_label(row)
+    round_stage = _round_stage_label(row.get("stage") or stage_label)
     time = html.escape(_kickoff_time(row.get("utc_date"), row.get("local_time")))
     center = html.escape(_scoreline(row) if _has_score(row) else time)
+    top_markup = _fixture_focus_top_markup(match_number, city, center, round_stage)
+    bottom_markup = _fixture_focus_bottom_markup(round_stage, stage_label, center)
     markup = (
         f'<section class="fixture-focus" style="background-image: {background_style};">'
-        f'<div class="fixture-focus-top"><span>{match_number}</span><span>{stage}</span></div>'
+        f'{top_markup}'
         '<div class="fixture-focus-body">'
         f'<div class="fixture-focus-team">{home_flag}<div>{home}</div></div>'
-        f'<div class="fixture-focus-center"><div class="fixture-focus-vs">vs</div><div class="fixture-focus-time">{center}</div></div>'
         f'<div class="fixture-focus-team right">{away_flag}<div>{away}</div></div>'
         '</div>'
-        f'<div class="fixture-focus-bottom"><span>{round_stage}</span><span>{html.escape(city)}</span></div>'
+        f'{bottom_markup}'
         '</section>'
     )
     st.markdown(markup, unsafe_allow_html=True)
+    _render_betting_odds(row)
+
+
+def _render_betting_odds(row) -> None:
+    refresh_result = refresh_match_odds_if_available()
+    if refresh_result.get("saved"):
+        latest_fixture_odds.clear()
+
+    odds = latest_fixture_odds(
+        _match_number_value(row),
+        str(row.get("home_team") or ""),
+        str(row.get("away_team") or ""),
+        str(row.get("utc_date") or row.get("kickoff_utc") or ""),
+    )
+
+    if refresh_result.get("error"):
+        st.warning(refresh_result["error"])
+    if odds.empty:
+        if not get_api_key(None):
+            st.info("Add a The Odds API key to show game-level betting odds here.")
+        else:
+            st.info("No game-level betting odds are stored for this match yet.")
+        return
+
+    odds = _preferred_fixture_odds(odds)
+    if odds.empty:
+        st.info("No preferred game-level betting odds are stored for this match yet.")
+        return
+
+    st.markdown(_fixture_odds_panel_html(row, odds), unsafe_allow_html=True)
+
+
+def _fixture_odds_panel_html(fixture_row, odds: pd.DataFrame) -> str:
+    moneyline = odds[odds["market_type"].eq("h2h")]
+    totals = odds[odds["market_type"].eq("totals")]
+    home_team = str(fixture_row.get("home_team") or "Home")
+    away_team = str(fixture_row.get("away_team") or "Away")
+    moneyline_items = "".join(
+        _fixture_odds_price_html(label, _odds_row_for_outcome(moneyline, label))
+        for label in (home_team, "Draw", away_team)
+    )
+    total_items = "".join(
+        _fixture_odds_price_html(_total_label(label, _odds_row_for_outcome(totals, label)), _odds_row_for_outcome(totals, label))
+        for label in ("Under", "Over")
+    )
+    return (
+        '<section class="fixture-odds-panel">'
+        '<div class="fixture-odds-group">'
+        '<h3>Moneyline</h3>'
+        f'<div class="fixture-odds-prices moneyline">{moneyline_items}</div>'
+        '</div>'
+        '<div class="fixture-odds-group">'
+        '<h3>Total Goals</h3>'
+        f'<div class="fixture-odds-prices totals">{total_items}</div>'
+        '</div>'
+        '</section>'
+    )
+
+
+def _preferred_fixture_odds(odds: pd.DataFrame) -> pd.DataFrame:
+    if odds.empty:
+        return odds
+    market = odds.get("market_type", pd.Series(dtype=str)).astype(str)
+    selected = pd.concat(
+        [
+            _preferred_market_odds(odds[market == "h2h"], ["draftkings", "betrivers", "fanduel"]),
+            _preferred_market_odds(odds[market == "totals"], ["betrivers", "draftkings", "fanduel"]),
+        ],
+        ignore_index=True,
+    )
+    if selected.empty:
+        return selected
+    selected["_market_order"] = selected["market_type"].map({"h2h": 0, "totals": 1}).fillna(9)
+    selected["_outcome_order"] = selected["outcome_name"].map({"Draw": 1, "Over": 3, "Under": 4}).fillna(0)
+    selected = selected.sort_values(["_market_order", "_outcome_order", "outcome_name"])
+    return selected.drop(columns=["_market_order", "_outcome_order"])
+
+
+def _preferred_market_odds(rows: pd.DataFrame, bookmaker_priority: list[str]) -> pd.DataFrame:
+    if rows.empty:
+        return rows
+    book = rows.get("bookmaker_title", pd.Series(dtype=str)).fillna(rows.get("source", "")).astype(str).str.lower()
+    for bookmaker in bookmaker_priority:
+        selected = rows[book.eq(bookmaker)].copy()
+        if not selected.empty:
+            return selected
+    return rows.iloc[0:0].copy()
+
+
+def _odds_row_for_outcome(rows: pd.DataFrame, label: str):
+    if rows.empty:
+        return None
+    label_key = normalize_team_key(label)
+    matches = rows[rows["outcome_name"].map(normalize_team_key).eq(label_key)]
+    if matches.empty:
+        return None
+    return matches.iloc[0]
+
+
+def _fixture_odds_price_html(label: str, row) -> str:
+    odds = "TBD" if row is None else american_odds_text(row.get("american_odds"))
+    return (
+        '<div class="fixture-odds-price">'
+        f'<span>{html.escape(str(label))}</span>'
+        f'<strong>{html.escape(odds)}</strong>'
+        '</div>'
+    )
+
+
+def _total_label(label: str, row) -> str:
+    point = "" if row is None else _point_text(row.get("point"))
+    if not point:
+        return label
+    return f"{label} {point.replace('+', '')}"
+
+
+def _point_text(value) -> str:
+    if pd.isna(value) or str(value).strip() == "":
+        return ""
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return str(value)
+    if number.is_integer():
+        return f"{number:+.0f}"
+    return f"{number:+.1f}"
+
+
+def _match_number_value(row) -> int | None:
+    text = _match_number(row).replace("M", "", 1)
+    try:
+        return int(float(text))
+    except ValueError:
+        return None
 
 
 def _selected_fixture_id() -> str:
@@ -355,12 +494,54 @@ def _stage_label(row) -> str:
     stage = str(row.get("stage") or "").replace("_", " ").title()
     group = str(row.get("group") or "").replace("_", " ").title()
     if group and group.lower() != "nan":
-        return group
+        return f"Group {group}" if len(group) == 1 else group
     if stage == "Last 32":
         return "Round of 32"
     if stage == "Last 16":
         return "Round of 16"
     return stage if stage and stage.lower() != "nan" else "Stage TBD"
+
+
+def _fixture_card_bottom_markup(round_stage: str, stage: str) -> str:
+    if _is_group_stage_label(round_stage) and stage != round_stage:
+        return (
+            '<div class="fixture-card-bottom">'
+            f'<span>{html.escape(round_stage)}</span><span>{html.escape(stage)}</span>'
+            '</div>'
+        )
+    return (
+        '<div class="fixture-card-bottom is-centered">'
+        f'<span>{html.escape(round_stage)}</span>'
+        '</div>'
+    )
+
+
+def _fixture_focus_top_markup(match_number: str, city: str, center: str, round_stage: str) -> str:
+    if _is_group_stage_label(round_stage):
+        return f'<div class="fixture-focus-top"><span>{match_number}</span><span>{html.escape(city)}</span></div>'
+    return (
+        '<div class="fixture-focus-top has-center">'
+        f'<span>{match_number}</span><strong>{center}</strong><span>{html.escape(city)}</span>'
+        '</div>'
+    )
+
+
+def _fixture_focus_bottom_markup(round_stage: str, stage: str, center: str) -> str:
+    if _is_group_stage_label(round_stage) and stage != round_stage:
+        return (
+            '<div class="fixture-focus-bottom">'
+            f'<span>{html.escape(round_stage)}</span><strong>{center}</strong><span>{html.escape(stage)}</span>'
+            '</div>'
+        )
+    return (
+        '<div class="fixture-focus-bottom is-centered">'
+        f'<span>{html.escape(round_stage)}</span>'
+        '</div>'
+    )
+
+
+def _is_group_stage_label(value: str) -> bool:
+    return str(value or "").strip().lower() == "group stage"
 
 
 def _round_stage_label(value) -> str:
@@ -573,6 +754,10 @@ def _styles() -> None:
             text-transform: uppercase;
             text-shadow: 0 2px 10px rgba(0,0,0,.75);
         }
+        .fixture-card-bottom.is-centered {
+            justify-content: center;
+            text-align: center;
+        }
         .fixture-card-body {
             color: #FFFFFF;
             text-shadow: 0 3px 16px rgba(0,0,0,.9);
@@ -640,6 +825,17 @@ def _styles() -> None:
             margin-top: .8rem;
             overflow: hidden;
             padding: 1.35rem;
+            position: relative;
+        }
+        .fixture-focus::before {
+            background:
+                radial-gradient(circle at 50% 46%, rgba(0,0,0,.06), rgba(0,0,0,.34) 54%, rgba(0,0,0,.48) 100%),
+                linear-gradient(90deg, rgba(0,0,0,.24), rgba(0,0,0,.02) 34%, rgba(0,0,0,.02) 66%, rgba(0,0,0,.24));
+            content: "";
+            inset: 0;
+            pointer-events: none;
+            position: absolute;
+            z-index: 0;
         }
         .fixture-focus-top, .fixture-focus-bottom {
             display: flex;
@@ -650,25 +846,83 @@ def _styles() -> None:
             font-weight: 950;
             text-transform: uppercase;
             text-shadow: 0 3px 14px rgba(0,0,0,.84);
+            position: relative;
+            z-index: 2;
+        }
+        .fixture-focus-top span,
+        .fixture-focus-top strong,
+        .fixture-focus-bottom span,
+        .fixture-focus-bottom strong {
+            background: rgba(5,5,5,.38);
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 999px;
+            padding: .36rem .62rem;
+        }
+        .fixture-focus-top.has-center strong {
+            color: #FFFFFF;
+            font-size: clamp(1.05rem, 2vw, 1.6rem);
+            font-weight: 950;
+            left: 50%;
+            position: absolute;
+            text-transform: none;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+        .fixture-focus-bottom strong {
+            color: #FFFFFF;
+            font-size: clamp(1.05rem, 2vw, 1.6rem);
+            font-weight: 950;
+            left: 50%;
+            position: absolute;
+            text-transform: none;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+        .fixture-focus-bottom {
+            margin-top: auto;
+        }
+        .fixture-focus-bottom.is-centered {
+            justify-content: center;
         }
         .fixture-focus-body {
+            left: clamp(1.5rem, 5vw, 5rem);
+            position: absolute;
+            right: clamp(1.5rem, 5vw, 5rem);
+            top: 50%;
+            transform: translateY(-50%);
             display: grid;
-            grid-template-columns: 1fr auto 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             align-items: center;
-            gap: 1.2rem;
+            gap: clamp(2rem, 10vw, 12rem);
             color: #FFFFFF;
             text-shadow: 0 5px 22px rgba(0,0,0,.92);
+            z-index: 1;
         }
         .fixture-focus-team {
-            font-size: clamp(2rem, 5vw, 5.2rem);
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: .9rem;
+            min-width: 0;
+            justify-self: center;
+            font-size: clamp(2rem, 4.2vw, 4.8rem);
             font-weight: 950;
-            line-height: .95;
+            line-height: .94;
+            max-width: min(38vw, 540px);
+            text-align: center;
+        }
+        .fixture-focus-team div {
+            overflow-wrap: normal;
+            text-wrap: balance;
         }
         .fixture-focus-team.right {
-            text-align: right;
+            align-items: center;
+            text-align: center;
         }
         .fixture-focus-flag {
-            width: clamp(92px, 12vw, 170px);
+            width: clamp(98px, 12vw, 180px);
             aspect-ratio: 3 / 2;
             object-fit: cover;
             object-position: center;
@@ -676,23 +930,60 @@ def _styles() -> None:
             border: 2px solid rgba(255,255,255,.78);
             border-radius: 8px;
             box-shadow: 0 14px 30px rgba(0,0,0,.46);
-            margin-bottom: .8rem;
         }
-        .fixture-focus-center {
-            min-width: 120px;
-            text-align: center;
+        .fixture-odds-panel {
+            background: rgba(5,5,5,.42);
+            border: 1px solid rgba(214,168,58,.28);
+            border-radius: 8px;
+            display: grid;
+            gap: 1px;
+            grid-template-columns: 1.35fr 1fr;
+            margin: 1rem 0;
+            overflow: hidden;
         }
-        .fixture-focus-vs {
+        .fixture-odds-group {
+            background: rgba(255,255,255,.055);
+            padding: .85rem;
+        }
+        .fixture-odds-group h3 {
             color: #D6A83A;
-            font-size: 1rem;
+            font-size: .95rem;
             font-weight: 950;
+            letter-spacing: 0;
+            margin: 0 0 .7rem;
             text-transform: uppercase;
         }
-        .fixture-focus-time {
+        .fixture-odds-prices {
+            display: grid;
+            gap: .55rem;
+        }
+        .fixture-odds-prices.moneyline {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .fixture-odds-prices.totals {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .fixture-odds-price {
+            align-items: center;
+            background: rgba(5,5,5,.30);
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 8px;
+            display: grid;
+            gap: .35rem;
+            min-height: 76px;
+            padding: .65rem .75rem;
+            text-align: center;
+        }
+        .fixture-odds-price span {
             color: #FFFFFF;
-            font-size: clamp(1.25rem, 2.6vw, 2.4rem);
+            font-weight: 900;
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+        .fixture-odds-price strong {
+            color: #FFFFFF;
+            font-size: 1.25rem;
             font-weight: 950;
-            margin-top: .3rem;
         }
         @media (max-width: 980px) {
             .fixture-grid {
@@ -709,11 +1000,21 @@ def _styles() -> None:
             }
             .fixture-focus-body {
                 grid-template-columns: 1fr;
+                left: 1rem;
+                right: 1rem;
                 text-align: center;
+                top: 52%;
             }
             .fixture-focus-team,
             .fixture-focus-team.right {
+                align-items: center;
                 text-align: center;
+            }
+            .fixture-odds-panel {
+                grid-template-columns: 1fr;
+            }
+            .fixture-odds-prices.moneyline {
+                grid-template-columns: 1fr;
             }
         }
         </style>

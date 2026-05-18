@@ -5,10 +5,13 @@ import re
 
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
 from src.components.clickable_cards import clickable_cards
 from src.database import fetch_df
+from src.navigation import remember_detail_origin
 from src.official_match_reference import normalize_team_key
+from src.pages.wcq import WCQ_DATA_SCHEMA_VERSION, _wcq_data_signature, load_wcq_data
 
 
 FLAG_CODES = {
@@ -95,12 +98,10 @@ def render() -> None:
 
     rankings = _world_cup_rankings()
     global_rankings = _global_rankings()
-    default_view = st.session_state.pop("rankings_default_view", "World Cup Teams")
+    if st.session_state.get("selected_ranking_wcq_team") or st.session_state.pop("activate_full_rankings_tab", False):
+        _activate_full_rankings_tab()
 
-    if default_view == "Full FIFA List":
-        tab_full, tab_world_cup = st.tabs(["Full FIFA List", "World Cup Teams"])
-    else:
-        tab_world_cup, tab_full = st.tabs(["World Cup Teams", "Full FIFA List"])
+    tab_world_cup, tab_full = st.tabs(["World Cup Teams", "Full FIFA List"])
 
     with tab_world_cup:
         _render_world_cup_rankings(rankings)
@@ -121,6 +122,11 @@ def _render_world_cup_rankings(rankings: pd.DataFrame) -> None:
 
 
 def _render_full_rankings(global_rankings: pd.DataFrame) -> None:
+    selected_wcq_team = st.session_state.get("selected_ranking_wcq_team")
+    if selected_wcq_team:
+        _render_wcq_team_focus(str(selected_wcq_team))
+        return
+
     if global_rankings.empty:
         st.info("Import a FIFA rankings CSV to see the full list here.")
         return
@@ -134,7 +140,45 @@ def _render_full_rankings(global_rankings: pd.DataFrame) -> None:
         global_latest = global_latest[_ranking_search_mask(global_latest, search)]
 
     st.markdown(_section_title("Full FIFA List", latest_global_date), unsafe_allow_html=True)
-    st.markdown(f'<div class="ranking-list">{_ranking_cards(global_latest, team_column="team_name", compact=True)}</div>', unsafe_allow_html=True)
+    clicked_team = clickable_cards(
+        _full_ranking_click_cards(global_latest),
+        variant="ranking-list",
+        key=f"full_ranking_cards_{normalize_team_key(search or 'all')}_{st.session_state.get('ranking_cards_nonce', 0)}",
+    )
+    if clicked_team:
+        _open_full_ranking_team(str(clicked_team), global_latest)
+
+
+def _activate_full_rankings_tab() -> None:
+    components.html(
+        """
+        <script>
+        (() => {
+          const doc = window.parent.document;
+          const tabText = "Full FIFA List";
+
+          function activate() {
+            const tabs = Array.from(doc.querySelectorAll('[role="tab"]'));
+            const target = tabs.find(tab => (tab.textContent || "").trim() === tabText);
+            if (target && target.getAttribute("aria-selected") !== "true") {
+              target.click();
+              return true;
+            }
+            return Boolean(target);
+          }
+
+          let attempts = 0;
+          const timer = setInterval(() => {
+            attempts += 1;
+            const found = activate();
+            if (found && attempts >= 3) clearInterval(timer);
+            if (attempts >= 20) clearInterval(timer);
+          }, 100);
+        })();
+        </script>
+        """,
+        height=0,
+    )
 
 
 def _world_cup_rankings() -> pd.DataFrame:
@@ -225,7 +269,488 @@ def _ranking_click_cards(rows: pd.DataFrame) -> list[dict]:
     return cards
 
 
+def _full_ranking_click_cards(rows: pd.DataFrame) -> list[dict]:
+    cards = []
+    for _, row in rows.iterrows():
+        team = str(row.get("team_name") or "")
+        code = _flag_code(team, row.get("country_code"))
+        cards.append(
+            {
+                "id": team,
+                "name": team,
+                "rank": _rank_text(row.get("rank")),
+                "badge": "World Cup" if int(row.get("is_world_cup_team") or 0) == 1 else "",
+                "flag_url": f"https://flagcdn.com/w80/{code}.png" if code else "",
+            }
+        )
+    return cards
+
+
+def _open_full_ranking_team(team_name: str, rows: pd.DataFrame) -> None:
+    team_rows = rows[rows["team_name"].astype(str).map(normalize_team_key).eq(normalize_team_key(team_name))]
+    if team_rows.empty:
+        return
+    row = team_rows.iloc[0]
+    if int(row.get("is_world_cup_team") or 0) == 1:
+        team_id = _world_cup_team_id(team_name)
+        if team_id is not None:
+            _open_team(team_id)
+            return
+    st.session_state["selected_ranking_wcq_team"] = team_name
+    st.rerun()
+
+
+def _world_cup_team_id(team_name: str) -> int | None:
+    teams = fetch_df("SELECT id, name FROM teams")
+    if teams.empty:
+        return None
+    key = normalize_team_key(team_name)
+    direct = teams[teams["name"].astype(str).map(normalize_team_key).eq(key)]
+    if direct.empty:
+        alias_keys = {
+            normalize_team_key(alias): normalize_team_key(official)
+            for alias, official in SEARCH_ALIASES.items()
+        }
+        official_key = alias_keys.get(key)
+        if official_key:
+            direct = teams[teams["name"].astype(str).map(normalize_team_key).eq(official_key)]
+    if direct.empty:
+        return None
+    return int(direct.iloc[0]["id"])
+
+
+def _render_wcq_team_focus(team_name: str) -> None:
+    st.markdown(_section_title("Full FIFA List", "Qualifying Results"), unsafe_allow_html=True)
+    if st.button("Back to full rankings", key="close_ranking_wcq_team"):
+        st.session_state.pop("selected_ranking_wcq_team", None)
+        st.session_state["activate_full_rankings_tab"] = True
+        st.session_state["ranking_cards_nonce"] = int(st.session_state.get("ranking_cards_nonce", 0)) + 1
+        st.rerun()
+
+    data = load_wcq_data(WCQ_DATA_SCHEMA_VERSION, _wcq_data_signature())
+    profile = _wcq_team_profile(data, team_name)
+    if not profile["team_name"]:
+        st.info(f"No qualifying results are stored for {team_name} yet.")
+        return
+    _render_wcq_profile_hero(profile)
+    _render_wcq_elimination_panel(profile)
+    _render_wcq_matches(profile["matches"], profile["team_key"], profile["round_names"])
+    _render_wcq_ties(profile["ties"], profile["team_key"], profile["round_names"])
+
+
+def _wcq_team_profile(data: dict, team_name: str) -> dict:
+    keys = _team_lookup_keys(team_name)
+    standings = _matching_team_rows(data.get("standings", pd.DataFrame()), keys)
+    eliminated = _matching_team_rows(data.get("eliminated", pd.DataFrame()), keys)
+    qualified = _matching_team_rows(data.get("qualified", pd.DataFrame()), keys)
+    runner_up = _matching_team_rows(data.get("runners_up_ranking", pd.DataFrame()), keys)
+    matches = _matching_match_rows(data.get("matches", pd.DataFrame()), keys)
+    ties = _matching_tie_rows(data.get("playoff_ties", pd.DataFrame()), keys)
+    round_names = _round_name_lookup(data.get("rounds", pd.DataFrame()))
+
+    source_rows = [frame for frame in [eliminated, qualified, standings, runner_up] if not frame.empty]
+    source = source_rows[0].iloc[0] if source_rows else None
+    display_name = _row_value(source, "team_name", team_name) if source is not None else ""
+    team_key = normalize_team_key(display_name or team_name)
+    return {
+        "team_name": display_name,
+        "team_key": team_key,
+        "standings": standings,
+        "eliminated": eliminated,
+        "qualified": qualified,
+        "runner_up": runner_up,
+        "matches": matches,
+        "ties": ties,
+        "summary": _wcq_summary_text(eliminated, qualified, standings, runner_up),
+        "confederation": _row_value(source, "confederation_id", "") if source is not None else "",
+        "flag_code": _row_value(source, "flag_code", "") if source is not None else "",
+        "fifa_code": _row_value(source, "fifa_code", "") if source is not None else "",
+        "rank": _row_value(source, "fifa_rank", "") if source is not None else "",
+        "round_names": round_names,
+        "stage": _wcq_stage_text(eliminated, qualified, standings, runner_up, round_names),
+        "final_record": _wcq_final_record(standings, runner_up),
+        "final_position": _wcq_final_position(eliminated, standings, runner_up),
+    }
+
+
+def _team_lookup_keys(team_name: str) -> set[str]:
+    keys = {normalize_team_key(team_name)}
+    for alias, official in SEARCH_ALIASES.items():
+        alias_key = normalize_team_key(alias)
+        official_key = normalize_team_key(official)
+        if keys & {alias_key, official_key}:
+            keys.update({alias_key, official_key})
+    wcq_aliases = {
+        "congo dr": "dr congo",
+        "cabo verde": "cape verde",
+        "cape verde": "cabo verde",
+        "ir iran": "iran",
+        "korea dpr": "north korea",
+        "korea republic": "south korea",
+        "hong kong china": "hong kong",
+        "brunei darussalam": "brunei",
+        "usa": "united states",
+    }
+    for left, right in wcq_aliases.items():
+        if keys & {normalize_team_key(left), normalize_team_key(right)}:
+            keys.update({normalize_team_key(left), normalize_team_key(right)})
+    return keys
+
+
+def _matching_team_rows(frame: pd.DataFrame, keys: set[str]) -> pd.DataFrame:
+    if frame.empty or "team_name" not in frame.columns:
+        return pd.DataFrame()
+    return frame[frame["team_name"].astype(str).map(normalize_team_key).isin(keys)].copy()
+
+
+def _matching_match_rows(frame: pd.DataFrame, keys: set[str]) -> pd.DataFrame:
+    if frame.empty:
+        return pd.DataFrame()
+    home = frame.get("home_team_name", pd.Series("", index=frame.index)).astype(str).map(normalize_team_key).isin(keys)
+    away = frame.get("away_team_name", pd.Series("", index=frame.index)).astype(str).map(normalize_team_key).isin(keys)
+    rows = frame[home | away].copy()
+    if not rows.empty:
+        rows["_date"] = pd.to_datetime(rows.get("date", ""), errors="coerce")
+        rows["_order"] = pd.to_numeric(rows.get("match_order", ""), errors="coerce").fillna(999)
+        rows = rows.sort_values(["_date", "_order", "match_id"], na_position="last")
+    return rows
+
+
+def _matching_tie_rows(frame: pd.DataFrame, keys: set[str]) -> pd.DataFrame:
+    if frame.empty:
+        return pd.DataFrame()
+    team1 = frame.get("team1_name", pd.Series("", index=frame.index)).astype(str).map(normalize_team_key).isin(keys)
+    team2 = frame.get("team2_name", pd.Series("", index=frame.index)).astype(str).map(normalize_team_key).isin(keys)
+    return frame[team1 | team2].copy()
+
+
+def _wcq_summary_text(eliminated: pd.DataFrame, qualified: pd.DataFrame, standings: pd.DataFrame, runner_up: pd.DataFrame) -> str:
+    if not eliminated.empty:
+        row = eliminated.iloc[-1]
+        reason = _row_value(row, "elimination_reason", _row_value(row, "notes", "Eliminated in qualifying."))
+        final_position = _row_value(row, "final_position", "")
+        return " | ".join(part for part in [reason, final_position] if part)
+    if not qualified.empty:
+        row = qualified.iloc[0]
+        return _row_value(row, "qualification_method", "Qualified for the World Cup.")
+    if not runner_up.empty:
+        row = runner_up.iloc[-1]
+        return _row_value(row, "notes", _row_value(row, "status", "Runner-up ranking result recorded."))
+    if not standings.empty:
+        row = standings.iloc[-1]
+        return _row_value(row, "notes", _row_value(row, "status", "Qualifying standings are recorded."))
+    return ""
+
+
+def _round_name_lookup(rounds: pd.DataFrame) -> dict[str, str]:
+    if rounds.empty or "round_id" not in rounds.columns:
+        return {}
+    return {
+        str(row.get("round_id", "")): _row_value(row, "round_name", str(row.get("round_id", "")))
+        for _, row in rounds.iterrows()
+        if str(row.get("round_id", "")).strip()
+    }
+
+
+def _wcq_stage_text(
+    eliminated: pd.DataFrame,
+    qualified: pd.DataFrame,
+    standings: pd.DataFrame,
+    runner_up: pd.DataFrame,
+    round_names: dict[str, str],
+) -> str:
+    if not eliminated.empty:
+        row = eliminated.iloc[-1]
+        round_name = _display_round_name(_row_value(row, "round_id", ""), round_names) or "Qualifying"
+        return f"Eliminated in {round_name}"
+    if not qualified.empty:
+        row = qualified.iloc[0]
+        return _row_value(row, "qualification_round", "Qualified")
+    if not runner_up.empty:
+        return "Runner-up ranking"
+    if not standings.empty:
+        row = standings.iloc[-1]
+        return _display_round_name(_row_value(row, "round_id", ""), round_names) or "Qualifying"
+    return "Qualifying"
+
+
+def _wcq_final_record(standings: pd.DataFrame, runner_up: pd.DataFrame) -> str:
+    if not runner_up.empty:
+        return _record_text(runner_up.iloc[-1])
+    if not standings.empty:
+        return _record_text(standings.iloc[-1])
+    return ""
+
+
+def _wcq_final_position(eliminated: pd.DataFrame, standings: pd.DataFrame, runner_up: pd.DataFrame) -> str:
+    if not eliminated.empty:
+        return _row_value(eliminated.iloc[-1], "final_position", "")
+    if not runner_up.empty:
+        row = runner_up.iloc[-1]
+        rank = _row_value(row, "runner_up_rank", "")
+        group = _row_value(row, "group_name", "")
+        return " | ".join(part for part in [f"Runner-up rank {rank}" if rank else "", group] if part)
+    if not standings.empty:
+        row = standings.iloc[-1]
+        position = _row_value(row, "position", "")
+        group = _row_value(row, "group_id", _row_value(row, "group_name", ""))
+        return " | ".join(part for part in [f"Position {position}" if position else "", group] if part)
+    return ""
+
+
+def _render_wcq_profile_hero(profile: dict) -> None:
+    code = str(profile.get("flag_code") or "").lower()
+    background = f"https://flagcdn.com/w1280/{html.escape(code)}.png" if code else ""
+    background_style = (
+        f"linear-gradient(90deg, rgba(3,7,18,.88), rgba(3,7,18,.70)), url('{background}')"
+        if background
+        else "linear-gradient(135deg, rgba(5,5,5,.82), rgba(11,16,32,.72))"
+    )
+    meta = " | ".join(
+        part
+        for part in [
+            str(profile.get("confederation") or ""),
+            f"FIFA rank {profile.get('rank')}" if profile.get("rank") else "",
+        ]
+        if part
+    )
+    st.markdown(
+        f"""
+        <section class="wcq-team-profile-hero" style="background-image: {background_style};">
+          <div>
+            <div class="wcq-team-profile-kicker">{html.escape(meta)}</div>
+            <h2>{html.escape(profile["team_name"])}</h2>
+            <p>{html.escape(profile["stage"])}</p>
+          </div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_wcq_elimination_panel(profile: dict) -> None:
+    stats = [
+        ("Status", "Eliminated" if profile["eliminated"].empty is False else "Qualified" if profile["qualified"].empty is False else "Recorded"),
+        ("Final stage", str(profile.get("stage") or "Qualifying")),
+        ("Final position", str(profile.get("final_position") or "Not listed")),
+        ("Record", str(profile.get("final_record") or "Not listed")),
+    ]
+    stat_markup = "".join(
+        f'<div class="wcq-profile-stat"><span>{html.escape(label)}</span><strong>{html.escape(value)}</strong></div>'
+        for label, value in stats
+    )
+    st.markdown(
+        f"""
+        <section class="wcq-profile-summary">
+          <div>
+            <div class="wcq-profile-summary-kicker">Qualifying outcome</div>
+            <h3>{html.escape(profile["summary"] or "Qualifying outcome is recorded.")}</h3>
+          </div>
+          <div class="wcq-profile-stats">{stat_markup}</div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_wcq_path(profile: dict) -> None:
+    rows = _important_path_rows(profile)
+    if rows.empty:
+        return
+    body = "".join(
+        "<tr>"
+        f"<td>{html.escape(_row_value(row, 'stage'))}</td>"
+        f"<td>{html.escape(_row_value(row, 'group'))}</td>"
+        f"<td>{html.escape(_row_value(row, 'position', '-'))}</td>"
+        f"<td>{html.escape(_record_text(row))}</td>"
+        f"<td>{html.escape(_row_value(row, 'points', '0'))}</td>"
+        f"<td>{html.escape(_clean_status(_row_value(row, 'status', '')))}</td>"
+        "</tr>"
+        for _, row in rows.iterrows()
+    )
+    _render_wcq_table("Qualifying Path", "<th>Stage</th><th>Group / Table</th><th>Place</th><th>W-D-L</th><th>Pts</th><th>Status</th>", body)
+
+
+def _important_path_rows(profile: dict) -> pd.DataFrame:
+    rows = []
+    standings = profile["standings"].copy()
+    if not standings.empty:
+        standings["_position"] = pd.to_numeric(standings.get("position", ""), errors="coerce").fillna(999)
+        standings = standings.sort_values(["confederation_id", "round_id", "group_id", "_position"])
+        for _, row in standings.iterrows():
+            item = row.copy()
+            item["stage"] = _display_round_name(_row_value(row, "round_id", ""), profile["round_names"])
+            item["group"] = _row_value(row, "group_name", _row_value(row, "group_id", ""))
+            rows.append(item)
+    runner_up = profile["runner_up"].copy()
+    if not runner_up.empty:
+        for _, row in runner_up.iterrows():
+            item = row.copy()
+            item["stage"] = "Runner-up ranking"
+            item["group"] = _row_value(row, "group_name", "")
+            item["position"] = _row_value(row, "runner_up_rank", "")
+            item["played"] = _row_value(row, "played_counting_results", _row_value(row, "played", ""))
+            rows.append(item)
+    return pd.DataFrame(rows) if rows else pd.DataFrame()
+
+
+def _render_wcq_matches(rows: pd.DataFrame, team_key: str, round_names: dict[str, str]) -> None:
+    if rows.empty:
+        return
+    cards = "".join(_wcq_match_card(row, team_key, round_names) for _, row in rows.iterrows())
+    st.markdown(
+        f"""
+        <section class="wcq-profile-results">
+          <h3>Qualifying Results</h3>
+          <div class="wcq-profile-result-grid">{cards}</div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_wcq_ties(rows: pd.DataFrame, team_key: str, round_names: dict[str, str]) -> None:
+    if rows.empty:
+        return
+    body = "".join(
+        "<tr>"
+        f"<td>{html.escape(_row_value(row, 'round_name', _display_round_name(_row_value(row, 'round_id'), round_names)))}</td>"
+        f"<td>{html.escape(_row_value(row, 'team1_name'))} vs {html.escape(_row_value(row, 'team2_name'))}</td>"
+        f"<td>{html.escape(_row_value(row, 'aggregate_score', '-'))}</td>"
+        f"<td>{html.escape(_tie_result_text(row, team_key))}</td>"
+        "</tr>"
+        for _, row in rows.iterrows()
+    )
+    _render_wcq_table("Playoff Ties", "<th>Round</th><th>Tie</th><th>Aggregate</th><th>Result</th>", body)
+
+
+def _render_wcq_table(title: str, header: str, body: str) -> None:
+    st.markdown(
+        f"""
+        <section class="ranking-wcq-table-shell">
+          <h3>{html.escape(title)}</h3>
+          <div class="ranking-wcq-table-wrap">
+            <table class="ranking-wcq-table">
+              <thead><tr>{header}</tr></thead>
+              <tbody>{body}</tbody>
+            </table>
+          </div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _wcq_match_card(row: pd.Series, team_key: str, round_names: dict[str, str]) -> str:
+    home = _row_value(row, "home_team_name", "TBD")
+    away = _row_value(row, "away_team_name", "TBD")
+    result = _match_result_text(row, team_key)
+    result_class = _safe_key(result or "scheduled")
+    return (
+        f'<article class="wcq-profile-result-card {html.escape(result_class)}">'
+        f'<div class="wcq-profile-result-top"><span>{html.escape(_format_short_date(_row_value(row, "date", "")))}</span><span>{html.escape(_display_round_name(_row_value(row, "round_id", ""), round_names))}</span></div>'
+        '<div class="wcq-profile-result-match">'
+        f'{_wcq_result_team(row, "home", home)}'
+        f'<strong>{html.escape(_match_score(row))}</strong>'
+        f'{_wcq_result_team(row, "away", away)}'
+        '</div>'
+        f'<div class="wcq-profile-result-status">{html.escape(result or "Result TBD")}</div>'
+        '</article>'
+    )
+
+
+def _wcq_result_team(row: pd.Series, side: str, name: str) -> str:
+    code = _row_value(row, f"{side}_flag_code", "").lower()
+    if not code:
+        code = _flag_code(name, "")
+    flag = _flag_img(code, name)
+    return f'<span class="wcq-profile-result-team">{flag}<em>{html.escape(name)}</em></span>'
+
+
+def _match_score(row: pd.Series) -> str:
+    home = _row_value(row, "home_score", "")
+    away = _row_value(row, "away_score", "")
+    if not home or not away:
+        return "vs"
+    penalties = _row_value(row, "penalties", "")
+    return f"{home}-{away}" + (f" ({penalties} pens)" if penalties else "")
+
+
+def _display_round_name(round_id: str, round_names: dict[str, str]) -> str:
+    value = str(round_id or "").strip()
+    if not value:
+        return ""
+    return round_names.get(value, value.replace("_", " ").title())
+
+
+def _clean_status(value: str) -> str:
+    text = str(value or "").replace("_", " ").strip()
+    return text.title() if text else "Recorded"
+
+
+def _format_short_date(value: str) -> str:
+    parsed = pd.to_datetime(value, errors="coerce")
+    if pd.isna(parsed):
+        return value
+    return f"{parsed.strftime('%b')} {parsed.day}, {parsed.year}"
+
+
+def _match_result_text(row: pd.Series, team_key: str) -> str:
+    winner_id = _row_value(row, "winning_team_id", "")
+    if winner_id:
+        home_won = winner_id == _row_value(row, "home_team_id", "")
+        away_won = winner_id == _row_value(row, "away_team_id", "")
+        if home_won and normalize_team_key(_row_value(row, "home_team_name")) == team_key:
+            return "Won"
+        if away_won and normalize_team_key(_row_value(row, "away_team_name")) == team_key:
+            return "Won"
+        if home_won or away_won:
+            return "Lost"
+    home_score = pd.to_numeric(_row_value(row, "home_score", ""), errors="coerce")
+    away_score = pd.to_numeric(_row_value(row, "away_score", ""), errors="coerce")
+    if pd.isna(home_score) or pd.isna(away_score):
+        return ""
+    is_home = normalize_team_key(_row_value(row, "home_team_name")) == team_key
+    team_score = home_score if is_home else away_score
+    opponent_score = away_score if is_home else home_score
+    if team_score > opponent_score:
+        return "Won"
+    if team_score < opponent_score:
+        return "Lost"
+    return "Drew"
+
+
+def _tie_result_text(row: pd.Series, team_key: str) -> str:
+    winner = _row_value(row, "winner_team_id", "")
+    loser = _row_value(row, "loser_team_id", "")
+    team1_is_team = normalize_team_key(_row_value(row, "team1_name")) == team_key
+    team_id = _row_value(row, "team1_id" if team1_is_team else "team2_id", "")
+    if winner and team_id == winner:
+        return "Won tie"
+    if loser and team_id == loser:
+        return "Lost tie"
+    return ""
+
+
+def _record_text(row: pd.Series) -> str:
+    return f"{_row_value(row, 'wins', '0')}-{_row_value(row, 'draws', '0')}-{_row_value(row, 'losses', '0')}"
+
+
+def _safe_key(value: str) -> str:
+    return "".join(character.lower() if character.isalnum() else "_" for character in str(value)).strip("_")
+
+
+def _row_value(row: pd.Series | None, key: str, default: str = "") -> str:
+    if row is None or key not in row:
+        return default
+    value = row.get(key, default)
+    if pd.isna(value) or str(value).strip() == "":
+        return default
+    return str(value).strip()
+
+
 def _open_team(team_id: int) -> None:
+    remember_detail_origin("team_return_origin")
     st.session_state["page_name"] = "Teams"
     st.session_state["selected_team_id"] = team_id
     st.session_state.pop("selected_match_id", None)
@@ -399,7 +924,9 @@ def _styles() -> None:
             border: 1px solid rgba(255,255,255,.52);
             border-radius: 6px;
             box-shadow: 0 8px 18px rgba(0,0,0,.34);
+            display: block;
             object-fit: cover;
+            object-position: center;
             width: 100%;
         }
         .ranking-flag-fallback {
@@ -445,12 +972,237 @@ def _styles() -> None:
             font-weight: 850;
             padding: 1rem 0;
         }
+        .wcq-team-profile-hero {
+            align-items: center;
+            background-position: center;
+            background-size: cover;
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 22px;
+            box-shadow: 0 16px 50px rgba(15,23,42,.28);
+            display: grid;
+            gap: 1.35rem;
+            grid-template-columns: 1fr;
+            margin: 1rem 0 1.25rem;
+            min-height: 360px;
+            padding: 3rem;
+        }
+        .wcq-team-profile-kicker,
+        .wcq-profile-summary-kicker {
+            color: #D6A83A;
+            font-size: .82rem;
+            font-weight: 950;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+        .wcq-team-profile-hero h2 {
+            color: #FFFFFF;
+            font-size: 4.25rem;
+            font-weight: 950;
+            line-height: .95;
+            margin: .2rem 0 .3rem;
+            text-shadow: 0 3px 18px rgba(0,0,0,.9);
+        }
+        .wcq-team-profile-hero p {
+            color: #F8FAFC;
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 2px 12px rgba(0,0,0,.9);
+        }
+        .wcq-profile-summary {
+            background:
+                linear-gradient(135deg, rgba(5,5,5,.50), rgba(11,16,32,.42)),
+                radial-gradient(circle at 12% 0%, rgba(214,168,58,.14), transparent 30%);
+            border: 1px solid rgba(214,168,58,.26);
+            border-radius: 8px;
+            box-shadow: 0 14px 34px rgba(0,0,0,.20);
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: minmax(0, 1.35fr) minmax(280px, .95fr);
+            margin: 1rem 0 1.25rem;
+            padding: 1rem;
+        }
+        .wcq-profile-summary h3 {
+            color: #FFFFFF;
+            font-size: 1.42rem;
+            font-weight: 950;
+            line-height: 1.12;
+            margin: .2rem 0 0;
+        }
+        .wcq-profile-stats {
+            display: grid;
+            gap: .55rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .wcq-profile-stat {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 8px;
+            padding: .72rem;
+        }
+        .wcq-profile-stat span {
+            color: #CBD5E1;
+            display: block;
+            font-size: .72rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .wcq-profile-stat strong {
+            color: #FFFFFF;
+            display: block;
+            font-size: 1rem;
+            font-weight: 950;
+            margin-top: .18rem;
+        }
+        .ranking-wcq-table-shell {
+            background: rgba(5,5,5,.24);
+            border: 1px solid rgba(214,168,58,.22);
+            border-radius: 8px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        .ranking-wcq-table-shell h3 {
+            color: #D6A83A;
+            font-size: 1.08rem;
+            font-weight: 950;
+            margin: 0;
+            padding: .8rem .9rem;
+        }
+        .ranking-wcq-table-wrap {
+            overflow-x: auto;
+        }
+        .ranking-wcq-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .ranking-wcq-table th {
+            background: rgba(214,168,58,.18);
+            color: #D6A83A;
+            font-size: .72rem;
+            font-weight: 950;
+            padding: .58rem .65rem;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .ranking-wcq-table td {
+            border-top: 1px solid rgba(255,255,255,.08);
+            color: #F8FAFC;
+            font-weight: 800;
+            padding: .62rem .65rem;
+            vertical-align: top;
+        }
+        .ranking-wcq-table tr:nth-child(even) td {
+            background: rgba(255,255,255,.045);
+        }
+        .wcq-profile-results {
+            margin: 1rem 0 1.25rem;
+        }
+        .wcq-profile-results h3 {
+            color: #D6A83A;
+            font-size: 1.18rem;
+            font-weight: 950;
+            margin: .2rem 0 .75rem;
+        }
+        .wcq-profile-result-grid {
+            display: grid;
+            gap: .75rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .wcq-profile-result-card {
+            background:
+                linear-gradient(135deg, rgba(5,5,5,.48), rgba(11,16,32,.38)),
+                radial-gradient(circle at 88% 12%, rgba(214,168,58,.12), transparent 30%);
+            border: 1px solid rgba(214,168,58,.24);
+            border-radius: 8px;
+            box-shadow: 0 14px 34px rgba(0,0,0,.20);
+            min-height: 118px;
+            padding: .9rem;
+        }
+        .wcq-profile-result-card.won {
+            border-color: rgba(34,197,94,.46);
+        }
+        .wcq-profile-result-card.lost {
+            border-color: rgba(239,68,68,.50);
+        }
+        .wcq-profile-result-card.drew {
+            border-color: rgba(245,158,11,.50);
+        }
+        .wcq-profile-result-top {
+            color: #CBD5E1;
+            display: flex;
+            font-size: .72rem;
+            font-weight: 900;
+            gap: .75rem;
+            justify-content: space-between;
+            text-transform: uppercase;
+        }
+        .wcq-profile-result-match {
+            align-items: center;
+            color: #FFFFFF;
+            font-weight: 950;
+            display: grid;
+            gap: .65rem;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            line-height: 1.18;
+            margin-top: .8rem;
+            text-align: center;
+        }
+        .wcq-profile-result-match strong {
+            color: #D6A83A;
+            font-size: 1.05rem;
+            white-space: nowrap;
+        }
+        .wcq-profile-result-team {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: .38rem;
+            min-width: 0;
+        }
+        .wcq-profile-result-team img,
+        .wcq-profile-result-team .ranking-flag-fallback {
+            aspect-ratio: 3 / 2;
+            border: 1px solid rgba(255,255,255,.62);
+            border-radius: 4px;
+            box-shadow: 0 8px 16px rgba(0,0,0,.32);
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            width: 42px;
+        }
+        .wcq-profile-result-team .ranking-flag-fallback.hidden {
+            display: none;
+        }
+        .wcq-profile-result-team em {
+            color: #FFFFFF;
+            font-style: normal;
+            font-size: .95rem;
+            font-weight: 950;
+            overflow-wrap: anywhere;
+        }
+        .wcq-profile-result-status {
+            color: #D6A83A;
+            font-size: .78rem;
+            font-weight: 950;
+            margin-top: .55rem;
+            text-transform: uppercase;
+        }
         @media (max-width: 980px) {
             .ranking-grid, .ranking-list {
                 grid-template-columns: 1fr;
             }
             .ranking-hero {
                 flex-direction: column;
+            }
+            .wcq-team-profile-hero,
+            .wcq-profile-summary,
+            .wcq-profile-result-grid {
+                grid-template-columns: 1fr;
+            }
+            .wcq-team-profile-hero {
+                min-height: 320px;
+                padding: 2rem;
             }
         }
         @media (max-width: 560px) {
@@ -459,6 +1211,15 @@ def _styles() -> None:
             }
             .ranking-position {
                 font-size: 1.2rem;
+            }
+            .wcq-team-profile-hero h2 {
+                font-size: 2.65rem;
+            }
+            .wcq-profile-stats {
+                grid-template-columns: 1fr;
+            }
+            .wcq-profile-result-match {
+                grid-template-columns: 1fr;
             }
         }
         </style>

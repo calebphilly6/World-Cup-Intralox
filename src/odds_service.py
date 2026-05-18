@@ -86,3 +86,77 @@ def odds_source_text(american_odds, source) -> str:
     if not source_text or source_text.lower() == "draftkings":
         return odds
     return f"{odds} {source_text}"
+
+
+@st.cache_data(show_spinner=False)
+def latest_fixture_odds(match_number: int | None, home_team: str, away_team: str, kickoff_utc: str) -> pd.DataFrame:
+    params: list = []
+    filters: list[str] = []
+    if match_number is not None:
+        filters.append(
+            """
+            o.fixture_id IN (
+                SELECT id FROM fixtures WHERE match_number = ?
+            )
+            """
+        )
+        params.append(match_number)
+
+    event_day = str(kickoff_utc or "")[:10]
+    if event_day and home_team and away_team:
+        filters.append(
+            """
+            (
+                substr(o.commence_time, 1, 10) = ?
+                AND LOWER(o.home_team) = LOWER(?)
+                AND LOWER(o.away_team) = LOWER(?)
+            )
+            """
+        )
+        params.extend([event_day, home_team, away_team])
+
+    if not filters:
+        return pd.DataFrame()
+
+    return fetch_df(
+        f"""
+        WITH latest_rows AS (
+            SELECT o.*,
+                   ROW_NUMBER() OVER (
+                       PARTITION BY
+                           COALESCE(o.fixture_id, 0),
+                           COALESCE(o.external_event_id, ''),
+                           LOWER(COALESCE(o.bookmaker_key, o.bookmaker_title, '')),
+                           o.market_type,
+                           o.outcome_name,
+                           COALESCE(o.point, -999999)
+                       ORDER BY datetime(o.snapshot_ts) DESC, o.id DESC
+                   ) AS row_num
+            FROM fixture_odds_snapshots o
+            WHERE {" OR ".join(filters)}
+        )
+        SELECT fixture_id, external_event_id, commence_time, home_team, away_team,
+               bookmaker_key, bookmaker_title, market_type, outcome_name, odds_format,
+               american_odds, decimal_odds, implied_probability, point, source,
+               snapshot_ts, notes
+        FROM latest_rows
+        WHERE row_num = 1
+        ORDER BY
+            CASE market_type
+                WHEN 'h2h' THEN 0
+                WHEN 'spreads' THEN 1
+                WHEN 'totals' THEN 2
+                ELSE 9
+            END,
+            LOWER(COALESCE(bookmaker_title, bookmaker_key, source, '')),
+            CASE outcome_name
+                WHEN home_team THEN 0
+                WHEN 'Draw' THEN 1
+                WHEN away_team THEN 2
+                WHEN 'Over' THEN 3
+                WHEN 'Under' THEN 4
+                ELSE 5
+            END
+        """,
+        params,
+    )

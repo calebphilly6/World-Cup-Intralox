@@ -1,0 +1,16 @@
+{
+  "style_key": "conmebol",
+  "display_name": "CONMEBOL",
+  "theme_name": "Andes & Atlantic",
+  "primary": "#00AEEF",
+  "secondary": "#F6D21A",
+  "accent": "#0B7A3B",
+  "deep": "#071B3A",
+  "surface": "#F7FBFF",
+  "qualified": "#FFD54A",
+  "advanced": "#00AEEF",
+  "playoff": "#FF8C1A",
+  "eliminated": "#6B7280",
+  "text": "#0F172A",
+  "description": "Bright sky blue, gold, green, and deep navy inspired by South American football identity, Argentina/Uruguay sky tones, Brazil/Paraguay energy, and continental tournament branding."
+}

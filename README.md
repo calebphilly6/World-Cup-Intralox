@@ -116,16 +116,18 @@ APP_PASSWORD = "choose-a-private-password"
 SHARED_CORE_READ_ONLY_MODE = true
 
 [odds]
-sport_key = ""
+sport_key = "soccer_fifa_world_cup_winner"
+match_sport_key = "soccer_fifa_world_cup"
 regions = "us"
 bookmakers = ""
+match_markets = "h2h,spreads,totals"
 ```
 
 ## API Keys
 
 All API keys are optional. Missing keys should show friendly warnings instead of crashing the app.
 
-- `THE_ODDS_API_KEY`: optional odds snapshots from The Odds API.
+- `THE_ODDS_API_KEY`: optional tournament-winner and match odds snapshots from The Odds API.
 - `BALLDONTLIE_API_KEY`: reserved for optional future sports-data integrations.
 - `FOOTBALL_DATA_API_KEY`: optional football-data.org fixture, team, and standings calls.
 

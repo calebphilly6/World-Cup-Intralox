@@ -1,105 +1,105 @@
 match_number,round_name,game_label,city,updated_at
-1,Group A,Mexico vs South Africa,Mexico City,2026-05-14 11:31:37
-2,Group A,Korea Republic vs Czechia,Guadalajara,2026-05-14 11:31:37
-3,Group B,Canada vs Bosnia and Herzegovina,Toronto,2026-05-14 11:31:37
-4,Group D,United States vs Paraguay,Los Angeles,2026-05-14 11:31:37
-5,Group C,Haiti vs Scotland,Boston,2026-05-14 11:31:37
-6,Group D,Australia vs Turkiye,Vancouver,2026-05-14 11:31:37
-7,Group C,Brazil vs Morocco,New York New Jersey,2026-05-14 11:31:37
-8,Group B,Qatar vs Switzerland,San Francisco Bay Area,2026-05-14 11:31:37
-9,Group E,Cote d'Ivoire vs Ecuador,Philadelphia,2026-05-14 11:31:37
-10,Group E,Germany vs Curacao,Houston,2026-05-14 11:31:37
-11,Group F,Netherlands vs Japan,Dallas,2026-05-14 11:31:37
-12,Group F,Sweden vs Tunisia,Monterrey,2026-05-14 11:31:37
-13,Group H,Saudi Arabia vs Uruguay,Miami,2026-05-14 11:31:37
-14,Group H,Spain vs Cabo Verde,Atlanta,2026-05-14 11:31:37
-15,Group G,IR Iran vs New Zealand,Los Angeles,2026-05-14 11:31:37
-16,Group G,Belgium vs Egypt,Seattle,2026-05-14 11:31:37
-17,Group I,France vs Senegal,New York New Jersey,2026-05-14 11:31:37
-18,Group I,Iraq vs Norway,Boston,2026-05-14 11:31:37
-19,Group J,Argentina vs Algeria,Kansas City,2026-05-14 11:31:37
-20,Group J,Austria vs Jordan,San Francisco Bay Area,2026-05-14 11:31:37
-21,Group L,Ghana vs Panama,Toronto,2026-05-14 11:31:37
-22,Group L,England vs Croatia,Dallas,2026-05-14 11:31:37
-23,Group K,Portugal vs Congo DR,Houston,2026-05-14 11:31:37
-24,Group K,Uzbekistan vs Colombia,Mexico City,2026-05-14 11:31:37
-25,Group A,Czechia vs South Africa,Atlanta,2026-05-14 11:31:37
-26,Group B,Switzerland vs Bosnia and Herzegovina,Los Angeles,2026-05-14 11:31:37
-27,Group B,Canada vs Qatar,Vancouver,2026-05-14 11:31:37
-28,Group A,Mexico vs Korea Republic,Guadalajara,2026-05-14 11:31:37
-29,Group C,Brazil vs Haiti,Philadelphia,2026-05-14 11:31:37
-30,Group C,Scotland vs Morocco,Boston,2026-05-14 11:31:37
-31,Group D,Turkiye vs Paraguay,San Francisco Bay Area,2026-05-14 11:31:37
-32,Group D,United States vs Australia,Seattle,2026-05-14 11:31:37
-33,Group E,Germany vs Cote d'Ivoire,Toronto,2026-05-14 11:31:37
-34,Group E,Ecuador vs Curacao,Kansas City,2026-05-14 11:31:37
-35,Group F,Netherlands vs Sweden,Houston,2026-05-14 11:31:37
-36,Group F,Tunisia vs Japan,Monterrey,2026-05-14 11:31:37
-37,Group H,Uruguay vs Cabo Verde,Miami,2026-05-14 11:31:37
-38,Group H,Spain vs Saudi Arabia,Atlanta,2026-05-14 11:31:37
-39,Group G,Belgium vs IR Iran,Los Angeles,2026-05-14 11:31:37
-40,Group G,New Zealand vs Egypt,Vancouver,2026-05-14 11:31:37
-41,Group I,Norway vs Senegal,New York New Jersey,2026-05-14 11:31:37
-42,Group I,France vs Iraq,Philadelphia,2026-05-14 11:31:37
-43,Group J,Argentina vs Austria,Dallas,2026-05-14 11:31:37
-44,Group J,Jordan vs Algeria,San Francisco Bay Area,2026-05-14 11:31:37
-45,Group L,England vs Ghana,Boston,2026-05-14 11:31:37
-46,Group L,Panama vs Croatia,Toronto,2026-05-14 11:31:37
-47,Group K,Portugal vs Uzbekistan,Houston,2026-05-14 11:31:37
-48,Group K,Colombia vs Congo DR,Guadalajara,2026-05-14 11:31:37
-49,Group C,Scotland vs Brazil,Miami,2026-05-14 11:31:37
-50,Group C,Morocco vs Haiti,Atlanta,2026-05-14 11:31:37
-51,Group B,Switzerland vs Canada,Vancouver,2026-05-14 11:31:37
-52,Group B,Bosnia and Herzegovina vs Qatar,Seattle,2026-05-14 11:31:37
-53,Group A,Czechia vs Mexico,Mexico City,2026-05-14 11:31:37
-54,Group A,South Africa vs Korea Republic,Monterrey,2026-05-14 11:31:37
-55,Group E,Curacao vs Cote d'Ivoire,Philadelphia,2026-05-14 11:31:37
-56,Group E,Ecuador vs Germany,New York New Jersey,2026-05-14 11:31:37
-57,Group F,Japan vs Sweden,Dallas,2026-05-14 11:31:37
-58,Group F,Tunisia vs Netherlands,Kansas City,2026-05-14 11:31:37
-59,Group D,Turkiye vs United States,Los Angeles,2026-05-14 11:31:37
-60,Group D,Paraguay vs Australia,San Francisco Bay Area,2026-05-14 11:31:37
-61,Group I,Norway vs France,Boston,2026-05-14 11:31:37
-62,Group I,Senegal vs Iraq,Toronto,2026-05-14 11:31:37
-63,Group G,Egypt vs IR Iran,Seattle,2026-05-14 11:31:37
-64,Group G,New Zealand vs Belgium,Vancouver,2026-05-14 11:31:37
-65,Group H,Cabo Verde vs Saudi Arabia,Houston,2026-05-14 11:31:37
-66,Group H,Uruguay vs Spain,Guadalajara,2026-05-14 11:31:37
-67,Group L,Panama vs England,New York New Jersey,2026-05-14 11:31:37
-68,Group L,Croatia vs Ghana,Philadelphia,2026-05-14 11:31:37
-69,Group J,Algeria vs Austria,Kansas City,2026-05-14 11:31:37
-70,Group J,Jordan vs Argentina,Dallas,2026-05-14 11:31:37
-71,Group K,Colombia vs Portugal,Dallas,2026-05-14 11:31:37
-72,Group K,Congo DR vs Uzbekistan,Atlanta,2026-05-14 11:31:37
-73,Round of 32,2A vs 2B,Los Angeles,2026-05-14 11:31:37
-74,Round of 32,1E vs 3ABCDF,Boston,2026-05-14 11:31:37
-75,Round of 32,1F vs 2C,Monterrey,2026-05-14 11:31:37
-76,Round of 32,1C vs 2F,Houston,2026-05-14 11:31:37
-77,Round of 32,1I vs 3CDFGH,New York New Jersey,2026-05-14 11:31:37
-78,Round of 32,2E vs 2I,Dallas,2026-05-14 11:31:37
-79,Round of 32,1A vs 3CEFHI,Mexico City,2026-05-14 11:31:37
-80,Round of 32,1L vs 3EHIJK,Atlanta,2026-05-14 11:31:37
-81,Round of 32,1D vs 3BEFIJ,San Francisco Bay Area,2026-05-14 11:31:37
-82,Round of 32,1G vs 3AEHIJ,Seattle,2026-05-14 11:31:37
-83,Round of 32,2K vs 2L,Toronto,2026-05-14 11:31:37
-84,Round of 32,1H vs 2J,Los Angeles,2026-05-14 11:31:37
-85,Round of 32,1B vs 3EFGIJ,Vancouver,2026-05-14 11:31:37
-86,Round of 32,1J vs 2H,Miami,2026-05-14 11:31:37
-87,Round of 32,1K vs 3DEIJL,Kansas City,2026-05-14 11:31:37
-88,Round of 32,2D vs 2G,Dallas,2026-05-14 11:31:37
-89,Round of 16,Winner M74 vs Winner M77,Philadelphia,2026-05-14 11:31:37
-90,Round of 16,Winner M73 vs Winner M75,Houston,2026-05-14 11:31:37
-91,Round of 16,Winner M76 vs Winner M78,New York New Jersey,2026-05-14 11:31:37
-92,Round of 16,Winner M79 vs Winner M80,Mexico City,2026-05-14 11:31:37
-93,Round of 16,Winner M83 vs Winner M84,Dallas,2026-05-14 11:31:37
-94,Round of 16,Winner M81 vs Winner M82,Seattle,2026-05-14 11:31:37
-95,Round of 16,Winner M86 vs Winner M88,Atlanta,2026-05-14 11:31:37
-96,Round of 16,Winner M85 vs Winner M87,Vancouver,2026-05-14 11:31:37
-97,Quarter-final,Winner M89 vs Winner M90,Boston,2026-05-14 11:31:37
-98,Quarter-final,Winner M93 vs Winner M94,Los Angeles,2026-05-14 11:31:37
-99,Quarter-final,Winner M91 vs Winner M92,Miami,2026-05-14 11:31:37
-100,Quarter-final,Winner M95 vs Winner M96,Kansas City,2026-05-14 11:31:37
-101,Semi-final,Winner M97 vs Winner M98,Dallas,2026-05-14 11:31:37
-102,Semi-final,Winner M99 vs Winner M100,Atlanta,2026-05-14 11:31:37
-103,Bronze final,Loser M101 vs Loser M102,Miami,2026-05-14 11:31:37
-104,Final,Winner M101 vs Winner M102,New York New Jersey,2026-05-14 11:31:37
+1,Group A,Mexico vs South Africa,Mexico City,2026-05-16 04:21:07
+2,Group A,Korea Republic vs Czechia,Guadalajara,2026-05-16 04:21:07
+3,Group B,Canada vs Bosnia and Herzegovina,Toronto,2026-05-16 04:21:07
+4,Group D,United States vs Paraguay,Los Angeles,2026-05-16 04:21:07
+5,Group C,Haiti vs Scotland,Boston,2026-05-16 04:21:07
+6,Group D,Australia vs Turkiye,Vancouver,2026-05-16 04:21:07
+7,Group C,Brazil vs Morocco,New York New Jersey,2026-05-16 04:21:07
+8,Group B,Qatar vs Switzerland,San Francisco Bay Area,2026-05-16 04:21:07
+9,Group E,Cote d'Ivoire vs Ecuador,Philadelphia,2026-05-16 04:21:07
+10,Group E,Germany vs Curacao,Houston,2026-05-16 04:21:07
+11,Group F,Netherlands vs Japan,Dallas,2026-05-16 04:21:07
+12,Group F,Sweden vs Tunisia,Monterrey,2026-05-16 04:21:07
+13,Group H,Saudi Arabia vs Uruguay,Miami,2026-05-16 04:21:07
+14,Group H,Spain vs Cabo Verde,Atlanta,2026-05-16 04:21:07
+15,Group G,IR Iran vs New Zealand,Los Angeles,2026-05-16 04:21:07
+16,Group G,Belgium vs Egypt,Seattle,2026-05-16 04:21:07
+17,Group I,France vs Senegal,New York New Jersey,2026-05-16 04:21:07
+18,Group I,Iraq vs Norway,Boston,2026-05-16 04:21:07
+19,Group J,Argentina vs Algeria,Kansas City,2026-05-16 04:21:07
+20,Group J,Austria vs Jordan,San Francisco Bay Area,2026-05-16 04:21:07
+21,Group L,Ghana vs Panama,Toronto,2026-05-16 04:21:07
+22,Group L,England vs Croatia,Dallas,2026-05-16 04:21:07
+23,Group K,Portugal vs Congo DR,Houston,2026-05-16 04:21:07
+24,Group K,Uzbekistan vs Colombia,Mexico City,2026-05-16 04:21:07
+25,Group A,Czechia vs South Africa,Atlanta,2026-05-16 04:21:07
+26,Group B,Switzerland vs Bosnia and Herzegovina,Los Angeles,2026-05-16 04:21:07
+27,Group B,Canada vs Qatar,Vancouver,2026-05-16 04:21:07
+28,Group A,Mexico vs Korea Republic,Guadalajara,2026-05-16 04:21:07
+29,Group C,Brazil vs Haiti,Philadelphia,2026-05-16 04:21:07
+30,Group C,Scotland vs Morocco,Boston,2026-05-16 04:21:07
+31,Group D,Turkiye vs Paraguay,San Francisco Bay Area,2026-05-16 04:21:07
+32,Group D,United States vs Australia,Seattle,2026-05-16 04:21:07
+33,Group E,Germany vs Cote d'Ivoire,Toronto,2026-05-16 04:21:07
+34,Group E,Ecuador vs Curacao,Kansas City,2026-05-16 04:21:07
+35,Group F,Netherlands vs Sweden,Houston,2026-05-16 04:21:07
+36,Group F,Tunisia vs Japan,Monterrey,2026-05-16 04:21:07
+37,Group H,Uruguay vs Cabo Verde,Miami,2026-05-16 04:21:07
+38,Group H,Spain vs Saudi Arabia,Atlanta,2026-05-16 04:21:07
+39,Group G,Belgium vs IR Iran,Los Angeles,2026-05-16 04:21:07
+40,Group G,New Zealand vs Egypt,Vancouver,2026-05-16 04:21:07
+41,Group I,Norway vs Senegal,New York New Jersey,2026-05-16 04:21:07
+42,Group I,France vs Iraq,Philadelphia,2026-05-16 04:21:07
+43,Group J,Argentina vs Austria,Dallas,2026-05-16 04:21:07
+44,Group J,Jordan vs Algeria,San Francisco Bay Area,2026-05-16 04:21:07
+45,Group L,England vs Ghana,Boston,2026-05-16 04:21:07
+46,Group L,Panama vs Croatia,Toronto,2026-05-16 04:21:07
+47,Group K,Portugal vs Uzbekistan,Houston,2026-05-16 04:21:07
+48,Group K,Colombia vs Congo DR,Guadalajara,2026-05-16 04:21:07
+49,Group C,Scotland vs Brazil,Miami,2026-05-16 04:21:07
+50,Group C,Morocco vs Haiti,Atlanta,2026-05-16 04:21:07
+51,Group B,Switzerland vs Canada,Vancouver,2026-05-16 04:21:07
+52,Group B,Bosnia and Herzegovina vs Qatar,Seattle,2026-05-16 04:21:07
+53,Group A,Czechia vs Mexico,Mexico City,2026-05-16 04:21:07
+54,Group A,South Africa vs Korea Republic,Monterrey,2026-05-16 04:21:07
+55,Group E,Curacao vs Cote d'Ivoire,Philadelphia,2026-05-16 04:21:07
+56,Group E,Ecuador vs Germany,New York New Jersey,2026-05-16 04:21:07
+57,Group F,Japan vs Sweden,Dallas,2026-05-16 04:21:07
+58,Group F,Tunisia vs Netherlands,Kansas City,2026-05-16 04:21:07
+59,Group D,Turkiye vs United States,Los Angeles,2026-05-16 04:21:07
+60,Group D,Paraguay vs Australia,San Francisco Bay Area,2026-05-16 04:21:07
+61,Group I,Norway vs France,Boston,2026-05-16 04:21:07
+62,Group I,Senegal vs Iraq,Toronto,2026-05-16 04:21:07
+63,Group G,Egypt vs IR Iran,Seattle,2026-05-16 04:21:07
+64,Group G,New Zealand vs Belgium,Vancouver,2026-05-16 04:21:07
+65,Group H,Cabo Verde vs Saudi Arabia,Houston,2026-05-16 04:21:07
+66,Group H,Uruguay vs Spain,Guadalajara,2026-05-16 04:21:07
+67,Group L,Panama vs England,New York New Jersey,2026-05-16 04:21:07
+68,Group L,Croatia vs Ghana,Philadelphia,2026-05-16 04:21:07
+69,Group J,Algeria vs Austria,Kansas City,2026-05-16 04:21:07
+70,Group J,Jordan vs Argentina,Dallas,2026-05-16 04:21:07
+71,Group K,Colombia vs Portugal,Dallas,2026-05-16 04:21:07
+72,Group K,Congo DR vs Uzbekistan,Atlanta,2026-05-16 04:21:07
+73,Round of 32,2A vs 2B,Los Angeles,2026-05-16 04:21:07
+74,Round of 32,1E vs 3ABCDF,Boston,2026-05-16 04:21:07
+75,Round of 32,1F vs 2C,Monterrey,2026-05-16 04:21:07
+76,Round of 32,1C vs 2F,Houston,2026-05-16 04:21:07
+77,Round of 32,1I vs 3CDFGH,New York New Jersey,2026-05-16 04:21:07
+78,Round of 32,2E vs 2I,Dallas,2026-05-16 04:21:07
+79,Round of 32,1A vs 3CEFHI,Mexico City,2026-05-16 04:21:07
+80,Round of 32,1L vs 3EHIJK,Atlanta,2026-05-16 04:21:07
+81,Round of 32,1D vs 3BEFIJ,San Francisco Bay Area,2026-05-16 04:21:07
+82,Round of 32,1G vs 3AEHIJ,Seattle,2026-05-16 04:21:07
+83,Round of 32,2K vs 2L,Toronto,2026-05-16 04:21:07
+84,Round of 32,1H vs 2J,Los Angeles,2026-05-16 04:21:07
+85,Round of 32,1B vs 3EFGIJ,Vancouver,2026-05-16 04:21:07
+86,Round of 32,1J vs 2H,Miami,2026-05-16 04:21:07
+87,Round of 32,1K vs 3DEIJL,Kansas City,2026-05-16 04:21:07
+88,Round of 32,2D vs 2G,Dallas,2026-05-16 04:21:07
+89,Round of 16,Winner M74 vs Winner M77,Philadelphia,2026-05-16 04:21:07
+90,Round of 16,Winner M73 vs Winner M75,Houston,2026-05-16 04:21:07
+91,Round of 16,Winner M76 vs Winner M78,New York New Jersey,2026-05-16 04:21:07
+92,Round of 16,Winner M79 vs Winner M80,Mexico City,2026-05-16 04:21:07
+93,Round of 16,Winner M83 vs Winner M84,Dallas,2026-05-16 04:21:07
+94,Round of 16,Winner M81 vs Winner M82,Seattle,2026-05-16 04:21:07
+95,Round of 16,Winner M86 vs Winner M88,Atlanta,2026-05-16 04:21:07
+96,Round of 16,Winner M85 vs Winner M87,Vancouver,2026-05-16 04:21:07
+97,Quarter-final,Winner M89 vs Winner M90,Boston,2026-05-16 04:21:07
+98,Quarter-final,Winner M93 vs Winner M94,Los Angeles,2026-05-16 04:21:07
+99,Quarter-final,Winner M91 vs Winner M92,Miami,2026-05-16 04:21:07
+100,Quarter-final,Winner M95 vs Winner M96,Kansas City,2026-05-16 04:21:07
+101,Semi-final,Winner M97 vs Winner M98,Dallas,2026-05-16 04:21:07
+102,Semi-final,Winner M99 vs Winner M100,Atlanta,2026-05-16 04:21:07
+103,Bronze final,Loser M101 vs Loser M102,Miami,2026-05-16 04:21:07
+104,Final,Winner M101 vs Winner M102,New York New Jersey,2026-05-16 04:21:07

@@ -92,20 +92,37 @@ def normalize_team_key(value) -> str:
     text = str(value or "").strip()
     aliases = {
         "usa": "united states",
+        "us": "united states",
         "united states of america": "united states",
+        "czech republic": "czechia",
         "south korea": "korea republic",
         "bosnia & herzegovina": "bosnia and herzegovina",
         "bosnia-herzegovina": "bosnia and herzegovina",
+        "bosnia herzegovina": "bosnia and herzegovina",
+        "bosnia and hersegovina": "bosnia and herzegovina",
+        "bosnia hersegovina": "bosnia and herzegovina",
         "turkey": "turkiye",
+        "turkiye": "turkiye",
+        "trkiye": "turkiye",
+        "t?rkiye": "turkiye",
         "tÃ¼rkiye": "turkiye",
         "curacao": "curacao",
         "curaÃ§ao": "curacao",
         "cote d'ivoire": "cote divoire",
         "cÃ´te d'ivoire": "cote divoire",
         "ivory coast": "cote divoire",
+        "cote divoire": "cote divoire",
+        "c?te divoire": "cote divoire",
+        "cte divoire": "cote divoire",
+        "cape verde": "cabo verde",
+        "cabo verde islands": "cabo verde",
+        "iran": "ir iran",
+        "dr congo": "congo dr",
+        "democratic republic of congo": "congo dr",
+        "congo democratic republic": "congo dr",
     }
     normalized = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
-    normalized = normalized.lower().replace("&", "and").replace("'", "").replace(".", "")
+    normalized = normalized.lower().replace("&", "and").replace("'", "").replace(".", "").replace("?", "")
     normalized = " ".join(normalized.split())
     return aliases.get(normalized, normalized)
 

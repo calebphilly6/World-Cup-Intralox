@@ -1,0 +1,112 @@
+I have a CAF 2026 World Cup Qualification data pack that I want you to add to my Streamlit World Cup program's WCQ tab.
+
+Please inspect the existing app structure first. Do not break any existing tabs or features.
+
+Data location:
+Place these files in:
+
+data/wcq/caf/
+
+Files included:
+- wcq_confederations.csv
+- wcq_caf_teams.csv
+- wcq_rounds.csv
+- wcq_groups.csv
+- wcq_group_standings.csv
+- wcq_runners_up_ranking.csv
+- wcq_matches.csv
+- wcq_playoff_ties.csv
+- wcq_brackets.csv
+- wcq_eliminated_by_round.csv
+- wcq_qualified_teams.csv
+- wcq_sources.csv
+- caf_style.json
+- caf_wcq_data.json
+
+Feature behavior:
+Inside the top-level WCQ tab, add or populate the CAF tab.
+The CAF tab should use the CAF-specific style from caf_style.json.
+
+CAF tab layout:
+1. Overview
+   - Show CAF format summary.
+   - Show 54 teams entered.
+   - Show 9 direct qualifiers.
+   - Show DR Congo as the inter-confederation playoff qualifier.
+   - Show qualified count: 10 total CAF teams at the World Cup.
+
+2. First round / Group stage
+   - Show Groups A-I using wcq_group_standings.csv.
+   - Each team row/card should show flag, team name, FIFA code, FIFA ranking snapshot, played, W-D-L, GF, GA, GD, points, and status.
+   - Highlight direct group winners as World Cup qualified.
+   - Highlight DR Congo as eventual World Cup qualified even though its first-round row status is advanced.
+   - Highlight Nigeria, Cameroon, and Gabon as advanced to the CAF playoff.
+   - Mark eliminated teams clearly.
+   - Mark Eritrea as withdrew.
+
+3. Runner-up ranking
+   - Use wcq_runners_up_ranking.csv.
+   - Explain that matches against sixth-place teams were excluded because Group E had five active teams after Eritrea withdrew.
+   - Highlight top four runners-up as advanced.
+
+4. CAF playoff bracket
+   - Use wcq_playoff_ties.csv and wcq_brackets.csv.
+   - Show Nigeria 4-1 Gabon after extra time.
+   - Show Cameroon 0-1 DR Congo.
+   - Show Nigeria 1-1 DR Congo, DR Congo won 4-3 on penalties.
+   - Visually show DR Congo advancing to inter-confederation playoffs.
+
+5. Inter-confederation playoff path
+   - Show Jamaica 1-0 New Caledonia as context.
+   - Show DR Congo 1-0 Jamaica after extra time.
+   - Highlight DR Congo as World Cup qualified.
+
+6. Qualified tab
+   - Use wcq_qualified_teams.csv.
+   - Show all CAF qualified teams:
+     Morocco, Tunisia, Egypt, Algeria, Ghana, Cape Verde, South Africa, Senegal, Ivory Coast, DR Congo.
+
+7. Eliminated tab
+   - Use wcq_eliminated_by_round.csv.
+   - Group eliminated teams by round.
+   - Include elimination reason and final position.
+
+8. Sources tab
+   - Use wcq_sources.csv.
+   - Show source name, URL, last checked, and notes.
+
+Implementation requirements:
+- Use local CSVs only; do not scrape websites at app runtime.
+- Handle missing columns gracefully.
+- Use Streamlit caching for loading data.
+- Keep functions modular.
+- Add helper functions if needed:
+  - load_caf_wcq_data()
+  - render_caf_wcq_tab()
+  - render_caf_overview()
+  - render_caf_group_stage()
+  - render_caf_runners_up_ranking()
+  - render_caf_playoff_bracket()
+  - render_caf_interconfed_path()
+  - render_caf_qualified_teams()
+  - render_caf_eliminated_teams()
+  - get_caf_status_style(status, qualified_for_world_cup)
+
+Important UI rules:
+- Every listed team should show flag, name, FIFA code, and FIFA rank when available.
+- World Cup-qualified teams should have the strongest highlight.
+- Advanced teams should have a positive but less strong highlight.
+- Eliminated teams should be muted but readable.
+- Withdrawn teams should use neutral gray styling.
+- The CAF styling should feel distinct from AFC and other confederations.
+
+Acceptance criteria:
+- The CAF tab is fully populated from these files.
+- Group standings render for all nine groups.
+- Runner-up ranking renders correctly.
+- CAF playoff bracket renders correctly.
+- DR Congo's inter-confederation playoff qualification path is shown.
+- All qualified teams are shown clearly.
+- Eliminated teams are grouped by round.
+- Missing match dates in group-stage score matrix do not crash the app.
+- The design is polished and consistent with the rest of the World Cup program.
