@@ -5,23 +5,24 @@
   "theme_name": "Pacific Ocean",
   "description": "Ocean blue, teal, sand, and coral accents for a Pacific island qualification feel.",
   "colors": {
-    "primary": "#0077B6",
-    "secondary": "#00B4D8",
-    "accent": "#FFB703",
+    "primary": "#1A3374",
+    "secondary": "#40B93C",
+    "accent": "#D9E70C",
     "deep": "#023047",
     "surface": "#E0F7FA",
     "card": "#FFFFFF",
-    "qualified": "#FFD166",
-    "advanced": "#2A9D8F",
+    "qualified": "#D9E70C",
+    "advanced": "#40B93C",
     "eliminated": "#9AA6B2",
     "playoff": "#F4A261",
     "text": "#102A43"
   },
   "ui_hints": {
-    "hero_gradient": "linear-gradient(135deg, #023047 0%, #0077B6 52%, #00B4D8 100%)",
+    "hero_gradient": "linear-gradient(135deg, #023047 0%, #1A3374 52%, #40B93C 100%)",
     "card_radius": "18px",
     "badge_style": "rounded-pill",
     "motif": "wave lines, island map texture, soft ocean glow",
     "font_suggestion": "clean rounded sans-serif with bold condensed headers"
-  }
+  },
+  "logo_asset_path": "assets/OFC.png"
 }

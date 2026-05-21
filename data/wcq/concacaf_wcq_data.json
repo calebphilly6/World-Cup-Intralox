@@ -20,18 +20,19 @@
     "display_name": "CONCACAF",
     "style_key": "concacaf",
     "theme_name": "Continental Lights",
-    "primary": "#0067B1",
-    "secondary": "#F8D000",
-    "accent": "#E31B23",
+    "primary": "#0B1220",
+    "secondary": "#DABC73",
+    "accent": "#DABC73",
     "dark": "#061B3A",
     "light": "#F7FBFF",
     "muted": "#6B7280",
-    "gradient": "linear-gradient(135deg, #0067B1 0%, #009FE3 45%, #F8D000 100%)",
+    "gradient": "linear-gradient(135deg, #0B1220 0%, #0B1220 58%, #DABC73 100%)",
     "hero_title": "Road through North America, Central America & the Caribbean",
     "font_suggestion": "Use the app default; pair bold geometric headings with clean sans-serif body text.",
+    "logo_asset_path": "assets/Concacaf.png",
     "badge_styles": {
       "qualified": {
-        "bg": "#F8D000",
+        "bg": "#DABC73",
         "text": "#061B3A",
         "border": "#FFE76A"
       },
@@ -41,9 +42,9 @@
         "border": "#C4B5FD"
       },
       "advanced": {
-        "bg": "#0067B1",
+        "bg": "#0B1220",
         "text": "#FFFFFF",
-        "border": "#66B3E7"
+        "border": "#DABC73"
       },
       "playoff": {
         "bg": "#F97316",

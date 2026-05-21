@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import html
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,14 @@ WCQ_DATA_DIR = PROJECT_ROOT / "data" / "wcq"
 WCQ_DATA_SCHEMA_VERSION = "2026-05-16-caf-runners-up"
 
 CONFEDERATION_ORDER = ["AFC", "CAF", "CONCACAF", "CONMEBOL", "OFC", "UEFA"]
+CONFEDERATION_LOGOS = {
+    "AFC": PROJECT_ROOT / "assets" / "AFC.png",
+    "CAF": PROJECT_ROOT / "assets" / "CAF.png",
+    "CONCACAF": PROJECT_ROOT / "assets" / "Concacaf.png",
+    "CONMEBOL": PROJECT_ROOT / "assets" / "CONMEBOL.png",
+    "OFC": PROJECT_ROOT / "assets" / "OFC.png",
+    "UEFA": PROJECT_ROOT / "assets" / "UEFA.png",
+}
 
 WCQ_FILES: dict[str, dict[str, Any]] = {
     "confederations": {
@@ -230,46 +239,46 @@ WCQ_FILES: dict[str, dict[str, Any]] = {
 
 CONFEDERATION_STYLES = {
     "AFC": {
-        "primary": "#B91C1C",
-        "secondary": "#D6A83A",
-        "accent": "#0B1020",
-        "surface": "rgba(185,28,28,.18)",
-        "glow": "rgba(214,168,58,.24)",
+        "primary": "#002395",
+        "secondary": "#FFC72C",
+        "accent": "#FFC72C",
+        "surface": "rgba(0,35,149,.20)",
+        "glow": "rgba(255,199,44,.24)",
     },
     "CAF": {
-        "primary": "#166534",
-        "secondary": "#F2C94C",
-        "accent": "#050505",
-        "surface": "rgba(22,101,52,.20)",
-        "glow": "rgba(242,201,76,.22)",
+        "primary": "#189E4B",
+        "secondary": "#F8E825",
+        "accent": "#F8E825",
+        "surface": "rgba(24,158,75,.20)",
+        "glow": "rgba(248,232,37,.22)",
     },
     "CONCACAF": {
-        "primary": "#1D4ED8",
-        "secondary": "#FFFFFF",
-        "accent": "#DC2626",
-        "surface": "rgba(29,78,216,.20)",
-        "glow": "rgba(220,38,38,.18)",
+        "primary": "#0B1220",
+        "secondary": "#DABC73",
+        "accent": "#DABC73",
+        "surface": "rgba(11,18,32,.26)",
+        "glow": "rgba(218,188,115,.20)",
     },
     "CONMEBOL": {
-        "primary": "#0284C7",
-        "secondary": "#FACC15",
-        "accent": "#166534",
-        "surface": "rgba(2,132,199,.18)",
-        "glow": "rgba(250,204,21,.20)",
+        "primary": "#005CA4",
+        "secondary": "#FFFFFF",
+        "accent": "#F6C453",
+        "surface": "rgba(0,92,164,.18)",
+        "glow": "rgba(255,255,255,.20)",
     },
     "OFC": {
-        "primary": "#0891B2",
-        "secondary": "#5EEAD4",
-        "accent": "#D6A83A",
-        "surface": "rgba(8,145,178,.18)",
-        "glow": "rgba(94,234,212,.18)",
+        "primary": "#1A3374",
+        "secondary": "#40B93C",
+        "accent": "#D9E70C",
+        "surface": "rgba(26,51,116,.20)",
+        "glow": "rgba(64,185,60,.20)",
     },
     "UEFA": {
-        "primary": "#1E3A8A",
-        "secondary": "#E5E7EB",
+        "primary": "#00088E",
+        "secondary": "#F61225",
         "accent": "#60A5FA",
-        "surface": "rgba(30,58,138,.22)",
-        "glow": "rgba(229,231,235,.18)",
+        "surface": "rgba(0,8,142,.22)",
+        "glow": "rgba(246,18,37,.18)",
     },
 }
 
@@ -382,10 +391,11 @@ def render_confederation_header(confederation_id: str, data: dict[str, Any], con
     if confederation_id.upper() == "OFC":
         region = "Oceania and Pacific"
     kicker_markup = f'<div class="wcq-kicker">{html.escape(region)}</div>' if region else ""
+    logo_markup = _confederation_logo_markup(confederation_id)
     st.markdown(
         f"""
         <section class="wcq-hero" style="{_style_vars(style)}">
-          <div class="wcq-hero-badge">{html.escape(confederation_id)}</div>
+          {logo_markup}
           <div>
             {kicker_markup}
             <h2>{html.escape(name)}</h2>
@@ -394,6 +404,21 @@ def render_confederation_header(confederation_id: str, data: dict[str, Any], con
         </section>
         """,
         unsafe_allow_html=True,
+    )
+
+
+def _confederation_logo_markup(confederation_id: str) -> str:
+    confed = str(confederation_id).upper()
+    logo_path = CONFEDERATION_LOGOS.get(confed)
+    if not logo_path or not logo_path.exists():
+        return f'<div class="wcq-hero-badge wcq-hero-badge-text">{html.escape(confed)}</div>'
+    encoded = base64.b64encode(logo_path.read_bytes()).decode("ascii")
+    mime_type = "image/jpeg" if logo_path.suffix.lower() in {".jpg", ".jpeg"} else "image/png"
+    logo_class = f"wcq-logo-{_safe_key(confed)}"
+    return (
+        f'<div class="wcq-hero-badge wcq-hero-badge-logo {logo_class}">'
+        f'<img src="data:{mime_type};base64,{encoded}" alt="{html.escape(confed)} logo">'
+        "</div>"
     )
 
 
@@ -676,7 +701,7 @@ def get_status_style(status: str, confederation_id: str) -> dict[str, str]:
     confederation_id = str(confederation_id).upper()
     status = str(status or "unknown").lower()
     if status in {"qualified", "host"}:
-        return {"border": "#FACC15", "background": "rgba(250,204,21,.18)", "accent": "#FACC15", "shadow": "rgba(250,204,21,.28)"}
+        return {"border": confed["secondary"], "background": confed["surface"], "accent": confed["secondary"], "shadow": confed["glow"]}
     if status == "advanced":
         if confederation_id == "AFC":
             return {"border": "#22C55E", "background": "rgba(22,101,52,.24)", "accent": "#86EFAC", "shadow": "rgba(34,197,94,.18)"}
@@ -1925,18 +1950,77 @@ def _styles() -> None:
         }
         .wcq-hero-badge {
             align-items: center;
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, var(--wcq-secondary), var(--wcq-primary));
-            border: 1px solid rgba(255,255,255,.28);
+            background:
+                radial-gradient(circle at 72% 12%, color-mix(in srgb, var(--wcq-secondary) 50%, transparent), transparent 42%),
+                linear-gradient(135deg, color-mix(in srgb, var(--wcq-primary) 56%, #050505), rgba(255,255,255,.09));
+            border: 1px solid color-mix(in srgb, var(--wcq-secondary) 58%, rgba(255,255,255,.22));
             border-radius: 8px;
+            box-shadow: 0 18px 36px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.16);
             color: #050505;
             display: grid;
             font-size: 1.25rem;
             font-weight: 950;
             justify-content: center;
-            min-width: 92px;
-            padding: .9rem;
+            min-height: 112px;
+            overflow: hidden;
+            padding: .72rem;
             text-shadow: none;
+            width: 128px;
+        }
+        .wcq-hero-badge-text {
+            background: linear-gradient(135deg, var(--wcq-secondary), var(--wcq-primary));
+        }
+        .wcq-hero-badge-logo {
+            position: relative;
+        }
+        .wcq-hero-badge-logo::after {
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 6px;
+            content: "";
+            inset: .45rem;
+            pointer-events: none;
+            position: absolute;
+        }
+        .wcq-hero-badge-logo img {
+            display: block;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,.30));
+            max-height: 92px;
+            object-fit: contain;
+            position: relative;
+            width: 104px;
+            z-index: 1;
+        }
+        .wcq-logo-afc {
+            background:
+                radial-gradient(circle at 24% 18%, rgba(255,255,255,.12), transparent 32%),
+                linear-gradient(135deg, #002395, color-mix(in srgb, #002395 72%, #050505));
+        }
+        .wcq-logo-afc img {
+            border-radius: 6px;
+            max-height: 88px;
+            width: 88px;
+        }
+        .wcq-logo-caf img,
+        .wcq-logo-uefa img {
+            max-height: 98px;
+            width: 98px;
+        }
+        .wcq-logo-ofc img {
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,.26));
+            max-height: 86px;
+            mix-blend-mode: screen;
+            width: 108px;
+        }
+        .wcq-logo-concacaf img {
+            filter:
+                drop-shadow(0 0 10px rgba(218,188,115,.34))
+                drop-shadow(0 8px 14px rgba(0,0,0,.30));
+            max-height: 96px;
+            width: 96px;
+        }
+        .wcq-logo-conmebol img {
+            max-height: 100px;
+            width: 112px;
         }
         .wcq-hero h2 {
             font-size: clamp(2rem, 4vw, 3.8rem);

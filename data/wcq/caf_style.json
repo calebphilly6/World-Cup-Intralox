@@ -3,9 +3,9 @@
   "display_name": "CAF",
   "design_intent": "Warm African tournament style inspired by CAF/AFCON energy: green, gold, black, red accents, patterned hero sections, and premium trophy-like highlights.",
   "colors": {
-    "primary": "#0B6B3A",
-    "primary_dark": "#063D24",
-    "secondary": "#F4B000",
+    "primary": "#189E4B",
+    "primary_dark": "#0F6F35",
+    "secondary": "#F8E825",
     "accent_red": "#C1121F",
     "accent_orange": "#E76F1E",
     "background": "#07130C",
@@ -13,18 +13,18 @@
     "surface_alt": "#173822",
     "text": "#F7F4E8",
     "muted_text": "#C9C2A5",
-    "border": "#D6A733"
+    "border": "#F8E825"
   },
   "status_colors": {
     "qualified": {
-      "background": "#F4B000",
+      "background": "#F8E825",
       "text": "#07130C",
       "border": "#FFE08A"
     },
     "advanced": {
-      "background": "#0B6B3A",
+      "background": "#189E4B",
       "text": "#FFFFFF",
-      "border": "#6DD99A"
+      "border": "#F8E825"
     },
     "eliminated": {
       "background": "#3A2F2F",
@@ -49,6 +49,7 @@
     "card_radius": "18px",
     "shadow": "0 10px 30px rgba(0,0,0,0.30)"
   },
+  "logo_asset_path": "assets/CAF.png",
   "ui_notes": [
     "Use gold glow/border for World Cup qualified teams.",
     "Use green badges for advanced teams and muted red/gray for eliminated teams.",

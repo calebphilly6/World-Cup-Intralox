@@ -8,8 +8,8 @@
     "background_soft": "#0F2E66",
     "card": "#102A56",
     "card_alt": "#142F63",
-    "primary": "#1D4ED8",
-    "secondary": "#60A5FA",
+    "primary": "#00088E",
+    "secondary": "#F61225",
     "accent": "#FACC15",
     "qualified": "#FACC15",
     "advanced": "#38BDF8",
@@ -33,5 +33,6 @@
     "Segoe UI"
   ],
   "header_emoji": "\ud83c\udfc6",
+  "logo_asset_path": "assets/UEFA.png",
   "fallback_logo_text": "UEFA"
 }
