@@ -17,6 +17,7 @@ from src.official_match_reference import apply_official_match_reference, normali
 from src.pages.rankings import FLAG_CODES
 from src.storage.storage import load_favorite_teams
 from src.utils.formatting import format_local_time
+from src.utils.team_names import display_team_name, team_lookup_keys
 from src.world_cup_scoring import daily_score_refresh_key
 from src.pages.work_competition import _daily_competition_state, _ensure_results_for_world_cup_teams
 
@@ -169,7 +170,7 @@ def _match_center(row) -> str:
 def _team_text(value) -> str:
     if pd.isna(value) or not str(value).strip():
         return "TBD"
-    return str(value)
+    return display_team_name(value)
 
 
 def _home_fixture_team(value) -> str:
@@ -422,18 +423,25 @@ def _favorite_teams() -> pd.DataFrame:
         team_id = int(team["id"])
         team_fixtures = _team_fixtures(fixtures, team_id, str(team["Team"]))
         next_fixture = _next_fixture(team_fixtures, now)
+        is_out = _team_is_out_or_lost(team["qualification_status"], team_fixtures, now, team_id)
         rows.append(
             {
                 "id": team_id,
-                "Team": team["Team"],
+                "Team": display_team_name(team["Team"]),
                 "Group": team["Group"],
                 "country_code": team["country_code"],
                 "Next Game": _next_game_label(next_fixture, team_id, team["Team"]),
-                "Round": _current_round(team["qualification_status"], team_fixtures, now, team_id),
-                "_lost": _team_is_out_or_lost(team["qualification_status"], team_fixtures, now, team_id),
+                "Round": _favorite_stage_label(is_out, team["qualification_status"], team_fixtures, now, team_id),
+                "_lost": is_out,
             }
         )
     return pd.DataFrame(rows).sort_values("Team")
+
+
+def _favorite_stage_label(is_out: bool, status: str, fixtures: pd.DataFrame, now: datetime, team_id: int) -> str:
+    if is_out:
+        return "Eliminated"
+    return _current_round(status, fixtures, now, team_id)
 
 
 def _flag_img(team: str, stored_code=None) -> str:
@@ -454,8 +462,8 @@ def _team_fixtures(fixtures: pd.DataFrame, team_id: int, team_name: str | None =
         return fixtures
     mask = (fixtures["home_team_id"] == team_id) | (fixtures["away_team_id"] == team_id)
     if team_name:
-        team_key = normalize_team_key(team_name)
-        mask = mask | fixtures["home_team"].map(normalize_team_key).eq(team_key) | fixtures["away_team"].map(normalize_team_key).eq(team_key)
+        keys = team_lookup_keys(team_name)
+        mask = mask | fixtures["home_team"].map(normalize_team_key).isin(keys) | fixtures["away_team"].map(normalize_team_key).isin(keys)
     return fixtures[mask].copy()
 
 
@@ -472,12 +480,17 @@ def _next_fixture(fixtures: pd.DataFrame, now: datetime):
 def _next_game_label(fixture, team_id: int, team_name: str = "") -> str:
     if fixture is None:
         return ""
-    if fixture["home_team_id"] == team_id or normalize_team_key(fixture["home_team"]) == normalize_team_key(team_name):
-        opponent = fixture["away_team"]
+    if fixture["home_team_id"] == team_id or normalize_team_key(fixture["home_team"]) in team_lookup_keys(team_name):
+        opponent = _team_text(fixture["away_team"])
     else:
-        opponent = fixture["home_team"]
-    kickoff = format_local_time(fixture["kickoff_utc"])
-    return f"{kickoff} vs {opponent}"
+        opponent = _team_text(fixture["home_team"])
+    kickoff_date = _next_game_date_label(fixture["kickoff_utc"])
+    return f"Next Game: {kickoff_date} vs {opponent}"
+
+
+def _next_game_date_label(value) -> str:
+    local_date = _parse_dt(value).astimezone(ZoneInfo("America/Chicago"))
+    return f"{local_date.strftime('%B')} {local_date.day}"
 
 
 def _current_round(status: str, fixtures: pd.DataFrame, now: datetime, team_id: int) -> str:

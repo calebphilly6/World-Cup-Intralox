@@ -17,6 +17,7 @@ from src.storage.storage import (
     save_favorite_teams,
 )
 from src.utils.formatting import format_local_time
+from src.utils.team_names import display_team_name, team_lookup_keys
 
 
 FALLBACK_FLAGS = {
@@ -74,6 +75,8 @@ def _teams() -> pd.DataFrame:
         favorite_ids = set(load_favorite_teams())
         teams["favorite"] = teams["id"].apply(lambda value: 1 if int(value) in favorite_ids else 0)
     teams["favorite_sort"] = teams["favorite"].fillna(0).astype(int)
+    teams["team"] = teams["team"].apply(display_team_name)
+    teams["name"] = teams["name"].apply(display_team_name)
     return teams
 
 
@@ -96,15 +99,17 @@ def _team_card(team) -> None:
         """,
         unsafe_allow_html=True,
     )
-    c1, c2 = st.columns([1, 4])
+    c1, c2 = st.columns([0.14, 0.86], gap="small", vertical_alignment="center")
     with c1:
         with st.container(key=f"favorite_star_{team['id']}"):
-            if st.button(star, key=f"fav_{team['id']}", help=favorite_label):
+            if st.button(star, key=f"fav_{team['id']}", help=favorite_label, use_container_width=True):
                 _toggle_favorite(int(team["id"]), int(team["favorite"] or 0))
                 st.rerun()
-    if c2.button(f"Open {team['team']}", key=f"open_{team['id']}", use_container_width=True):
-        st.session_state["selected_team_id"] = int(team["id"])
-        st.rerun()
+    with c2:
+        with st.container(key=f"open_country_{team['id']}"):
+            if st.button(f"Open {team['team']}", key=f"open_{team['id']}", use_container_width=True):
+                st.session_state["selected_team_id"] = int(team["id"])
+                st.rerun()
 
 
 def _team_focus(team) -> None:
@@ -159,7 +164,8 @@ def _ranking_context(team_name: str) -> None:
     if rankings.empty:
         st.info("Import FIFA rankings to show ranking context.")
         return
-    current = rankings[rankings["team"] == team_name]
+    lookup_keys = team_lookup_keys(team_name)
+    current = rankings[rankings["team"].map(normalize_team_key).isin(lookup_keys)]
     if current.empty:
         st.info("This team does not have a FIFA ranking yet.")
         return
@@ -187,9 +193,10 @@ def _ranking_context(team_name: str) -> None:
 
 
 def _ranking_context_row(row, focus_team: str) -> str:
-    team = html.escape(str(row["team"]))
+    display_name = display_team_name(row["team"])
+    team = html.escape(display_name)
     rank = "" if pd.isna(row["rank"]) else str(int(row["rank"]))
-    focus_class = " ranking-context-focus" if row["team"] == focus_team else ""
+    focus_class = " ranking-context-focus" if normalize_team_key(display_name) in team_lookup_keys(focus_team) else ""
     return f'<tr class="{focus_class}"><td>{team}</td><td>#{rank}</td></tr>'
 
 
@@ -1048,6 +1055,10 @@ def _styles() -> None:
         [class*="st-key-favorite_star_"] button p {
             color: #D6A83A;
             font-weight: 950;
+        }
+        [class*="st-key-open_country_"] button {
+            min-height: 2.75rem;
+            width: 100%;
         }
         .team-fixture-card {
             border: 1px solid rgba(255,255,255,.18);

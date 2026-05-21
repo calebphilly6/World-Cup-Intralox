@@ -10,6 +10,7 @@ from src.config import is_shared_core_read_only_mode
 from src.database import fetch_df, get_connection
 from src.odds_service import latest_tournament_winner_odds_lookup, odds_source_text
 from src.pages.rankings import FLAG_CODES
+from src.utils.team_names import display_team_name
 from src.world_cup_scoring import (
     POT_MULTIPLIERS,
     TeamScore,
@@ -186,7 +187,7 @@ def _pot_cell(score: TeamScore | None, pot: int) -> str:
     flag = _flag_img(score.team, "intralox-pot-flag")
     return (
         f'<div class="intralox-pot"><small>Pot {pot}</small>'
-        f'<div class="intralox-pot-team">{flag}<strong>{html.escape(score.team)}</strong></div>'
+        f'<div class="intralox-pot-team">{flag}<strong>{html.escape(display_team_name(score.team))}</strong></div>'
         f'<span>{score.adjusted_score:.1f}</span></div>'
     )
 
@@ -212,7 +213,7 @@ def _score_breakdown_card(score: TeamScore) -> str:
     flag = _flag_img(score.team, "team-score-flag")
     return (
         '<article class="team-score-card">'
-        f'<div class="team-score-head"><div>{flag}<span>{html.escape(score.team)}</span></div><small>Pot {score.pot} x{score.multiplier:.2f}</small></div>'
+        f'<div class="team-score-head"><div>{flag}<span>{html.escape(display_team_name(score.team))}</span></div><small>Pot {score.pot} x{score.multiplier:.2f}</small></div>'
         '<div class="score-lines">'
         f'<div><span>Group wins</span><strong>{score.group_wins} x 3 = {score.group_wins * 3}</strong></div>'
         f'<div><span>Group draws</span><strong>{score.group_draws} x 1 = {score.group_draws}</strong></div>'
@@ -252,7 +253,7 @@ def _owner_odds_team(score: TeamScore, odds: dict) -> str:
     missing_class = " missing" if not odds else ""
     return (
         f'<article class="owner-odds-team{missing_class}">'
-        f'<div>{flag}<strong>{html.escape(score.team)}</strong></div>'
+        f'<div>{flag}<strong>{html.escape(display_team_name(score.team))}</strong></div>'
         f'<span>{_percent_text(probability)}</span>'
         f'<small>{html.escape(odds_text)}</small>'
         '</article>'

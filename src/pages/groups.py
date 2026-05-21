@@ -12,6 +12,7 @@ from src.database import fetch_df
 from src.football_data_service import cached_matches
 from src.navigation import remember_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
+from src.utils.team_names import display_team_name, team_lookup_keys
 
 FALLBACK_FLAGS = {
     "England": "gb-eng",
@@ -107,10 +108,11 @@ def _fixture_group_standings(refresh_key: str) -> pd.DataFrame:
         }
         for _, row in groups.iterrows()
     }
-    team_lookup = {
-        normalize_team_key(str(row["team"])): (int(row["team_id"]), str(row["group_name"]))
-        for _, row in groups.iterrows()
-    }
+    team_lookup = {}
+    for _, row in groups.iterrows():
+        ref = (int(row["team_id"]), str(row["group_name"]))
+        for key in team_lookup_keys(row["team"]):
+            team_lookup[key] = ref
 
     try:
         fixtures = apply_official_match_reference(cached_matches())
@@ -188,7 +190,7 @@ def _group_cards(subset: pd.DataFrame) -> list[dict]:
     return [
         {
             "id": int(row["team_id"]),
-            "name": str(row["team"]),
+            "name": display_team_name(row["team"]),
             "flag_url": _flag_url(row),
         }
         for _, row in subset.iterrows()
@@ -210,7 +212,7 @@ def _open_team(team_id: int) -> None:
 
 
 def _team_card(row) -> str:
-    team = html.escape(str(row["team"]))
+    team = html.escape(display_team_name(row["team"]))
     rank = "TBD" if pd.isna(row["fifa_rank"]) else str(int(row["fifa_rank"]))
     points = "" if pd.isna(row["ranking_points"]) else f"{float(row['ranking_points']):.1f} pts"
     meta = f"FIFA Rank {rank}{' | ' + points if points else ''}"
@@ -222,7 +224,7 @@ def _team_card(row) -> str:
 
 
 def _table_row(row) -> str:
-    team = html.escape(str(row["team"]))
+    team = html.escape(display_team_name(row["team"]))
     rank = "TBD" if pd.isna(row["fifa_rank"]) else str(int(row["fifa_rank"]))
     wins = _standing_int(row, "wins")
     draws = _standing_int(row, "draws")

@@ -16,6 +16,7 @@ from src.navigation import remember_detail_origin, return_to_detail_origin
 from src.odds_service import american_odds_text, latest_fixture_odds
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.utils.formatting import format_local_time
+from src.utils.team_names import team_lookup_keys
 
 
 STAGE_ORDER = {
@@ -131,7 +132,7 @@ def _filter_fixtures(fixtures: pd.DataFrame) -> pd.DataFrame:
     filtered = fixtures.copy()
     c1, c2, c3 = st.columns(3)
 
-    teams = sorted(set(filtered.get("home_team", pd.Series(dtype=str)).dropna()) | set(filtered.get("away_team", pd.Series(dtype=str)).dropna()))
+    teams = _team_filter_options(filtered)
     selected_teams = c1.multiselect("Team", teams)
     group_options = sorted(filtered.get("group", pd.Series(dtype=str)).dropna().unique())
     stage_options = _ordered_stage_options(filtered.get("stage", pd.Series(dtype=str)).dropna().unique())
@@ -146,6 +147,31 @@ def _filter_fixtures(fixtures: pd.DataFrame) -> pd.DataFrame:
         filtered = filtered[filtered["stage"].isin(selected_stages)]
 
     return filtered.sort_values(["utc_date", "venue"])
+
+
+def _team_filter_options(fixtures: pd.DataFrame) -> list[str]:
+    teams = fetch_df("SELECT name FROM teams")
+    return _team_filter_options_from_known(fixtures, teams.get("name", pd.Series(dtype=str)))
+
+
+def _team_filter_options_from_known(fixtures: pd.DataFrame, known_teams) -> list[str]:
+    known_keys = {
+        key
+        for team in pd.Series(known_teams).dropna()
+        if str(team).strip()
+        for key in team_lookup_keys(team)
+    }
+    if not known_keys:
+        return []
+    options: set[str] = set()
+    for column in ("home_team", "away_team"):
+        if column not in fixtures:
+            continue
+        for value in fixtures[column].dropna():
+            team = str(value).strip()
+            if team and normalize_team_key(team) in known_keys:
+                options.add(team)
+    return sorted(options)
 
 
 def _normalize_fixture_labels(fixtures: pd.DataFrame) -> pd.DataFrame:

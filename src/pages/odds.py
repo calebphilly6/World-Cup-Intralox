@@ -14,6 +14,7 @@ from src.odds_service import latest_tournament_winner_odds, odds_source_text
 from src.odds_refresh import APP_TIMEZONE, daily_odds_refresh_key
 from src.pages.rankings import FLAG_CODES
 from src.tournament_odds_service import refresh_tournament_odds_if_available
+from src.utils.team_names import display_team_name
 
 
 def render() -> None:
@@ -96,6 +97,7 @@ def _odds_cards(rows: pd.DataFrame, featured: bool = False) -> str:
 
 def _odds_card(row, featured: bool = False) -> str:
     team = str(row.get("Team") or "Unknown")
+    display_name = display_team_name(team)
     probability = row.get("implied_probability")
     percent = f"{float(probability):.2%}" if pd.notna(probability) else "TBD"
     odds = html.escape(odds_source_text(row.get("american_odds"), row.get("source")))
@@ -103,9 +105,9 @@ def _odds_card(row, featured: bool = False) -> str:
     class_name = "odds-card featured" if featured else "odds-card"
     return (
         f'<article class="{class_name}">'
-        f'<div class="odds-flag">{_flag_img(code, team)}</div>'
+        f'<div class="odds-flag">{_flag_img(code, display_name)}</div>'
         '<div class="odds-card-main">'
-        f'<div class="odds-team">{html.escape(team)}</div>'
+        f'<div class="odds-team">{html.escape(display_name)}</div>'
         f'<div class="odds-price">{odds}</div>'
         '</div>'
         f'<div class="odds-prob"><span>{percent}</span><small>Implied</small></div>'

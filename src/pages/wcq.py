@@ -8,6 +8,10 @@ from typing import Any
 import pandas as pd
 import streamlit as st
 
+from src.database import fetch_df
+from src.official_match_reference import normalize_team_key
+from src.utils.team_names import display_team_name, team_lookup_keys
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 WCQ_DATA_DIR = PROJECT_ROOT / "data" / "wcq"
@@ -349,7 +353,155 @@ def load_wcq_data(_schema_version: str = WCQ_DATA_SCHEMA_VERSION, _data_signatur
             for column in missing_columns:
                 frame[column] = ""
         payload[key] = frame.fillna("")
+    _apply_global_fifa_rankings(payload)
+    _apply_common_team_names(payload)
     return payload
+
+
+def _apply_global_fifa_rankings(payload: dict[str, Any]) -> None:
+    rankings = _latest_global_fifa_ranking_lookup()
+    for key in ["standings", "runners_up_ranking", "eliminated", "qualified"]:
+        frame = _wcq_frame(payload, key)
+        if frame.empty or "team_name" not in frame.columns:
+            continue
+        payload[key] = _with_canonical_rank_columns(frame, rankings, [("team_name", "fifa_rank", "rank_snapshot_date")])
+    for key in ["matches"]:
+        frame = _wcq_frame(payload, key)
+        if frame.empty:
+            continue
+        payload[key] = _with_canonical_rank_columns(
+            frame,
+            rankings,
+            [
+                ("home_team_name", "home_fifa_rank", "home_rank_snapshot_date"),
+                ("away_team_name", "away_fifa_rank", "away_rank_snapshot_date"),
+            ],
+        )
+    for key in ["playoff_ties"]:
+        frame = _wcq_frame(payload, key)
+        if frame.empty:
+            continue
+        payload[key] = _with_canonical_rank_columns(
+            frame,
+            rankings,
+            [
+                ("team1_name", "team1_fifa_rank", "team1_rank_snapshot_date"),
+                ("team2_name", "team2_fifa_rank", "team2_rank_snapshot_date"),
+                ("team_1_name", "team_1_fifa_rank", "team_1_rank_snapshot_date"),
+                ("team_2_name", "team_2_fifa_rank", "team_2_rank_snapshot_date"),
+                ("home_team_name", "home_fifa_rank", "home_rank_snapshot_date"),
+                ("away_team_name", "away_fifa_rank", "away_rank_snapshot_date"),
+            ],
+        )
+
+
+def _with_canonical_rank_columns(
+    frame: pd.DataFrame,
+    rankings: dict[str, dict[str, str]],
+    team_rank_columns: list[tuple[str, str, str]],
+) -> pd.DataFrame:
+    updated = frame.copy()
+    for team_column, rank_column, date_column in team_rank_columns:
+        if team_column not in updated.columns or rank_column not in updated.columns:
+            continue
+        updated[rank_column] = updated[team_column].apply(lambda value: rankings.get(_ranking_lookup_key(value), {}).get("rank", ""))
+        if date_column in updated.columns:
+            updated[date_column] = updated[team_column].apply(lambda value: rankings.get(_ranking_lookup_key(value), {}).get("ranking_date", ""))
+    return updated
+
+
+def _latest_global_fifa_ranking_lookup() -> dict[str, dict[str, str]]:
+    try:
+        rankings = fetch_df(
+            """
+            SELECT team_name, ranking_date, rank
+            FROM global_fifa_rankings
+            WHERE ranking_date = (SELECT MAX(ranking_date) FROM global_fifa_rankings)
+            """
+        )
+    except Exception:
+        return {}
+    lookup: dict[str, dict[str, str]] = {}
+    for _, row in rankings.fillna("").iterrows():
+        rank = _clean_rank_value(row.get("rank", ""))
+        if not rank:
+            continue
+        value = {
+            "rank": rank,
+            "ranking_date": str(row.get("ranking_date", "")).strip(),
+        }
+        team_name = str(row.get("team_name", "")).strip()
+        for key in _ranking_lookup_keys(team_name):
+            lookup[key] = value
+    return lookup
+
+
+def _ranking_lookup_keys(team_name: str) -> set[str]:
+    key = _ranking_lookup_key(team_name)
+    keys = {key} if key else set()
+    keys.update(team_lookup_keys(team_name))
+    aliases = {
+        "cabo verde": "cape verde",
+        "cape verde": "cabo verde",
+        "congo dr": "dr congo",
+        "dr congo": "congo dr",
+        "democratic republic of the congo": "dr congo",
+        "czechia": "czech republic",
+        "czech republic": "czechia",
+        "ir iran": "iran",
+        "iran": "ir iran",
+        "korea republic": "south korea",
+        "south korea": "korea republic",
+        "turkiye": "turkey",
+        "turkey": "turkiye",
+        "türkiye": "turkiye",
+        "usa": "united states",
+        "united states": "usa",
+        "united states of america": "usa",
+    }
+    for left, right in aliases.items():
+        left_key = _ranking_lookup_key(left)
+        right_key = _ranking_lookup_key(right)
+        if keys & {left_key, right_key}:
+            keys.update({left_key, right_key})
+    return keys
+
+
+def _ranking_lookup_key(value: Any) -> str:
+    return normalize_team_key(str(value or ""))
+
+
+def _clean_rank_value(value: Any) -> str:
+    if pd.isna(value) or str(value).strip() == "":
+        return ""
+    numeric = pd.to_numeric(value, errors="coerce")
+    if not pd.isna(numeric):
+        return str(int(numeric))
+    return str(value).strip()
+
+
+def _apply_common_team_names(payload: dict[str, Any]) -> None:
+    for key, value in list(payload.items()):
+        if not isinstance(value, pd.DataFrame) or value.empty:
+            continue
+        frame = value.copy()
+        changed = False
+        for column in [
+            "team_name",
+            "home_team_name",
+            "away_team_name",
+            "team1_name",
+            "team2_name",
+            "team_1_name",
+            "team_2_name",
+            "winner_team_name",
+            "loser_team_name",
+        ]:
+            if column in frame.columns:
+                frame[column] = frame[column].apply(display_team_name)
+                changed = True
+        if changed:
+            payload[key] = frame
 
 
 def _wcq_data_signature() -> tuple[tuple[str, int, int], ...]:
@@ -1225,7 +1377,7 @@ def _tie_team(tie: pd.Series, side: str, status: str, confederation_id: str) -> 
 
 
 def _enrich_team_identity(row: pd.Series) -> pd.Series:
-    if _field(row, "flag_code", "") and _field(row, "fifa_rank", ""):
+    if _field(row, "flag_code", ""):
         return row
     lookup = _team_identity_lookup()
     candidates = [
@@ -1241,8 +1393,6 @@ def _enrich_team_identity(row: pd.Series) -> pd.Series:
             enriched["fifa_code"] = identity.get("fifa_code", "")
         if not _field(enriched, "flag_code", ""):
             enriched["flag_code"] = identity.get("flag_code", "")
-        if not _field(enriched, "fifa_rank", ""):
-            enriched["fifa_rank"] = identity.get("fifa_rank", "")
         return enriched
     return row
 
@@ -1259,7 +1409,6 @@ def _team_identity_lookup() -> dict[str, dict[str, str]]:
                 "team_name": str(row.get("team_name", "")).strip(),
                 "fifa_code": str(row.get("fifa_code", "")).strip(),
                 "flag_code": str(row.get("flag_code", "")).strip(),
-                "fifa_rank": str(row.get("fifa_rank", "")).strip(),
             }
             for key in [identity["fifa_code"].upper(), _normalize_team_label(identity["team_name"])]:
                 if key:

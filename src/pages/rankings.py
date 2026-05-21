@@ -11,7 +11,20 @@ from src.components.clickable_cards import clickable_cards
 from src.database import fetch_df
 from src.navigation import remember_detail_origin
 from src.official_match_reference import normalize_team_key
-from src.pages.wcq import WCQ_DATA_SCHEMA_VERSION, _wcq_data_signature, load_wcq_data
+from src.pages.wcq import (
+    WCQ_DATA_SCHEMA_VERSION,
+    _canonical_inter_confederation_matches as _wcq_canonical_inter_confederation_matches,
+    _has_bracket_shape as _wcq_has_bracket_shape,
+    _inter_confederation_path_html as _wcq_inter_confederation_path_html,
+    _is_two_leg_round as _wcq_is_two_leg_round,
+    _round_rows as _wcq_round_rows,
+    _styles as _wcq_styles,
+    _wcq_data_signature,
+    load_wcq_data,
+    render_playoff_ties as _render_wcq_playoff_ties,
+    render_tournament_bracket as _render_wcq_tournament_bracket,
+)
+from src.utils.team_names import display_team_name, flag_code_for_common_team, team_lookup_keys as shared_team_lookup_keys
 
 
 FLAG_CODES = {
@@ -59,6 +72,8 @@ FLAG_CODES = {
     "Uganda": "ug", "Ukraine": "ua", "United Arab Emirates": "ae", "Uruguay": "uy", "Uzbekistan": "uz",
     "Vanuatu": "vu", "Venezuela": "ve", "Vietnam": "vn", "Wales": "gb-wls", "Yemen": "ye",
     "Zambia": "zm", "Zimbabwe": "zw",
+    "China": "cn", "North Korea": "kp", "Iran": "ir", "Turkey": "tr", "Ivory Coast": "ci",
+    "DR Congo": "cd", "Kyrgyzstan": "kg", "Gambia": "gm", "Hong Kong": "hk",
 }
 
 SEARCH_ALIASES = {
@@ -78,6 +93,8 @@ SEARCH_ALIASES = {
     "Korea Republic": "South Korea",
     "Republic of Korea": "South Korea",
     "South Korea": "Korea Republic",
+    "Korea DPR": "North Korea",
+    "North Korea": "Korea DPR",
     "Turkey": "Türkiye",
     "Turkiye": "Türkiye",
     "Türkiye": "Turkey",
@@ -89,6 +106,20 @@ SEARCH_ALIASES = {
     "Curaçao": "Curacao",
     "Bosnia & Herzegovina": "Bosnia and Herzegovina",
     "Bosnia-Herzegovina": "Bosnia and Herzegovina",
+    "China PR": "China",
+    "China": "China PR",
+    "Kyrgyz Republic": "Kyrgyzstan",
+    "Kyrgyzstan": "Kyrgyz Republic",
+    "The Gambia": "Gambia",
+    "Gambia": "The Gambia",
+    "Hong Kong, China": "Hong Kong",
+    "Hong Kong": "Hong Kong, China",
+    "St Kitts and Nevis": "Saint Kitts and Nevis",
+    "Saint Kitts and Nevis": "St Kitts and Nevis",
+    "St Lucia": "Saint Lucia",
+    "Saint Lucia": "St Lucia",
+    "St Vincent and the Grenadines": "Saint Vincent and the Grenadines",
+    "Saint Vincent and the Grenadines": "St Vincent and the Grenadines",
 }
 
 
@@ -226,6 +257,7 @@ def _ranking_cards(rows: pd.DataFrame, team_column: str, compact: bool = False, 
 
 def _ranking_card(row, team_column: str, compact: bool, clickable: bool) -> str:
     team = str(row.get(team_column) or "")
+    display_name = _common_team_name(team)
     rank = _rank_text(row.get("rank"))
     group = str(row.get("group_name") or "").strip()
     code = _flag_code(team, row.get("country_code"))
@@ -238,7 +270,7 @@ def _ranking_card(row, team_column: str, compact: bool, clickable: bool) -> str:
         f'<div class="ranking-position">#{rank}</div>'
         f'<div class="ranking-flag">{flag}</div>'
         '<div class="ranking-main">'
-        f'<div class="ranking-name">{html.escape(team)}</div>'
+        f'<div class="ranking-name">{html.escape(display_name)}</div>'
         f'<div class="ranking-meta">{group_badge}</div>'
         '</div>'
         '</article>'
@@ -256,11 +288,12 @@ def _ranking_click_cards(rows: pd.DataFrame) -> list[dict]:
     cards = []
     for _, row in rows.iterrows():
         team = str(row.get("team") or "")
+        display_name = _common_team_name(team)
         code = _flag_code(team, row.get("country_code"))
         cards.append(
             {
                 "id": int(row["team_id"]),
-                "name": team,
+                "name": display_name,
                 "rank": _rank_text(row.get("rank")),
                 "group": str(row.get("group_name") or "").strip(),
                 "flag_url": f"https://flagcdn.com/w80/{code}.png" if code else "",
@@ -273,11 +306,12 @@ def _full_ranking_click_cards(rows: pd.DataFrame) -> list[dict]:
     cards = []
     for _, row in rows.iterrows():
         team = str(row.get("team_name") or "")
+        display_name = _common_team_name(team)
         code = _flag_code(team, row.get("country_code"))
         cards.append(
             {
                 "id": team,
-                "name": team,
+                "name": display_name,
                 "rank": _rank_text(row.get("rank")),
                 "badge": "World Cup" if int(row.get("is_world_cup_team") or 0) == 1 else "",
                 "flag_url": f"https://flagcdn.com/w80/{code}.png" if code else "",
@@ -287,7 +321,11 @@ def _full_ranking_click_cards(rows: pd.DataFrame) -> list[dict]:
 
 
 def _open_full_ranking_team(team_name: str, rows: pd.DataFrame) -> None:
-    team_rows = rows[rows["team_name"].astype(str).map(normalize_team_key).eq(normalize_team_key(team_name))]
+    key = normalize_team_key(team_name)
+    team_rows = rows[
+        rows["team_name"].astype(str).map(normalize_team_key).eq(key)
+        | rows["team_name"].astype(str).map(_common_team_name).map(normalize_team_key).eq(key)
+    ]
     if team_rows.empty:
         return
     row = team_rows.iloc[0]
@@ -320,6 +358,7 @@ def _world_cup_team_id(team_name: str) -> int | None:
 
 
 def _render_wcq_team_focus(team_name: str) -> None:
+    _wcq_styles()
     st.markdown(_section_title("Full FIFA List", "Qualifying Results"), unsafe_allow_html=True)
     if st.button("Back to full rankings", key="close_ranking_wcq_team"):
         st.session_state.pop("selected_ranking_wcq_team", None)
@@ -333,9 +372,7 @@ def _render_wcq_team_focus(team_name: str) -> None:
         st.info(f"No qualifying results are stored for {team_name} yet.")
         return
     _render_wcq_profile_hero(profile)
-    _render_wcq_elimination_panel(profile)
-    _render_wcq_matches(profile["matches"], profile["team_key"], profile["round_names"])
-    _render_wcq_ties(profile["ties"], profile["team_key"], profile["round_names"])
+    _render_wcq_round_results(profile, data)
 
 
 def _wcq_team_profile(data: dict, team_name: str) -> dict:
@@ -361,6 +398,8 @@ def _wcq_team_profile(data: dict, team_name: str) -> dict:
         "runner_up": runner_up,
         "matches": matches,
         "ties": ties,
+        "rounds": data.get("rounds", pd.DataFrame()),
+        "brackets": data.get("brackets", pd.DataFrame()),
         "summary": _wcq_summary_text(eliminated, qualified, standings, runner_up),
         "confederation": _row_value(source, "confederation_id", "") if source is not None else "",
         "flag_code": _row_value(source, "flag_code", "") if source is not None else "",
@@ -374,7 +413,7 @@ def _wcq_team_profile(data: dict, team_name: str) -> dict:
 
 
 def _team_lookup_keys(team_name: str) -> set[str]:
-    keys = {normalize_team_key(team_name)}
+    keys = set(shared_team_lookup_keys(team_name))
     for alias, official in SEARCH_ALIASES.items():
         alias_key = normalize_team_key(alias)
         official_key = normalize_team_key(official)
@@ -390,6 +429,13 @@ def _team_lookup_keys(team_name: str) -> set[str]:
         "hong kong china": "hong kong",
         "brunei darussalam": "brunei",
         "usa": "united states",
+        "china pr": "china",
+        "kyrgyz republic": "kyrgyzstan",
+        "the gambia": "gambia",
+        "hong kong china": "hong kong",
+        "st kitts and nevis": "saint kitts and nevis",
+        "st lucia": "saint lucia",
+        "st vincent and the grenadines": "saint vincent and the grenadines",
     }
     for left, right in wcq_aliases.items():
         if keys & {normalize_team_key(left), normalize_team_key(right)}:
@@ -419,9 +465,11 @@ def _matching_match_rows(frame: pd.DataFrame, keys: set[str]) -> pd.DataFrame:
 def _matching_tie_rows(frame: pd.DataFrame, keys: set[str]) -> pd.DataFrame:
     if frame.empty:
         return pd.DataFrame()
-    team1 = frame.get("team1_name", pd.Series("", index=frame.index)).astype(str).map(normalize_team_key).isin(keys)
-    team2 = frame.get("team2_name", pd.Series("", index=frame.index)).astype(str).map(normalize_team_key).isin(keys)
-    return frame[team1 | team2].copy()
+    mask = pd.Series(False, index=frame.index)
+    for column in ["team1_name", "team2_name", "team_1_name", "team_2_name", "home_team_name", "away_team_name"]:
+        if column in frame.columns:
+            mask = mask | frame[column].astype(str).map(normalize_team_key).isin(keys)
+    return frame[mask].copy()
 
 
 def _wcq_summary_text(eliminated: pd.DataFrame, qualified: pd.DataFrame, standings: pd.DataFrame, runner_up: pd.DataFrame) -> str:
@@ -594,19 +642,267 @@ def _important_path_rows(profile: dict) -> pd.DataFrame:
     return pd.DataFrame(rows) if rows else pd.DataFrame()
 
 
-def _render_wcq_matches(rows: pd.DataFrame, team_key: str, round_names: dict[str, str]) -> None:
+def _render_wcq_round_results(profile: dict, data: dict) -> None:
+    round_ids = _profile_round_ids(profile)
+    if not round_ids:
+        return
+    st.markdown('<section class="wcq-profile-results"><h3>Qualifying Results</h3></section>', unsafe_allow_html=True)
+    rendered_icpo_paths: set[str] = set()
+    for round_id in round_ids:
+        _render_wcq_round_result(profile, data, round_id, rendered_icpo_paths)
+
+
+def _profile_round_ids(profile: dict) -> list[str]:
+    round_ids: set[str] = set()
+    for key in ["matches", "ties", "standings", "runner_up", "eliminated", "qualified"]:
+        frame = profile.get(key, pd.DataFrame())
+        if isinstance(frame, pd.DataFrame) and not frame.empty and "round_id" in frame.columns:
+            round_ids.update(str(value) for value in frame["round_id"] if str(value).strip())
+    return sorted(round_ids, key=lambda round_id: _round_sort_key(round_id, profile.get("rounds", pd.DataFrame())))
+
+
+def _round_sort_key(round_id: str, rounds: pd.DataFrame) -> tuple[float, pd.Timestamp, str]:
+    if rounds.empty or "round_id" not in rounds.columns:
+        return (999, pd.NaT, round_id)
+    match = rounds[rounds["round_id"].astype(str).eq(str(round_id))]
+    if match.empty:
+        return (999, pd.NaT, round_id)
+    row = match.iloc[0]
+    order = pd.to_numeric(_row_value(row, "round_order", ""), errors="coerce")
+    start = pd.to_datetime(_row_value(row, "start_date", ""), errors="coerce")
+    return (float(order) if not pd.isna(order) else 999, start, round_id)
+
+
+def _render_wcq_round_result(profile: dict, data: dict, round_id: str, rendered_icpo_paths: set[str]) -> None:
+    confederation_id = _profile_round_confederation(profile, data, round_id)
+    round_name = _display_round_name(round_id, profile["round_names"])
+
+    matches = _wcq_round_rows(data.get("matches", pd.DataFrame()), round_id, confederation_id)
+    brackets = _wcq_round_rows(data.get("brackets", pd.DataFrame()), round_id, confederation_id)
+    team_matches = _round_subset(profile.get("matches", pd.DataFrame()), round_id)
+    team_ties = _round_subset(profile.get("ties", pd.DataFrame()), round_id)
+    team_standings = _round_subset(profile.get("standings", pd.DataFrame()), round_id)
+    team_runner_up = _round_subset(profile.get("runner_up", pd.DataFrame()), round_id)
+
+    icpo_status = _render_inter_confederation_path_if_available(profile, data, round_id, round_name, rendered_icpo_paths)
+    if icpo_status == "rendered":
+        return
+    if icpo_status == "already_rendered":
+        return
+
+    if not matches.empty and _wcq_has_bracket_shape(matches, brackets):
+        bracket_matches, bracket_rows = _team_bracket_tournament(matches, brackets, team_matches)
+        if bracket_matches.empty:
+            bracket_matches = team_matches
+        if bracket_matches.empty:
+            return
+        st.markdown(f'<div class="ranking-wcq-round-title">{html.escape(round_name)}</div>', unsafe_allow_html=True)
+        _render_wcq_tournament_bracket(bracket_matches, bracket_rows, confederation_id)
+        return
+
+    if team_ties.empty and team_matches.empty and team_standings.empty and team_runner_up.empty:
+        return
+    st.markdown(f'<div class="ranking-wcq-round-title">{html.escape(round_name)}</div>', unsafe_allow_html=True)
+
+    if not team_ties.empty and _wcq_is_two_leg_round(round_id, confederation_id, data):
+        _render_wcq_playoff_ties(team_ties, confederation_id)
+    elif not team_ties.empty:
+        _render_wcq_ties(team_ties, profile["team_key"], profile["round_names"])
+
+    if not team_matches.empty:
+        _render_wcq_matches(team_matches, profile["team_key"], profile["round_names"], show_title=False)
+    _render_round_group_details(data, round_id, confederation_id, team_standings, team_runner_up)
+
+
+def _round_subset(frame: pd.DataFrame, round_id: str) -> pd.DataFrame:
+    if frame.empty or "round_id" not in frame.columns:
+        return pd.DataFrame()
+    return frame[frame["round_id"].astype(str).eq(str(round_id))].copy()
+
+
+def _round_confederation(data: dict, round_id: str) -> str:
+    rounds = data.get("rounds", pd.DataFrame())
+    if not isinstance(rounds, pd.DataFrame) or rounds.empty or "round_id" not in rounds.columns:
+        return ""
+    rows = rounds[rounds["round_id"].astype(str).eq(str(round_id))]
+    if rows.empty:
+        return ""
+    return _row_value(rows.iloc[0], "confederation_id", "")
+
+
+def _profile_round_confederation(profile: dict, data: dict, round_id: str) -> str:
+    for key in ["matches", "ties", "standings", "runner_up", "eliminated", "qualified"]:
+        rows = _round_subset(profile.get(key, pd.DataFrame()), round_id)
+        if not rows.empty and "confederation_id" in rows.columns:
+            confederation_id = _row_value(rows.iloc[0], "confederation_id", "")
+            if confederation_id:
+                return confederation_id
+    return _round_confederation(data, round_id) or str(profile.get("confederation") or "")
+
+
+def _team_bracket_tournament(matches: pd.DataFrame, brackets: pd.DataFrame, team_matches: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    if team_matches.empty:
+        return pd.DataFrame(columns=matches.columns), pd.DataFrame(columns=brackets.columns)
+    bracket_ids = _nonempty_values(team_matches, "bracket_id")
+    match_ids = _nonempty_values(team_matches, "match_id")
+    if not bracket_ids and not brackets.empty and "match_id" in brackets.columns:
+        team_bracket_rows = brackets[brackets["match_id"].astype(str).isin(match_ids)]
+        bracket_ids = _nonempty_values(team_bracket_rows, "bracket_id")
+    if bracket_ids:
+        bracket_matches = matches[matches.get("bracket_id", pd.Series("", index=matches.index)).astype(str).isin(bracket_ids)].copy()
+        bracket_rows = brackets[brackets.get("bracket_id", pd.Series("", index=brackets.index)).astype(str).isin(bracket_ids)].copy()
+        return bracket_matches, bracket_rows
+    return team_matches.copy(), pd.DataFrame(columns=brackets.columns)
+
+
+def _nonempty_values(frame: pd.DataFrame, column: str) -> set[str]:
+    if frame.empty or column not in frame.columns:
+        return set()
+    return {str(value).strip() for value in frame[column] if str(value).strip()}
+
+
+def _render_inter_confederation_path_if_available(profile: dict, data: dict, round_id: str, round_name: str, rendered_paths: set[str]) -> str:
+    if "icpo" not in str(round_id).lower() and "inter" not in str(round_id).lower():
+        return ""
+    matches = _wcq_canonical_inter_confederation_matches(data)
+    if matches.empty or "_icpo_path" not in matches.columns:
+        return ""
+    team_key = str(profile.get("team_key") or "")
+    team_mask = (
+        matches.get("home_team_name", pd.Series("", index=matches.index)).astype(str).map(normalize_team_key).eq(team_key)
+        | matches.get("away_team_name", pd.Series("", index=matches.index)).astype(str).map(normalize_team_key).eq(team_key)
+    )
+    team_rows = matches[team_mask]
+    if team_rows.empty:
+        return ""
+    path_names = [str(path_name) for path_name in sorted(team_rows["_icpo_path"].dropna().unique())]
+    rendered = False
+    for path_name in path_names:
+        path_name = str(path_name)
+        if path_name in rendered_paths:
+            continue
+        path_matches = matches[matches["_icpo_path"].eq(path_name)].copy()
+        if path_matches.empty:
+            continue
+        path_matches["_stage_order"] = path_matches["_icpo_stage"].map({"Semi-Final": 1, "Final": 2}).fillna(99)
+        path_matches["_date"] = pd.to_datetime(path_matches.get("date", ""), errors="coerce")
+        if not rendered:
+            st.markdown(f'<div class="ranking-wcq-round-title">{html.escape(round_name)}</div>', unsafe_allow_html=True)
+        st.markdown(_wcq_inter_confederation_path_html(path_name, path_matches), unsafe_allow_html=True)
+        rendered_paths.add(path_name)
+        rendered = True
+    if rendered:
+        return "rendered"
+    return "already_rendered" if path_names else ""
+
+
+def _render_wcq_matches(rows: pd.DataFrame, team_key: str, round_names: dict[str, str], show_title: bool = True) -> None:
     if rows.empty:
         return
     cards = "".join(_wcq_match_card(row, team_key, round_names) for _, row in rows.iterrows())
+    title = "<h3>Qualifying Results</h3>" if show_title else ""
     st.markdown(
         f"""
         <section class="wcq-profile-results">
-          <h3>Qualifying Results</h3>
+          {title}
           <div class="wcq-profile-result-grid">{cards}</div>
         </section>
         """,
         unsafe_allow_html=True,
     )
+
+
+def _render_round_group_details(
+    data: dict,
+    round_id: str,
+    confederation_id: str,
+    team_standings: pd.DataFrame,
+    runner_up: pd.DataFrame,
+) -> None:
+    if team_standings.empty and runner_up.empty:
+        return
+    if not team_standings.empty:
+        all_standings = _wcq_round_rows(data.get("standings", pd.DataFrame()), round_id, confederation_id)
+        group_ids = _nonempty_values(team_standings, "group_id")
+        if group_ids:
+            all_standings = all_standings[all_standings.get("group_id", pd.Series("", index=all_standings.index)).astype(str).isin(group_ids)].copy()
+        else:
+            team_names = _nonempty_values(team_standings, "team_name")
+            all_standings = all_standings[all_standings.get("team_name", pd.Series("", index=all_standings.index)).astype(str).isin(team_names)].copy()
+        if not all_standings.empty:
+            all_standings["_position"] = pd.to_numeric(all_standings.get("position", ""), errors="coerce").fillna(999)
+            all_standings = all_standings.sort_values(["_position", "team_name"])
+            group_name = _display_group_name(_row_value(team_standings.iloc[0], "group_name", _row_value(team_standings.iloc[0], "group_id", "Group Table")))
+            st.markdown(f'<div class="ranking-wcq-group-title">{html.escape(group_name)}</div>', unsafe_allow_html=True)
+            _render_group_standings_table(all_standings)
+    if not runner_up.empty:
+        st.markdown('<div class="ranking-wcq-group-title">Runner-up Ranking</div>', unsafe_allow_html=True)
+        _render_runner_up_detail_table(runner_up)
+
+
+def _render_group_standings_table(rows: pd.DataFrame) -> None:
+    header = """
+        <div class="ranking-wcq-standings-row ranking-wcq-standings-head">
+          <span>Pos</span><span>Team</span><span>P</span><span>W</span><span>D</span><span>L</span><span>GD</span><span>Pts</span><span>Status</span>
+        </div>
+    """
+    body = "".join(_group_standings_row(row) for _, row in rows.iterrows())
+    st.markdown(f'<div class="ranking-wcq-standings-table">{header}{body}</div>', unsafe_allow_html=True)
+
+
+def _group_standings_row(row: pd.Series) -> str:
+    return (
+        '<div class="ranking-wcq-standings-row">'
+        f'<span>{html.escape(_row_value(row, "position", "-"))}</span>'
+        f'<span>{html.escape(_row_value(row, "team_name", "Team TBD"))}</span>'
+        f'<span>{html.escape(_row_value(row, "played", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "wins", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "draws", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "losses", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "goal_difference", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "points", "0"))}</span>'
+        f'<span class="ranking-wcq-status">{html.escape(_clean_status(_row_value(row, "status", "")))}</span>'
+        '</div>'
+    )
+
+
+def _display_group_name(value: str) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return "Group Table"
+    normalized = text.replace("-", "_").replace(" ", "_").upper()
+    if "_GRP_" in normalized:
+        suffix = normalized.rsplit("_GRP_", 1)[-1]
+        if suffix:
+            return f"Group {suffix}"
+    if normalized.startswith("GROUP_"):
+        suffix = normalized.rsplit("_", 1)[-1]
+        if suffix:
+            return f"Group {suffix}"
+    return text.replace("_", " ").title()
+
+
+def _render_runner_up_detail_table(rows: pd.DataFrame) -> None:
+    header = """
+        <div class="ranking-wcq-standings-row ranking-wcq-standings-head">
+          <span>Rank</span><span>Team</span><span>P</span><span>W</span><span>D</span><span>L</span><span>GD</span><span>Pts</span><span>Status</span>
+        </div>
+    """
+    body = "".join(
+        '<div class="ranking-wcq-standings-row">'
+        f'<span>{html.escape(_row_value(row, "runner_up_rank", "-"))}</span>'
+        f'<span>{html.escape(_row_value(row, "team_name", "Team TBD"))}</span>'
+        f'<span>{html.escape(_row_value(row, "played_counting_results", _row_value(row, "played", "0")))}</span>'
+        f'<span>{html.escape(_row_value(row, "wins", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "draws", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "losses", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "goal_difference", "0"))}</span>'
+        f'<span>{html.escape(_row_value(row, "points", "0"))}</span>'
+        f'<span class="ranking-wcq-status">{html.escape(_clean_status(_row_value(row, "status", "")))}</span>'
+        '</div>'
+        for _, row in rows.iterrows()
+    )
+    st.markdown(f'<div class="ranking-wcq-standings-table">{header}{body}</div>', unsafe_allow_html=True)
 
 
 def _render_wcq_ties(rows: pd.DataFrame, team_key: str, round_names: dict[str, str]) -> None:
@@ -764,7 +1060,7 @@ def _open_team(team_id: int) -> None:
 
 
 def _flag_code(team: str, stored_code=None) -> str:
-    code = FLAG_CODES.get(team) or stored_code or ""
+    code = FLAG_CODES.get(team) or flag_code_for_common_team(team) or stored_code or ""
     return str(code).strip().lower()
 
 
@@ -777,6 +1073,10 @@ def _flag_img(code: str, team: str) -> str:
         f'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\';">'
         f'<div class="ranking-flag-fallback hidden">{html.escape(initials)}</div>'
     )
+
+
+def _common_team_name(team_name: str) -> str:
+    return display_team_name(team_name)
 
 
 def _rank_text(value) -> str:
@@ -793,12 +1093,15 @@ def _ranking_search_mask(rows: pd.DataFrame, search: str) -> pd.Series:
             terms.update({alias, official})
     direct_terms = [term for term in terms if len(str(term).strip()) >= 3]
     direct = (
-        rows["team_name"].str.contains("|".join(re.escape(term) for term in direct_terms), case=False, na=False)
+        (
+            rows["team_name"].str.contains("|".join(re.escape(term) for term in direct_terms), case=False, na=False)
+            | rows["team_name"].map(_common_team_name).str.contains("|".join(re.escape(term) for term in direct_terms), case=False, na=False)
+        )
         if direct_terms
         else pd.Series(False, index=rows.index)
     )
     normalized_terms = {normalize_team_key(term) for term in terms if term}
-    normalized = rows["team_name"].map(normalize_team_key).isin(normalized_terms)
+    normalized = rows["team_name"].map(normalize_team_key).isin(normalized_terms) | rows["team_name"].map(_common_team_name).map(normalize_team_key).isin(normalized_terms)
     return direct | normalized
 
 
@@ -1068,6 +1371,54 @@ def _styles() -> None:
             margin: 0;
             padding: .8rem .9rem;
         }
+        .ranking-wcq-round-title {
+            border-top: 1px solid rgba(214,168,58,.24);
+            color: #FFFFFF;
+            font-size: 1.18rem;
+            font-weight: 950;
+            margin: 1.15rem 0 .7rem;
+            padding-top: .75rem;
+        }
+        .ranking-wcq-group-title {
+            color: #FFFFFF;
+            font-size: 1.02rem;
+            font-weight: 950;
+            margin: .9rem 0 .45rem;
+        }
+        .ranking-wcq-standings-table {
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 8px;
+            margin: .35rem 0 1rem;
+            overflow: hidden;
+        }
+        .ranking-wcq-standings-row {
+            align-items: center;
+            background: rgba(255,255,255,.055);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            color: #FFFFFF;
+            display: grid;
+            gap: .55rem;
+            grid-template-columns: .35fr minmax(190px, 2.4fr) repeat(5, .45fr) .55fr 1fr;
+            min-height: 52px;
+            padding: .5rem .65rem;
+        }
+        .ranking-wcq-standings-head {
+            background: rgba(5,5,5,.54);
+            border-left: 4px solid #D6A83A;
+            color: #D6A83A;
+            font-size: .72rem;
+            font-weight: 950;
+            min-height: 38px;
+            text-transform: uppercase;
+        }
+        .ranking-wcq-standings-row span:nth-child(2) {
+            font-weight: 950;
+            overflow-wrap: anywhere;
+        }
+        .ranking-wcq-status {
+            color: #D6A83A;
+            font-weight: 950;
+        }
         .ranking-wcq-table-wrap {
             overflow-x: auto;
         }
@@ -1199,6 +1550,15 @@ def _styles() -> None:
             .wcq-profile-summary,
             .wcq-profile-result-grid {
                 grid-template-columns: 1fr;
+            }
+            .ranking-wcq-standings-row {
+                grid-template-columns: .35fr minmax(150px, 2.2fr) repeat(2, .45fr) 1fr;
+            }
+            .ranking-wcq-standings-row span:nth-child(5),
+            .ranking-wcq-standings-row span:nth-child(6),
+            .ranking-wcq-standings-row span:nth-child(7),
+            .ranking-wcq-standings-row span:nth-child(8) {
+                display: none;
             }
             .wcq-team-profile-hero {
                 min-height: 320px;

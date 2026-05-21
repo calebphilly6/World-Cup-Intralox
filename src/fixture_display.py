@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import pandas as pd
 
+from src.utils.team_names import display_team_name, flag_code_for_common_team
+
 
 TEAM_NAME_ALIASES = {
     "bosnia herzegovina": "Bosnia and Herzegovina",
@@ -60,7 +62,7 @@ def canonical_fixture_team_name(value) -> str:
     if _is_blank(text):
         return ""
     key = _normalize_name(text)
-    return TEAM_NAME_ALIASES.get(key, text)
+    return display_team_name(TEAM_NAME_ALIASES.get(key, text))
 
 
 def flag_code_for_team(team_name, flag_lookup: dict[str, str]) -> str:
@@ -70,7 +72,7 @@ def flag_code_for_team(team_name, flag_lookup: dict[str, str]) -> str:
         code = flag_lookup.get(candidate)
         if code:
             return str(code).strip().lower()
-    return ""
+    return flag_code_for_common_team(team_name)
 
 
 def flag_lookup_with_aliases(rows: pd.DataFrame) -> dict[str, str]:
@@ -78,15 +80,24 @@ def flag_lookup_with_aliases(rows: pd.DataFrame) -> dict[str, str]:
     if rows.empty:
         return flags
     for _, row in rows.iterrows():
-        name = canonical_fixture_team_name(row.get("name"))
+        raw_name = str(row.get("name") or "").strip()
+        name = canonical_fixture_team_name(raw_name)
         code = str(row.get("country_code") or "").strip().lower()
         if name and code:
             flags[name] = code
             flags[_normalize_name(name)] = code
+        if raw_name and code:
+            flags[raw_name] = code
+            flags[_normalize_name(raw_name)] = code
     for alias_key, canonical in TEAM_NAME_ALIASES.items():
         code = flags.get(canonical) or flags.get(_normalize_name(canonical))
         if code:
             flags[alias_key] = code
+    for name in list(flags):
+        display_name = display_team_name(name)
+        if display_name and display_name not in flags:
+            flags[display_name] = flags[name]
+            flags[_normalize_name(display_name)] = flags[name]
     flags["England"] = "gb-eng"
     flags["england"] = "gb-eng"
     flags["Scotland"] = "gb-sct"
