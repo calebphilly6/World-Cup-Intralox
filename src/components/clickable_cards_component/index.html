@@ -21,19 +21,23 @@
       }
       .grid {
         display: grid;
-        gap: 12px;
+        gap: 8px;
+      }
+      .group-unit {
+        border: 1px solid rgba(214, 168, 58, 0.34);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(5, 5, 5, 0.58), rgba(11, 16, 32, 0.54)),
+          radial-gradient(circle at 100% 0%, rgba(214, 168, 58, 0.18), transparent 34%);
+        margin-bottom: 20px;
+        overflow: hidden;
       }
       .group-banner {
         display: grid;
         grid-template-columns: 180px minmax(0, 1fr);
-        gap: 18px;
+        gap: 14px;
         align-items: center;
-        padding: 18px;
-        border: 1px solid rgba(214, 168, 58, 0.34);
-        border-radius: 10px;
-        background:
-          linear-gradient(135deg, rgba(5, 5, 5, 0.58), rgba(11, 16, 32, 0.54)),
-          radial-gradient(circle at 100% 0%, rgba(214, 168, 58, 0.18), transparent 34%);
+        padding: 14px;
       }
       .group-copy {
         min-width: 0;
@@ -82,23 +86,89 @@
         outline: none;
       }
       .group-card {
-        min-height: 104px;
-        padding: 12px;
+        min-height: 84px;
+        padding: 8px;
         display: grid;
         justify-items: center;
         align-content: center;
-        gap: 9px;
+        gap: 6px;
       }
       .group-card img {
-        width: 62px;
+        width: 52px;
         aspect-ratio: 3 / 2;
         object-fit: cover;
         border-radius: 4px;
         box-shadow: 0 8px 18px rgba(0, 0, 0, 0.36);
       }
       .group-card strong {
-        font-size: 0.95rem;
+        font-size: 0.84rem;
+        line-height: 1.05;
         text-align: center;
+        overflow-wrap: anywhere;
+      }
+      .group-detail-shell {
+        background: rgba(5, 5, 5, 0.3);
+        border-top: 1px solid rgba(214, 168, 58, 0.3);
+        padding: 14px;
+      }
+      .group-detail-header {
+        align-items: flex-end;
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .group-detail-header h3 {
+        color: #f8fafc;
+        font-size: 1.25rem;
+        line-height: 1.05;
+        margin: 0;
+      }
+      .group-detail-stat {
+        color: #d6a83a;
+        font-size: 0.76rem;
+        font-weight: 900;
+        margin-top: 14px;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .group-table {
+        border-collapse: collapse;
+        border-radius: 7px;
+        overflow: hidden;
+        width: 100%;
+      }
+      .group-table th {
+        background: linear-gradient(135deg, #d6a83a, #9e7420);
+        color: #050505;
+        font-size: 0.72rem;
+        padding: 9px 8px;
+        text-transform: uppercase;
+      }
+      .group-table td {
+        background: rgba(255, 255, 255, 0.055);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+        color: #f8fafc;
+        font-size: 0.88rem;
+        font-weight: 750;
+        padding: 9px 8px;
+        text-align: center;
+      }
+      .group-table td:first-child {
+        text-align: left;
+      }
+      .table-team {
+        align-items: center;
+        display: inline-flex;
+        gap: 8px;
+        font-weight: 900;
+      }
+      .table-team img {
+        aspect-ratio: 3 / 2;
+        border-radius: 4px;
+        object-fit: cover;
+        object-position: center;
+        width: 34px;
       }
       .ranking-card {
         min-height: 108px;
@@ -231,6 +301,17 @@
         .group-title {
           font-size: 1.8rem;
         }
+        .group-detail-shell {
+          overflow-x: auto;
+        }
+        .group-detail-header {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .group-table {
+          min-width: 620px;
+        }
         .ranking-card {
           grid-template-columns: 42px minmax(0, 1fr);
         }
@@ -289,6 +370,10 @@
         return span;
       }
 
+      function updateFrameHeight() {
+        send(SET_HEIGHT, { height: document.documentElement.scrollHeight });
+      }
+
       function renderGroupCard(card) {
         return `
           <button class="group-card" data-id="${escapeHtml(card.id)}" type="button" aria-label="Open ${escapeHtml(card.name)}">
@@ -332,21 +417,30 @@
         const cards = Array.isArray(args.cards) ? args.cards : [];
         const variant = ["groups", "ranking-list"].includes(args.variant) ? args.variant : "rankings";
         const title = args.title || "";
+        const detailHtml = args.detail_html || "";
         const renderer = variant === "groups" ? renderGroupCard : variant === "ranking-list" ? renderRankingRow : renderRankingCard;
         const root = document.getElementById("root");
         const grid = `<div class="grid ${variant}">${cards.map(renderer).join("")}</div>`;
         root.innerHTML = variant === "groups"
-          ? `<section class="group-banner"><div class="group-copy"><div class="group-kicker">Group</div><div class="group-title">${escapeHtml(title)}</div></div>${grid}</section>`
+          ? `<section class="group-unit"><div class="group-banner"><div class="group-copy"><div class="group-kicker">Group</div><div class="group-title">${escapeHtml(title)}</div></div>${grid}</div>${detailHtml}</section>`
           : grid;
         root.querySelectorAll("button[data-id]").forEach((button) => {
           button.addEventListener("click", () => {
             send(SET_VALUE, { value: button.dataset.id, dataType: "json" });
           });
         });
-        requestAnimationFrame(() => send(SET_HEIGHT, { height: document.body.scrollHeight }));
+        root.querySelectorAll("img").forEach((image) => {
+          image.addEventListener("load", updateFrameHeight, { once: true });
+          image.addEventListener("error", updateFrameHeight, { once: true });
+        });
+        requestAnimationFrame(updateFrameHeight);
+        window.setTimeout(updateFrameHeight, 80);
+        window.setTimeout(updateFrameHeight, 300);
       }
 
       window.addEventListener("message", handleRender);
+      window.addEventListener("resize", updateFrameHeight);
+      new ResizeObserver(updateFrameHeight).observe(document.body);
       send(READY, { apiVersion: 1 });
       send(SET_HEIGHT, { height: 0 });
     </script>

@@ -10,5 +10,19 @@ COMPONENT_DIR = Path(__file__).resolve().parent / "clickable_cards_component"
 _component = components.declare_component("clickable_cards", path=str(COMPONENT_DIR))
 
 
-def clickable_cards(cards: list[dict[str, Any]], *, variant: str, key: str, title: str = ""):
-    return _component(cards=cards, variant=variant, title=title, key=key, default=None)
+def clickable_cards(
+    cards: list[dict[str, Any]],
+    *,
+    variant: str,
+    key: str,
+    title: str = "",
+    detail_html: str = "",
+):
+    return _component(
+        cards=cards,
+        variant=variant,
+        title=title,
+        detail_html=detail_html,
+        key=key,
+        default=None,
+    )

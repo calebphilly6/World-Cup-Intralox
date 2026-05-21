@@ -37,11 +37,10 @@ def render() -> None:
             variant="groups",
             key=f"group_cards_{group_name}",
             title=str(group_name),
+            detail_html=_group_details_markup(group_name, subset),
         )
         if clicked_team_id:
             _open_team(int(clicked_team_id))
-        with st.expander(f"Open Group {group_name} details", expanded=False):
-            _group_details(group_name, subset)
 
 
 def _fmt_number(value) -> str:
@@ -170,23 +169,19 @@ def _daily_group_refresh_key(now: datetime | None = None) -> str:
     return refresh_day.isoformat()
 
 
-def _group_details(group_name: str, subset: pd.DataFrame) -> None:
+def _group_details_markup(group_name: str, subset: pd.DataFrame) -> str:
     table_rows = "".join(_table_row(row) for _, row in subset.iterrows())
     group = html.escape(str(group_name))
     avg_rank = _fmt_number(subset["fifa_rank"].mean())
-    markup = (
+    return (
         '<div class="group-detail-shell">'
-        '<div class="group-detail-header">'
-        f"<div><h3>Group {group}</h3></div>"
-        f'<div class="group-detail-stat">Avg Rank {avg_rank}</div>'
-        "</div>"
         '<table class="group-table"><thead><tr>'
         "<th>Team</th><th>Rank</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>"
         "</tr></thead>"
         f"<tbody>{table_rows}</tbody></table>"
+        f'<div class="group-detail-stat">Avg Rank {avg_rank}</div>'
         "</div>"
     )
-    st.markdown(markup, unsafe_allow_html=True)
 
 
 def _group_cards(subset: pd.DataFrame) -> list[dict]:
@@ -274,37 +269,6 @@ def _styles() -> None:
     st.markdown(
         """
         <style>
-        [data-testid="stExpander"] details {
-            border: 1px solid rgba(214,168,58,.28);
-            border-radius: 8px;
-            background: rgba(11,16,32,.72);
-            overflow: hidden;
-        }
-        [data-testid="stExpander"] details,
-        [data-testid="stExpander"] details[open] {
-            background: rgba(11,16,32,.72) !important;
-            border-color: rgba(214,168,58,.38) !important;
-        }
-        [data-testid="stExpander"] summary,
-        [data-testid="stExpander"] details[open] summary {
-            background: rgba(5,5,5,.46) !important;
-            color: #D6A83A !important;
-            border-radius: 8px 8px 0 0;
-            font-weight: 900;
-        }
-        [data-testid="stExpander"] summary:hover,
-        [data-testid="stExpander"] details[open] summary:hover {
-            background: rgba(214,168,58,.13) !important;
-            color: #D6A83A !important;
-        }
-        [data-testid="stExpander"] summary *,
-        [data-testid="stExpander"] details[open] summary * {
-            color: #D6A83A !important;
-        }
-        [data-testid="stExpander"] svg {
-            color: #D6A83A !important;
-            fill: #D6A83A !important;
-        }
         .group-banner {
             min-height: 148px;
             margin: 1rem 0 .35rem;
@@ -384,10 +348,11 @@ def _styles() -> None:
         }
         .group-detail-shell {
             border: 1px solid rgba(214,168,58,.24);
-            border-radius: 8px;
-            background: rgba(5,5,5,.34);
+            border-top: 0;
+            border-radius: 0 0 8px 8px;
+            background: rgba(5,5,5,.38);
             padding: 1rem;
-            margin-bottom: 1.25rem;
+            margin: -.35rem 0 1.25rem;
         }
         .group-detail-header {
             display: flex;
