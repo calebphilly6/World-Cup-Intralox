@@ -35,15 +35,15 @@ st.set_page_config(
 
 NAV_PAGES = {
     "Home": dashboard.render,
-    "Teams": teams.render,
     "Fixtures": fixtures.render,
     "Groups": groups.render,
-    "History": history.render,
-    "WCQ": wcq.render,
     "Bracket": bracket.render,
-    "FIFA Rankings": rankings.render,
-    "Odds": odds.render,
     "Work Competition": work_competition.render,
+    "Teams": teams.render,
+    "Odds": odds.render,
+    "FIFA Rankings": rankings.render,
+    "WCQ": wcq.render,
+    "History": history.render,
 }
 
 PAGES = NAV_PAGES
@@ -431,7 +431,7 @@ def _render_app_header(logo_uri: str | None) -> None:
 
 def _render_header_nav() -> None:
     with st.container(key="header_nav"):
-        columns = st.columns([.62, .72, .82, .7, .78, .56, .78, 1.16, .52, .92], gap="small")
+        columns = st.columns([.62, .82, .7, .78, .92, .72, .52, 1.16, .56, .78], gap="small")
         for index, page_name in enumerate(NAV_PAGES):
             with columns[index]:
                 label = NAV_LABELS.get(page_name, page_name)
