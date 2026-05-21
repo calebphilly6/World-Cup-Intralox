@@ -22,9 +22,14 @@ from src.world_cup_scoring import daily_score_refresh_key
 from src.pages.work_competition import _daily_competition_state, _ensure_results_for_world_cup_teams
 
 
+WORLD_CUP_FIRST_KICKOFF_UTC = datetime(2026, 6, 11, 19, 0, tzinfo=timezone.utc)
+
+
 def render() -> None:
     st.title("Home")
     _styles()
+
+    _render_world_cup_countdown()
 
     matches, header = _dashboard_matches()
     st.markdown(f'<div class="home-section-title">{html.escape(header)}</div>', unsafe_allow_html=True)
@@ -62,6 +67,167 @@ def _render_intralox_snapshot(leaderboard: list[dict]) -> None:
         for row in leaderboard
     )
     st.markdown(f'<section class="home-scoreboard">{rows}</section>', unsafe_allow_html=True)
+
+
+def _render_world_cup_countdown(now: datetime | None = None) -> None:
+    now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    target = _world_cup_first_kickoff()
+    if now >= target:
+        return
+    st.iframe(_countdown_html(target), height=190)
+
+
+def _world_cup_first_kickoff() -> datetime:
+    try:
+        fixtures = _all_dashboard_fixtures()
+    except Exception:
+        return WORLD_CUP_FIRST_KICKOFF_UTC
+    if fixtures.empty or "kickoff_utc" not in fixtures:
+        return WORLD_CUP_FIRST_KICKOFF_UTC
+
+    kickoff_times = fixtures["kickoff_utc"].map(_parse_dt).dropna()
+    if kickoff_times.empty:
+        return WORLD_CUP_FIRST_KICKOFF_UTC
+    return min(kickoff_times)
+
+
+def _countdown_html(target: datetime) -> str:
+    target_iso = target.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+    return f"""
+    <section class="wc-countdown" aria-label="Countdown to the first World Cup game">
+      <div class="wc-countdown-copy">
+        <span>World Cup Kickoff</span>
+        <strong>First game starts in</strong>
+      </div>
+      <div class="wc-countdown-grid" aria-live="polite">
+        <div><strong data-unit="days">--</strong><span>Days</span></div>
+        <div><strong data-unit="hours">--</strong><span>Hours</span></div>
+        <div><strong data-unit="minutes">--</strong><span>Minutes</span></div>
+        <div><strong data-unit="seconds">--</strong><span>Seconds</span></div>
+      </div>
+    </section>
+    <style>
+      :root {{
+        color-scheme: dark;
+      }}
+      body {{
+        margin: 0;
+        overflow: hidden;
+        background: transparent;
+        font-family: "Source Sans Pro", sans-serif;
+      }}
+      .wc-countdown {{
+        align-items: center;
+        border: 1px solid rgba(214,168,58,.34);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(5,5,5,.72), rgba(11,16,32,.62)),
+          radial-gradient(circle at 82% 18%, rgba(214,168,58,.20), transparent 30%),
+          radial-gradient(circle at 18% 84%, rgba(35,215,215,.15), transparent 32%);
+        box-sizing: border-box;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        min-height: 106px;
+        padding: .9rem 1rem;
+      }}
+      .wc-countdown-copy span {{
+        color: #D6A83A;
+        display: block;
+        font-size: .72rem;
+        font-weight: 950;
+        text-transform: uppercase;
+      }}
+      .wc-countdown-copy strong {{
+        color: #FFFFFF;
+        display: block;
+        font-size: 1.35rem;
+        font-weight: 950;
+        line-height: 1.05;
+        margin-top: .18rem;
+      }}
+      .wc-countdown-grid {{
+        display: grid;
+        gap: .5rem;
+        grid-template-columns: repeat(4, minmax(70px, 1fr));
+        min-width: min(100%, 430px);
+      }}
+      .wc-countdown-grid div {{
+        border: 1px solid rgba(214,168,58,.24);
+        border-radius: 8px;
+        background: rgba(5,5,5,.34);
+        padding: .46rem .55rem;
+        text-align: center;
+      }}
+      .wc-countdown-grid strong {{
+        color: #FFFFFF;
+        display: block;
+        font-size: 1.4rem;
+        font-weight: 950;
+        line-height: 1;
+      }}
+      .wc-countdown-grid span {{
+        color: #D6A83A;
+        display: block;
+        font-size: .65rem;
+        font-weight: 950;
+        margin-top: .25rem;
+        text-transform: uppercase;
+      }}
+      @media (max-width: 560px) {{
+        body {{
+          overflow: auto;
+        }}
+        .wc-countdown {{
+          align-items: stretch;
+          flex-direction: column;
+          min-height: 174px;
+        }}
+        .wc-countdown-grid {{
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          min-width: 0;
+        }}
+      }}
+    </style>
+    <script>
+      const target = new Date("{target_iso}").getTime();
+      const units = {{
+        days: document.querySelector('[data-unit="days"]'),
+        hours: document.querySelector('[data-unit="hours"]'),
+        minutes: document.querySelector('[data-unit="minutes"]'),
+        seconds: document.querySelector('[data-unit="seconds"]')
+      }};
+
+      function hideCountdown() {{
+        document.querySelector(".wc-countdown")?.remove();
+        if (window.frameElement) {{
+          window.frameElement.style.display = "none";
+          window.frameElement.style.height = "0";
+          window.frameElement.style.minHeight = "0";
+          window.frameElement.style.margin = "0";
+        }}
+      }}
+
+      function renderCountdown() {{
+        const distance = target - Date.now();
+        if (distance <= 0) {{
+          hideCountdown();
+          return;
+        }}
+        const totalSeconds = Math.floor(distance / 1000);
+        units.days.textContent = String(Math.floor(totalSeconds / 86400));
+        units.hours.textContent = String(Math.floor((totalSeconds % 86400) / 3600)).padStart(2, "0");
+        units.minutes.textContent = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+        units.seconds.textContent = String(totalSeconds % 60).padStart(2, "0");
+        if (window.frameElement) {{
+          window.frameElement.style.height = `${{document.body.scrollHeight}}px`;
+        }}
+      }}
+
+      renderCountdown();
+      setInterval(renderCountdown, 1000);
+    </script>
+    """
 
 
 def _render_match_strip(matches: pd.DataFrame) -> None:

@@ -10,6 +10,7 @@ PAGE_SLUGS = {
     "Teams": "teams",
     "Fixtures": "fixtures",
     "Groups": "groups",
+    "History": "history",
     "WCQ": "wcq",
     "Bracket": "bracket",
     "FIFA Rankings": "fifa-rankings",

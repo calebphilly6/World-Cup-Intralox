@@ -9,7 +9,7 @@ import streamlit.components.v1 as components
 
 from src.config import ensure_app_directories, get_app_config, get_secret, is_deployed, is_shared_core_read_only_mode
 from src.database import fetch_df, initialize_database
-from src.pages import bracket, dashboard, fixtures, groups, rankings, teams, wcq, work_competition
+from src.pages import bracket, dashboard, fixtures, groups, history, rankings, teams, wcq, work_competition
 from src.pages import odds
 from src.reference_data import seed_world_cup_2026_reference_data
 from src.snapshots import core_snapshots_available, load_core_snapshots
@@ -38,6 +38,7 @@ NAV_PAGES = {
     "Teams": teams.render,
     "Fixtures": fixtures.render,
     "Groups": groups.render,
+    "History": history.render,
     "WCQ": wcq.render,
     "Bracket": bracket.render,
     "FIFA Rankings": rankings.render,
@@ -52,6 +53,7 @@ PAGE_SLUGS = {
     "Teams": "teams",
     "Fixtures": "fixtures",
     "Groups": "groups",
+    "History": "history",
     "WCQ": "wcq",
     "Bracket": "bracket",
     "FIFA Rankings": "fifa-rankings",
@@ -429,7 +431,7 @@ def _render_app_header(logo_uri: str | None) -> None:
 
 def _render_header_nav() -> None:
     with st.container(key="header_nav"):
-        columns = st.columns([.62, .72, .82, .7, .56, .78, 1.16, .52, .92], gap="small")
+        columns = st.columns([.62, .72, .82, .7, .78, .56, .78, 1.16, .52, .92], gap="small")
         for index, page_name in enumerate(NAV_PAGES):
             with columns[index]:
                 label = NAV_LABELS.get(page_name, page_name)
