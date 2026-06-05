@@ -1,235 +1,1244 @@
 id,team_id,player_name,shirt_number,position,club,source,created_at,updated_at
-1,18,Nikola Vasilj,,GK,FC St. Pauli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-2,18,Martin Zlomislić,,GK,Rijeka,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-3,18,Osman Hadžikić,,GK,Slaven Belupo,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-4,18,Sead Kolašinac,,DF,Atalanta,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-5,18,Dennis Hadžikadunić,,DF,Sampdoria,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-6,18,Amar Dedić,,DF,Benfica,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-7,18,Nikola Katić,,DF,Schalke 04,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-8,18,Tarik Muharemović,,DF,Sassuolo,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-9,18,Nihad Mujakić,,DF,Gaziantep,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-10,18,Stjepan Radeljić,,DF,Rijeka,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-11,18,Nidal Čelik,,DF,Lens,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-12,18,Amir Hadžiahmetović,,MF,Hull City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-13,18,Benjamin Tahirović,,MF,Brøndby,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-14,18,Armin Gigović,,MF,Young Boys,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-15,18,Dženis Burnić,,MF,Karlsruher SC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-16,18,Ivan Bašić,,MF,Astana,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-17,18,Esmir Bajraktarević,,MF,PSV Eindhoven,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-18,18,Amar Memić,,MF,Viktoria Plzeň,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-19,18,Ivan Šunjić,,MF,Pafos,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-20,18,Kerim Alajbegović,,MF,Red Bull Salzburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-21,18,Ermin Mahmić,,MF,Slovan Liberec,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-22,18,Edin Džeko,,FW,Schalke 04,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-23,18,Ermedin Demirović,,FW,VfB Stuttgart,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-24,18,Samed Baždar,,FW,Jagiellonia Białystok,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-25,18,Haris Tabaković,,FW,Borussia Mönchengladbach,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-26,18,Jovo Lukić,,FW,Universitatea Cluj,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-27,21,Johny Placide,,GK,Bastia,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-28,21,Alexandre Pierre,,GK,Sochaux,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-29,21,Josué Duverger,,GK,Cosmos Koblenz,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-30,21,Ricardo Adé,,DF,LDU Quito,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-31,21,Carlens Arcus,,DF,Angers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-32,21,Martin Expérience,,DF,Nancy,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-33,21,Jean-Kévin Duverne,,DF,Gent,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-34,21,Duke Lacroix,,DF,Colorado Springs Switchbacks FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-35,21,Wilguens Paugain,,DF,Zulte Waregem,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-36,21,Hannes Delcroix,,DF,Lugano,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-37,21,Keeto Thermoncy,,DF,Young Boys,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-38,21,Leverton Pierre,,MF,Vizela,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-39,21,Danley Jean Jacques,,MF,Philadelphia Union,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-40,21,Carl Sainté,,MF,El Paso Locomotive FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-41,21,Jean-Ricner Bellegarde,,MF,Wolverhampton Wanderers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-42,21,Woodensky Pierre,,MF,Violette,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-43,21,Dominique Simon,,MF,Tatran Prešov,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-44,21,Duckens Nazon,,FW,Esteghlal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-45,21,Frantzdy Pierrot,,FW,Çaykur Rizespor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-46,21,Derrick Etienne Jr.,,FW,Toronto FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-47,21,Louicius Deedson,,FW,FC Dallas,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-48,21,Ruben Providence,,FW,Almere City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-49,21,Josué Casimir,,FW,Auxerre,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-50,21,Yassin Fortuné,,FW,Vizela,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-51,21,Wilson Isidor,,FW,Sunderland,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-52,21,Lenny Joseph,,FW,Ferencváros,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-53,29,Yahia Fofana,,GK,Çaykur Rizespor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-54,29,Alban Lafont,,GK,Panathinaikos,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-55,29,Mohamed Koné,,GK,Charleroi,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-56,29,Ghislain Konan,,DF,Gil Vicente,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-57,29,Odilon Kossounou,,DF,Atalanta,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-58,29,Wilfried Singo,,DF,Galatasaray,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-59,29,Evan Ndicka,,DF,Roma,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-60,29,Emmanuel Agbadou,,DF,Beşiktaş,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-61,29,Guéla Doué,,DF,Strasbourg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-62,29,Ousmane Diomande,,DF,Sporting CP,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-63,29,Clément Akpa,,DF,Auxerre,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-64,29,Franck Kessié,,MF,Al-Ahli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-65,29,Jean Michaël Seri,,MF,Maribor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-66,29,Ibrahim Sangaré,,MF,Nottingham Forest,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-67,29,Seko Fofana,,MF,Porto,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-68,29,Christ Inao Oulaï,,MF,Trabzonspor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-69,29,Parfait Guiagon,,MF,Charleroi,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-70,29,Nicolas Pépé,,FW,Villarreal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-71,29,Oumar Diakité,,FW,Cercle Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-72,29,Simon Adingra,,FW,Monaco,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-73,29,Evann Guessand,,FW,Crystal Palace,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-74,29,Amad Diallo,,FW,Manchester United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-75,29,Yan Diomande,,FW,RB Leipzig,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-76,29,Bazoumana Touré,,FW,TSG Hoffenheim,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-77,29,Elye Wahi,,FW,Nice,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-78,29,Ange-Yoan Bonny,,FW,Inter Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-79,32,Zion Suzuki,,GK,Parma,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-80,32,Keisuke Ōsako,,GK,Sanfrecce Hiroshima,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-81,32,Tomoki Hayakawa,,GK,Kashima Antlers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-82,32,Yūto Nagatomo,,DF,FC Tokyo,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-83,32,Takehiro Tomiyasu,,DF,Ajax,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-84,32,Kō Itakura,,DF,Ajax,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-85,32,Shōgo Taniguchi,,DF,Sint-Truiden,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-86,32,Hiroki Itō,,DF,Bayern Munich,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-87,32,Yukinari Sugawara,,DF,Werder Bremen,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-88,32,Ayumu Seko,,DF,Le Havre,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-89,32,Tsuyoshi Watanabe,,DF,Feyenoord,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-90,32,Junnosuke Suzuki,,DF,Copenhagen,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-91,32,Wataru Endo,,MF,Liverpool,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-92,32,Junya Itō,,MF,Genk,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-93,32,Ritsu Dōan,,MF,Eintracht Frankfurt,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-94,32,Daichi Kamada,,MF,Crystal Palace,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-95,32,Takefusa Kubo,,MF,Real Sociedad,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-96,32,Ao Tanaka,,MF,Leeds United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-97,32,Keito Nakamura,,MF,Reims,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-98,32,Kaishū Sano,,MF,Mainz 05,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-99,32,Ayase Ueda,,FW,Feyenoord,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-100,32,Daizen Maeda,,FW,Celtic,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-101,32,Kōki Ogawa,,FW,NEC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-102,32,Yuito Suzuki,,FW,SC Freiburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-103,32,Keisuke Gotō,,FW,Sint-Truiden,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-104,32,Kento Shiogai,,FW,VfL Wolfsburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-105,33,Kristoffer Nordfeldt,,GK,AIK,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-106,33,Viktor Johansson,,GK,Stoke City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-107,33,Jacob Widell Zetterström,,GK,Derby County,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-108,33,Victor Lindelöf,,DF,Aston Villa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-109,33,Isak Hien,,DF,Atalanta,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-110,33,Gabriel Gudmundsson,,DF,Leeds United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-111,33,Carl Starfelt,,DF,Celta Vigo,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-112,33,Emil Holm,,DF,Juventus,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-113,33,Hjalmar Ekdal,,DF,Burnley,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-114,33,Daniel Svensson,,DF,Borussia Dortmund,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-115,33,Gustaf Lagerbielke,,DF,Braga,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-116,33,Eric Smith,,DF,FC St. Pauli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-117,33,Elliot Stroud,,DF,Mjällby AIF,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-118,33,Mattias Svanberg,,MF,VfL Wolfsburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-119,33,Jesper Karlström,,MF,Udinese,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-120,33,Yasin Ayari,,MF,Brighton & Hove Albion,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-121,33,Lucas Bergvall,,MF,Tottenham Hotspur,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-122,33,Besfort Zeneli,,MF,Union Saint-Gilloise,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-123,33,Alexander Isak,,FW,Liverpool,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-124,33,Viktor Gyökeres,,FW,Arsenal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-125,33,Ken Sema,,FW,Pafos,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-126,33,Anthony Elanga,,FW,Newcastle United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-127,33,Benjamin Nygren,,FW,Celtic,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-128,33,Alexander Bernhardsson,,FW,Holstein Kiel,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-129,33,Gustaf Nilsson,,FW,Club Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-130,33,Taha Ali,,FW,Malmö FF,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-131,34,Aymen Dahmen,,GK,CS Sfaxien,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-132,34,Sabri Ben Hessen,,GK,Étoile du Sahel,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-133,34,Mouhib Chamakh,,GK,Club Africain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-134,34,Montassar Talbi,,DF,Lorient,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-135,34,Dylan Bronn,,DF,Servette,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-136,34,Ali Abdi,,DF,Nice,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-137,34,Yan Valery,,DF,Young Boys,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-138,34,Mohamed Amine Ben Hamida,,DF,Espérance de Tunis,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-139,34,Moutaz Neffati,,DF,IFK Norrköping,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-140,34,Omar Rekik,,DF,Maribor,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-141,34,Adem Arous,,DF,Kasımpaşa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-142,34,Raed Chikhaoui,,DF,US Monastir,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-143,34,Ellyes Skhiri,,MF,Eintracht Frankfurt,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-144,34,Hannibal Mejbri,,MF,Burnley,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-145,34,Anis Ben Slimane,,MF,Norwich City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-146,34,Mortadha Ben Ouanes,,MF,Kasımpaşa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-147,34,Ismaël Gharbi,,MF,FC Augsburg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-148,34,Hadj Mahmoud,,MF,Lugano,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-149,34,Rani Khedira,,MF,Union Berlin,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-150,34,Elias Achouri,,FW,Copenhagen,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-151,34,Firas Chaouat,,FW,Club Africain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-152,34,Hazem Mastouri,,FW,Dynamo Makhachkala,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-153,34,Elias Saad,,FW,Hannover 96,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-154,34,Sebastian Tounekti,,FW,Celtic,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-155,34,Khalil Ayari,,FW,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-156,34,Rayan Elloumi,,FW,Vancouver Whitecaps FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-157,35,Thibaut Courtois,,GK,Real Madrid,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-158,35,Senne Lammens,,GK,Manchester United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-159,35,Mike Penders,,GK,Strasbourg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-160,35,Thomas Meunier,,DF,Lille,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-161,35,Timothy Castagne,,DF,Fulham,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-162,35,Arthur Theate,,DF,Eintracht Frankfurt,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-163,35,Zeno Debast,,DF,Sporting CP,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-164,35,Maxim De Cuyper,,DF,Brighton & Hove Albion,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-165,35,Brandon Mechele,,DF,Club Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-166,35,Koni De Winter,,DF,Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-167,35,Joaquin Seys,,DF,Club Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-168,35,Nathan Ngoy,,DF,Lille,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-169,35,Axel Witsel,,MF,Girona,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-170,35,Kevin De Bruyne,,MF,Napoli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-171,35,Youri Tielemans,,MF,Aston Villa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-172,35,Hans Vanaken,,MF,Club Brugge,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-173,35,Amadou Onana,,MF,Aston Villa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-174,35,Nicolas Raskin,,MF,Rangers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-175,35,Romelu Lukaku,,FW,Napoli,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-176,35,Leandro Trossard,,FW,Arsenal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-177,35,Jérémy Doku,,FW,Manchester City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-178,35,Dodi Lukébakio,,FW,Benfica,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-179,35,Charles De Ketelaere,,FW,Atalanta,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-180,35,Alexis Saelemaekers,,FW,Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-181,35,Diego Moreira,,FW,Strasbourg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-182,35,Matias Fernandez-Pardo,,FW,Lille,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-183,38,Max Crocombe,1.0,GK,Millwall,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-184,38,Tim Payne,2.0,DF,Wellington Phoenix,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-185,38,Francis de Vries,3.0,DF,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-186,38,Tyler Bindon,4.0,DF,Sheffield United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-187,38,Michael Boxall,5.0,DF,Minnesota United FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-188,38,Joe Bell,6.0,MF,Viking,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-189,38,Matthew Garbett,7.0,MF,Peterborough United,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-190,38,Marko Stamenić,8.0,MF,Swansea City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-191,38,Chris Wood,9.0,FW,Nottingham Forest,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-192,38,Sarpreet Singh,10.0,MF,Wellington Phoenix,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-193,38,Elijah Just,11.0,MF,Motherwell,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-194,38,Alex Paulsen,12.0,GK,Lechia Gdańsk,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-195,38,Liberato Cacace,13.0,DF,Wrexham,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-196,38,Alex Rufer,14.0,MF,Wellington Phoenix,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-197,38,Nando Pijnaker,15.0,DF,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-198,38,Finn Surman,16.0,DF,Portland Timbers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-199,38,Kosta Barbarouses,17.0,FW,Western Sydney Wanderers,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-200,38,Ben Waine,18.0,FW,Port Vale,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-201,38,Ben Old,19.0,MF,Saint-Étienne,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-202,38,Callum McCowatt,20.0,MF,Silkeborg,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-203,38,Jesse Randall,21.0,FW,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-204,38,Michael Woud,22.0,GK,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-205,38,Ryan Thomas,23.0,MF,PEC Zwolle,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-206,38,Callan Elliot,24.0,DF,Auckland FC,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-207,38,Lachlan Bayliss,25.0,MF,Newcastle Jets,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-208,38,Tommy Smith,26.0,DF,Braintree Town,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-209,43,Mike Maignan,,GK,Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-210,43,Brice Samba,,GK,Rennes,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-211,43,Robin Risser,,GK,Lens,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-212,43,Lucas Digne,,DF,Aston Villa,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-213,43,Jules Koundé,,DF,Barcelona,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-214,43,Théo Hernandez,,DF,Al-Hilal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-215,43,Lucas Hernandez,,DF,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-216,43,Dayot Upamecano,,DF,Bayern Munich,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-217,43,William Saliba,,DF,Arsenal,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-218,43,Ibrahima Konaté,,DF,Liverpool,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-219,43,Malo Gusto,,DF,Chelsea,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-220,43,Maxence Lacroix,,DF,Crystal Palace,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-221,43,N'Golo Kanté,,MF,Fenerbahçe,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-222,43,Adrien Rabiot,,MF,Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-223,43,Aurélien Tchouaméni,,MF,Real Madrid,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-224,43,Manu Koné,,MF,Roma,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-225,43,Warren Zaïre-Emery,,MF,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-226,43,Kylian Mbappé,,FW,Real Madrid,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-227,43,Ousmane Dembélé,,FW,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-228,43,Marcus Thuram,,FW,Inter Milan,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-229,43,Bradley Barcola,,FW,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-230,43,Michael Olise,,FW,Bayern Munich,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-231,43,Maghnes Akliouche,,FW,Monaco,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-232,43,Désiré Doué,,FW,Paris Saint-Germain,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-233,43,Rayan Cherki,,FW,Manchester City,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
-234,43,Jean-Philippe Mateta,,FW,Crystal Palace,manual,2026-05-16 04:21:27,2026-05-16 04:21:27
+1,3,Raúl Rangel,1,GK,Guadalajara,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+2,3,Carlos Acevedo,12,GK,Santos Laguna,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+3,3,Guillermo Ochoa,13,GK,AEL Limassol,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+4,3,Jorge Sánchez,2,DF,PAOK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+5,3,César Montes,3,DF,América,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+6,3,Edson Álvarez,4,DF,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+7,3,Johan Vásquez,5,DF,Genoa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+8,3,Erik Lira,6,MF,Cruz Azul,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+9,3,Luis Romo,7,MF,Guadalajara,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+10,3,Álvaro Fidalgo,8,MF,Real Betis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+11,3,Raúl Jiménez,9,FW,Fulham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+12,3,Alexis Vega,10,FW,Toluca,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+13,3,Santiago Giménez,11,FW,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+14,3,Armando González,14,FW,Guadalajara,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+15,3,Israel Reyes,15,DF,América,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+16,3,Julián Quiñones,16,FW,Al Qadisiyah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+17,3,Orbelín Pineda,17,MF,AEK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+18,3,Obed Vargas,18,MF,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+19,3,Gilberto Mora,19,MF,Tijuana,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+20,3,Mateo Chávez,20,DF,AZ Alkmaar,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+21,3,César Huerta,21,FW,Anderlecht,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+22,3,Luis Chávez,22,MF,Guadalajara,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+23,3,Jesús Gallardo,23,DF,Toluca,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+24,3,Guillermo Martínez,24,FW,Pumas,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+25,3,Roberto Alvarado,25,MF,Guadalajara,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+26,3,Brian Gutiérrez,26,MF,Guadalajara,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+27,12,Ronwen Williams,1,GK,Mamelodi Sundowns,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+28,12,Ricardo Goss,,GK,Siwele,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+29,12,Sipho Chaine,,GK,Orlando Pirates,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+30,12,Aubrey Modiba,,DF,Mamelodi Sundowns,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+31,12,Khuliso Mudau,,DF,Mamelodi Sundowns,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+32,12,Nkosinathi Sibisi,,DF,Orlando Pirates,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+33,12,Mbekezeli Mbokazi,,DF,Chicago Fire,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+34,12,Ime Okon,,DF,Hannover,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+35,12,Samukele Kabini,,DF,Molde,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+36,12,Khulumani Ndamane,,DF,Mamelodi Sundowns,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+37,12,Thabang Matuludi,,DF,Polokwane City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+38,12,Kamogelo Sebelebele,,DF,Orlando Pirates,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+39,12,Bradley Cross,,DF,Kaizer Chiefs,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+40,12,Olwethy Makhanya,,DF,Philadelphia Union,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+41,12,Teboho Mokoena,4,MF,Mamelodi Sundowns,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+42,12,Sphephelo Sithole,,MF,Tondela,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+43,12,Thalente Mbatha,,MF,Orlando Pirates,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+44,12,Jayden Adams,,MF,Mamelodi Sundowns,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+45,12,Relebohile Mofokeng,10,FW,Orlando Pirates,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+46,12,Themba Zwane,,FW,Mamelodi Sundowns,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+47,12,Lyle Foster,9,FW,Burnley,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+48,12,Evidence Makgopa,,FW,Orlando Pirates,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+49,12,Oswin Appollis,,FW,Orlando Pirates,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+50,12,Iqraam Rayners,,FW,Mamelodi Sundowns,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+51,12,Thapelo Maseko,,FW,AEL Limassol,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+52,12,Tshepang Moremi,,FW,Orlando Pirates,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+53,13,Kim Seung-gyu,,GK,FC Tokyo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+54,13,Jo Hyeon-woo,,GK,Ulsan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+55,13,Song Bum-keun,,GK,Jeonbuk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+56,13,Kim Min-jae,,DF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+57,13,Kim Moon-hwan,,DF,Daejeon,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+58,13,Kim Tae-hyeon,,DF,Kashima Antlers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+59,13,Park Jin-seob,,DF,Zhejiang,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+60,13,Seol Young-woo,,DF,Red Star Belgrade,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+61,13,Jens Castrop,,DF,Borussia Mönchengladbach,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+62,13,Lee Ki-hyuk,,DF,Gangwon,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+63,13,Lee Tae-seok,,DF,Austria Wien,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+64,13,Lee Han-beom,,DF,Midtjylland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+65,13,Cho Yu-min,,DF,Sharjah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+66,13,Kim Jin-gyu,,MF,Jeonbuk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+67,13,Bae Jun-ho,,MF,Stoke,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+68,13,Paik Seung-ho,,MF,Birmingham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+69,13,Yang Hyun-jun,,MF,Celtic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+70,13,Eom Ji-sung,,MF,Swansea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+71,13,Lee Kang-in,,MF,Paris Saint-Germain,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+72,13,Lee Dong-gyeong,,MF,Ulsan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+73,13,Lee Jae-sung,,MF,Mainz,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+74,13,Hwang In-beom,,MF,Feyenoord,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+75,13,Hwang Hee-chan,,MF,Wolverhampton Wanderers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+76,13,Son Heung-min,,FW,Los Angeles FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+77,13,Oh Hyeon-gyu,,FW,Beşiktaş,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+78,13,Cho Gue-sung,,FW,Midtjylland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+79,14,Matěj Kovář,,GK,PSV Eindhoven,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+80,14,Lukáš Horníček,,GK,Braga,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+81,14,Jindřich Staněk,,GK,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+82,14,Vladimír Coufal,,DF,Hoffenheim,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+83,14,David Doudera,,DF,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+84,14,Tomáš Holeš,,DF,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+85,14,Robin Hranáč,,DF,Hoffenheim,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+86,14,Štěpán Chaloupek,,DF,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+87,14,David Jurásek,,DF,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+88,14,Ladislav Krejčí,,DF,Wolverhampton Wanderers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+89,14,Jaroslav Zelený,,DF,Sparta Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+90,14,David Zima,,DF,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+91,14,Lukáš Červ,,MF,Viktoria Plzeň,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+92,14,Vladimír Darida,,MF,Hradec Králové,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+93,14,Lukáš Provod,,MF,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+94,14,Michal Sadílek,,MF,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+95,14,Hugo Sochurek,,MF,Sparta Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+96,14,Alexandr Sojka,,MF,Viktoria Plzeň,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+97,14,Tomáš Souček,,MF,West Ham United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+98,14,Pavel Šulc,,MF,Olympique Lyonnais,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+99,14,Denis Višinský,,MF,Viktoria Plzeň,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+100,14,Adam Hložek,,FW,Hoffenheim,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+101,14,Tomáš Chorý,,FW,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+102,14,Mojmír Chytil,,FW,Slavia Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+103,14,Jan Kuchta,,FW,Sparta Prague,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+104,14,Patrik Schick,,FW,Bayer Leverkusen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+105,16,Gregor Kobel,,GK,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+106,16,Marvin Keller,,GK,Young Boys,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+107,16,Yvon Mvogo,,GK,Lorient,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+108,16,Manuel Akanji,,DF,Inter Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+109,16,Aurèle Amenda,,DF,Eintracht Frankfurt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+110,16,Eray Comert,,DF,Valencia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+111,16,Nico Elvedi,,DF,Borussia Mönchengladbach,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+112,16,Luca Jaquez,,DF,Stuttgart,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+113,16,Miro Muheim,,DF,Hamburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+114,16,Ricardo Rodríguez,,DF,Real Betis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+115,16,Silvan Widmer,,DF,Mainz,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+116,16,Michel Aebischer,,MF,Pisa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+117,16,Christian Fassnacht,,MF,Young Boys,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+118,16,Remo Freuler,,MF,Bologna,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+119,16,Ardon Jashari,,MF,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+120,16,Johan Manzambi,,MF,Freiburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+121,16,Fabian Rieder,,MF,Augsburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+122,16,Djibril Sow,,MF,Sevilla,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+123,16,Rubén Vargas,,MF,Sevilla,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+124,16,Granit Xhaka,,MF,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+125,16,Denis Zakaria,,MF,Monaco,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+126,16,Zeki Amdouni,,FW,Burnley,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+127,16,Breel Embolo,,FW,Rennes,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+128,16,Cedric Itten,,FW,Fortuna Düsseldorf,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+129,16,Dan Ndoye,,FW,Nottingham Forest,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+130,16,Noah Okafor,,FW,Leeds,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+131,17,Meshaal Barsham,,GK,Al Sadd,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+132,17,Salah Zakaria,,GK,Al Duhail,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+133,17,Mahmoud Abunada,,GK,Al Rayyan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+134,17,Hashmi Hussein,,DF,Al Arabi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+135,17,Ayoub Alawi,,DF,Al Gharafa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+136,17,Boualem Khoukhi,,DF,Al Sadd,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+137,17,Pedro Miguel,,DF,Al Sadd,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+138,17,Issa Laaye,,DF,Al Arabi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+139,17,Lucas Mendes,,DF,Al Wakrah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+140,17,Sultan Al-Brake,,DF,Al Duhail,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+141,17,Homam Al-Amin,,DF,Cultural Leonesa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+142,17,Mohammed Al-Manai,,MF,Al Shamal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+143,17,Jassem Jaber,,MF,Al Arabi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+144,17,Karim Boudiaf,,MF,Al Duhail,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+145,17,Ahmed Fathi,,MF,Al Arabi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+146,17,Abdulaziz Hatem,,MF,Al Rayyan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+147,17,Assim Madibo,,MF,Al Wakrah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+148,17,Hassan Al-Haydos,10,FW,Al Sadd,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+149,17,Akram Afif,,FW,Al Sadd,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+150,17,Tahseen Mohammed,,FW,Al Duhail,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+151,17,Edmilson Junior,,FW,Al Duhail,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+152,17,Almoez Ali,,FW,Al Duhail,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+153,17,Mohammed Muntari,,FW,Al Gharafa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+154,17,Youssef Abdulrazzaq,,FW,Al Wakrah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+155,17,Ahmed Alaa,,FW,Al Rayyan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+156,17,Ahmed Al-Janahi,,FW,Al Gharafa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+157,18,Nikola Vasilj,,GK,FC St. Pauli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+158,18,Martin Zlomislić,,GK,Rijeka,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+159,18,Osman Hadžikadić,,GK,Slaven Belupo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+160,18,Sead Kolašinac,,DF,Atalanta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+161,18,Amar Dedić,,DF,Benfica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+162,18,Nihad Mujakić,,DF,Gaziantep,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+163,18,Nikola Katić,,DF,Schalke 04,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+164,18,Tarik Muharemović,,DF,Sassuolo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+165,18,Stjepan Radeljić,,DF,Rijeka,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+166,18,Dennis Hadžikadunić,,DF,Sampdoria,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+167,18,Nidal Čelić,,DF,Lens,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+168,18,Amir Hadžiahmetović,,MF,Hull,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+169,18,Ivan Šunjić,,MF,Pafos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+170,18,Ivan Bašić,,MF,Astana,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+171,18,Dženis Burnić,,MF,Karlsruher,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+172,18,Ermin Mahmić,,MF,Slovan Liberec,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+173,18,Benjamin Tahirović,,MF,Brøndby,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+174,18,Amar Memić,,MF,Viktoria Plzeň,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+175,18,Armin Gigović,,MF,Young Boys,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+176,18,Kerim Alajbegović,,MF,RB Salzburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+177,18,Esmir Bajraktarević,,MF,PSV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+178,18,Ermedin Demirović,,FW,Stuttgart,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+179,18,Jovo Lukić,,FW,Universitatea Cluj,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+180,18,Samed Baždar,,FW,Jagiellonia Białystok,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+181,18,Haris Tabaković,,FW,Borussia Mönchengladbach,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+182,18,Edin Džeko,,FW,Schalke 04,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+183,2,Maxime Crépeau,,GK,Orlando City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+184,2,Owen Goodman,,GK,Barnsley,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+185,2,Dayne St. Clair,,GK,Inter Miami,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+186,2,Moisé Bombito,,DF,Nice,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+187,2,Derek Cornelius,,DF,Rangers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+188,2,Alphonso Davies,,DF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+189,2,Luc de Fougerolles,,DF,Dender EH,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+190,2,Alistair Johnston,,DF,Celtic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+191,2,Alfie Jones,,DF,Middlesbrough,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+192,2,Richie Laryea,,DF,Toronto,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+193,2,Niko Sigur,,DF,Hajduk Split,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+194,2,Joel Waterman,,DF,Chicago Fire,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+195,2,Ali Ahmed,,MF,Norwich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+196,2,Tajon Buchanan,,MF,Villarreal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+197,2,Mathieu Choinière,,MF,LAFC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+198,2,Stephen Eustáquio,,MF,LAFC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+199,2,Marcelo Flores,,MF,Tigres UANL,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+200,2,Ismaël Koné,,MF,Sassuolo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+201,2,Liam Millar,,MF,Hull,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+202,2,Jonathan Osorio,,MF,Toronto,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+203,2,Nathan-Dylan Saliba,,MF,Anderlecht,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+204,2,Jacob Shaffelburg,,MF,LAFC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+205,2,Jonathan David,,FW,Juventus,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+206,2,Promise David,,FW,Union Saint-Gilloise,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+207,2,Cyle Larin,,FW,Southampton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+208,2,Tani Oluwaseyi,,FW,Villarreal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+209,19,Alisson,1,GK,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+210,19,Ederson,,GK,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+211,19,Weverton,,GK,Grêmio,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+212,19,Marquinhos,,DF,Paris Saint-Germain,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+213,19,Gabriel,,DF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+214,19,Bremer,,DF,Juventus,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+215,19,Ibañez,,DF,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+216,19,Leo Pereira,,DF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+217,19,Wesley,,DF,Roma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+218,19,Danilo,,DF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+219,19,Alex Sandro,,DF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+220,19,Douglas Santos,,DF,Zenit Saint Petersburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+221,19,Casemiro,,MF,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+222,19,Bruno Guimarães,,MF,Newcastle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+223,19,Fabinho,,MF,Al Ittihad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+224,19,Lucas Paquetá,,MF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+225,19,Vinicius Junior,7,FW,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+226,19,Raphinha,11,FW,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+227,19,Matheus Cunha,,FW,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+228,19,Luiz Henrique,,FW,Zenit Saint Petersburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+229,19,Igor Thiago,,FW,Brentford,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+230,19,Endrick,,FW,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+231,19,Gabriel Martinelli,,FW,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+232,19,Rayan,,FW,Bournemouth,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+233,19,Neymar,10,FW,Santos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+234,19,Rodrygo,,FW,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+235,20,Yassine Bounou,,GK,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+236,20,Munir Mohamedi,,GK,RS Berkane,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+237,20,Ahmed Tagnaouti,,GK,Royal Armed Forces,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+238,20,Noussair Mazraoui,,DF,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+239,20,Anass Salah-Eddine,,DF,PSV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+240,20,Youssef Belammari,,DF,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+241,20,Nayef Aguerd,,DF,Marseille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+242,20,Chadi Riad,,DF,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+243,20,Issa Diop,,DF,Fulham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+244,20,Redouane Halhal,,DF,KV Mechelen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+245,20,Achraf Hakimi,,DF,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+246,20,Zakaria El Ouahdi,,DF,Genk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+247,20,Samir El Mourabet,,MF,Strasbourg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+248,20,Ayyoub Bouaddi,,MF,Lille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+249,20,Neil El Aynaoui,,MF,Roma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+250,20,Sofyan Amrabat,,MF,Real Betis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+251,20,Azzedine Ounahi,,MF,Girona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+252,20,Bilal El Khannouss,,MF,Stuttgart,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+253,20,Ismael Saibari,,MF,PSV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+254,20,Abdessamad Ezzalzouli,,FW,Real Betis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+255,20,Chemsdine Talbi,,FW,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+256,20,Soufiane Rahimi,,FW,Al Ain,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+257,20,Ayoub El Kaabi,,FW,Olympiacos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+258,20,Brahim Díaz,,FW,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+259,20,Yassine Gessime,,FW,Strasbourg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+260,20,Ayoub Amaimouni-Echghouyabe,,FW,Eintracht Frankfurt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+261,21,Johnny Placide,,GK,Bastia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+262,21,Alexandre Pierre,,GK,Sochaux,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+263,21,Josue Duverger,,GK,FC Cosmos Koblenz,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+264,21,Carlens Arcus,,DF,Angers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+265,21,Wilguens Pauguain,,DF,Zulte Waregem,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+266,21,Duke Lacroix,,DF,Colorado Springs,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+267,21,Martin Experience,,DF,Nancy,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+268,21,Jean-Kevin Duverne,,DF,Gent,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+269,21,Ricardo Ade,,DF,LDU Quito,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+270,21,Hannes Delcroix,,DF,Lugano,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+271,21,Keeto Thermoncy,,DF,Young Boys,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+272,21,Leverton Pierre,,MF,Vizela,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+273,21,Carl-Fred Sainthe,,MF,El Paso Locomotive,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+274,21,Jean-Jacques Danley,,MF,Philadelphia Union,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+275,21,Jean-Ricner Bellegarde,,MF,Wolverhampton Wanderers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+276,21,Pierre Woodenski,,MF,Violette,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+277,21,Dominique Simon,,MF,Tatran Prešov,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+278,21,Louicius Deedson,,FW,Dallas,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+279,21,Ruben Providence,,FW,Almere City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+280,21,Josue Casimir,,FW,Auxerre,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+281,21,Derrick Etienne,,FW,Toronto,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+282,21,Wilson Isidor,,FW,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+283,21,Duckens Nazon,,FW,Esteghlal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+284,21,Frantzdy Pierrot,,FW,Çaykur Rizespor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+285,21,Yassin Fortune,,FW,Vizela,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+286,21,Lenny Joseph,,FW,Ferencváros,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+287,22,Craig Gordon,,GK,Hearts,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+288,22,Angus Gunn,,GK,Nottingham Forest,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+289,22,Liam Kelly,,GK,Rangers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+290,22,Grant Hanley,,DF,Hibernian,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+291,22,Jack Hendry,,DF,Al Etiffaq,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+292,22,Aaron Hickey,,DF,Brentford,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+293,22,Dom Hyam,,DF,Wrexham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+294,22,Scott McKenna,,DF,Dinamo Zagreb,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+295,22,Nathan Patterson,,DF,Everton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+296,22,Anthony Ralston,,DF,Celtic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+297,22,Andy Robertson,,DF,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+298,22,John Souttar,,DF,Rangers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+299,22,Kieran Tierney,,DF,Celtic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+300,22,Ryan Christie,,MF,Bournemouth,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+301,22,Findlay Curtis,,MF,Rangers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+302,22,Lewis Ferguson,,MF,Bologna,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+303,22,Ben Doak,,MF,Bournemouth,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+304,22,Tyler Fletcher,,MF,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+305,22,John McGinn,,MF,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+306,22,Kenny McLean,,MF,Norwich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+307,22,Scott McTominay,,MF,Napoli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+308,22,Che Adams,,FW,Torino,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+309,22,Lyndon Dykes,,FW,Charlton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+310,22,George Hirst,,FW,Ipswich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+311,22,Lawrence Shankland,,FW,Rangers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+312,22,Ross Stewart,,FW,Southampton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+313,24,Roberto Junior Fernandez,,GK,Cerro Porteño,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+314,24,Orlando Gill,,GK,San Lorenzo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+315,24,Gastón Olveira,,GK,Olimpia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+316,24,Omar Alderete,,DF,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+317,24,Junior Alonso,,DF,Atlético Mineiro,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+318,24,Fabián Balbuena,,DF,Grêmio,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+319,24,Juan José Cáceres,,DF,Dinamo Moscow,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+320,24,José Canale,,DF,Lanús,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+321,24,Gustavo Gómez,,DF,Palmeiras,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+322,24,Alexandro Maidana,,DF,Talleres,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+323,24,Gustavo Velázquez,,DF,Cerro Porteño,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+324,24,Damián Bobadilla,,MF,São Paulo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+325,24,Gustavo Caballero,,MF,Portsmouth,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+326,24,Andrés Cubas,,MF,Vancouver Whitecaps,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+327,24,Matías Galarza,,MF,Atlanta United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+328,24,Diego Gómez,,MF,Brighton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+329,24,Mauricio Magalhães,,MF,Palmeiras,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+330,24,Brjaian Ojeda,,MF,Orlando City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+331,24,Alejandro Romero,,MF,Al Ain,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+332,24,Miguel Almirón,,FW,Atlanta United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+333,24,Gabriel Avalos,,FW,Independiente,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+334,24,Álex Arce,,FW,Independiente Rivadavia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+335,24,Julio Enciso,,FW,Strasbourg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+336,24,Isidro Pitta,,FW,Bragantino,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+337,24,Antonio Sanabria,,FW,Cremonese,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+338,24,Ramón Sosa,,FW,Palmeiras,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+339,25,Maty Ryan,,GK,Levante,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+340,25,Paul Izzo,,GK,Randers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+341,25,Patrick Beach,,GK,Melbourne City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+342,25,Aziz Behich,,DF,Melbourne City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+343,25,Jordan Bos,,DF,Feyenoord,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+344,25,Cameron Burgess,,DF,Swansea City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+345,25,Alessandro Circati,,DF,Parma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+346,25,Miloš Degenek,,DF,APOEL,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+347,25,Jason Geria,,DF,Albirex Niigata,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+348,25,Lucas Herrington,,DF,Colorado Rapids,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+349,25,Jacob Italiano,,DF,Grazer AK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+350,25,Harry Souttar,,DF,Leicester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+351,25,Kai Trewin,,DF,New York City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+352,25,Cameron Devlin,,MF,Hearts,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+353,25,Ajdin Hrustić,,MF,Heracles Almelo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+354,25,Jackson Irvine,,MF,St. Pauli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+355,25,Connor Metcalfe,,MF,St. Pauli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+356,25,Aiden O'Neill,,MF,New York City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+357,25,Paul Okon-Engstler,,MF,Sydney FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+358,25,Nestory Irankunda,,FW,Watford,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+359,25,Mathew Leckie,,FW,Melbourne City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+360,25,Awer Mabil,,FW,CD Castellón,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+361,25,Mohamed Toure,,FW,Norwich City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+362,25,Nishan Velupillay,,FW,Melbourne Victory,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+363,25,Cristian Volpato,,FW,Sassuolo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+364,25,Tete Yengi,,FW,Machida Zelvia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+365,26,Uğurcan Çakır,,GK,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+366,26,Altay Bayındır,,GK,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+367,26,Mert Günok,,GK,Beşiktaş,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+368,26,Ferdi Kadıoğlu,,DF,Brighton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+369,26,Merih Demiral,,DF,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+370,26,Zeki Çelik,,DF,Roma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+371,26,Ozan Kabak,,DF,Hoffenheim,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+372,26,Mert Müldür,,DF,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+373,26,Abdülkerim Bardakcı,,DF,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+374,26,Eren Elmalı,,DF,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+375,26,Çağlar Söyüncü,,DF,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+376,26,Samet Akaydın,,DF,Rizespor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+377,26,Arda Güler,,MF,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+378,26,Can Uzun,,MF,Eintracht Frankfurt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+379,26,Orkun Kökçü,,MF,Beşiktaş,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+380,26,Hakan Çalhanoğlu,,MF,Inter Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+381,26,İsmail Yüksek,,MF,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+382,26,Kaan Ayhan,,MF,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+383,26,Salih Özcan,,MF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+384,26,Kenan Yıldız,,FW,Juventus,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+385,26,Barış Alper Yılmaz,,FW,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+386,26,Kerem Aktürkoğlu,,FW,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+387,26,Yunus Akgün,,FW,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+388,26,Oğuz Aydın,,FW,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+389,26,Deniz Gül,,FW,Porto,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+390,26,İrfan Can Kahveci,,FW,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+391,27,Manuel Neuer,1,GK,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+392,27,Oliver Baumann,12,GK,Hoffenheim,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+393,27,Alexander Nübel,21,GK,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+394,27,Waldemar Anton,,DF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+395,27,Nathaniel Brown,,DF,Eintracht Frankfurt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+396,27,David Raum,,DF,RB Leipzig,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+397,27,Antonio Rüdiger,2,DF,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+398,27,Nico Schlotterbeck,15,DF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+399,27,Jonathan Tah,,DF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+400,27,Malick Thiaw,24,DF,Newcastle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+401,27,Pascal Groß,,MF,Brighton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+402,27,Joshua Kimmich,6,MF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+403,27,Felix Nmecha,,MF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+404,27,Aleksandar Pavlović,,MF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+405,27,Angelo Stiller,,MF,Stuttgart,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+406,27,Leon Goretzka,,MF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+407,27,Florian Wirtz,17,MF,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+408,27,Jamie Leweling,9,FW,Stuttgart,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+409,27,Maximilian Beier,,FW,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+410,27,Kai Havertz,,FW,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+411,27,Lennart Karl,25,FW,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+412,27,Jamal Musiala,10,FW,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+413,27,Leroy Sané,19,FW,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+414,27,Deniz Undav,26,FW,Stuttgart,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+415,27,Nick Woltemade,11,FW,Newcastle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+416,29,Yahia Fofana,,GK,Çaykur Rizespor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+417,29,Mohamed Koné,,GK,Charleroi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+418,29,Alban Lafont,,GK,Panathinaikos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+419,29,Emmanuel Agbadou,,DF,Beşiktaş,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+420,29,Clément Akpa,,DF,Auxerre,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+421,29,Ousmane Diomandé,,DF,Sporting,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+422,29,Guela Doué,,DF,Strasbourg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+423,29,Ghislain Konan,,DF,Gil Vicente,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+424,29,Odilon Kossounou,,DF,Atalanta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+425,29,Evan Ndicka,,DF,Roma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+426,29,Wilfried Singo,,DF,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+427,29,Seko Fofana,,MF,Porto,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+428,29,Parfait Guiagon,,MF,Charleroi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+429,29,Christ Inao Oulai,,MF,Trabzonspor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+430,29,Franck Kessié,,MF,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+431,29,Ibrahim Sangaré,,MF,Nottingham Forest,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+432,29,Jean-Michael Séri,,MF,Maribor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+433,29,Simon Adingra,,FW,Monaco,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+434,29,Ange-Yoan Bonny,,FW,Inter Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+435,29,Amad Diallo,,FW,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+436,29,Oumar Diakité,,FW,Cercle Brugge,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+437,29,Yan Diomandé,,FW,RB Leipzig,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+438,29,Evann Guessand,,FW,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+439,29,Nicolas Pépé,,FW,Villarreal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+440,29,Bazoumana Touré,,FW,Hoffenheim,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+441,29,Elye Wahi,,FW,Nice,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+442,30,Hernán Galíndez,,GK,Huracán,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+443,30,Moisés Ramírez,,GK,Kifisia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+444,30,Gonzalo Valle,,GK,LDU Quito,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+445,30,Piero Hincapié,,DF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+446,30,Willian Pacho,,DF,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+447,30,Pervis Estupiñán,,DF,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+448,30,Félix Torres,,DF,Internacional,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+449,30,Joel Ordóñez,,DF,Club Brugge,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+450,30,Jackson Porozo,,DF,Tijuana,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+451,30,Ángelo Preciado,,DF,Atlético Mineiro,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+452,30,Moisés Caicedo,,MF,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+453,30,Alan Franco,,MF,Atlético Mineiro,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+454,30,Kendry Páez,,MF,River Plate,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+455,30,Pedro Vite,,MF,UNAM,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+456,30,Jordy Alcívar,,MF,Independiente del Valle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+457,30,Denil Castillo,,MF,Midtjylland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+458,30,Yaimar Medina,,MF,Genk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+459,30,Enner Valencia,,FW,Pachuca,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+460,30,Kevin Rodríguez,,FW,Union Saint-Gilloise,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+461,30,Jordy Caicedo,,FW,Huracán,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+462,30,Nilson Angulo,,FW,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+463,30,Anthony Valencia,,FW,Antwerp,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+464,30,Jérémy Arévalo,,FW,Stuttgart,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+465,31,Bart Verbruggen,1,GK,Brighton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+466,31,Robin Roefs,13,GK,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+467,31,Mark Flekken,23,GK,Bayer Leverkusen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+468,31,Virgil van Dijk,4,DF,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+469,31,Jan Paul van Hecke,9,DF,Brighton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+470,31,Nathan Aké,5,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+471,31,Micky van de Ven,8,DF,Tottenham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+472,31,Denzel Dumfries,6,DF,Inter Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+473,31,Jorrel Hato,7,DF,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+474,31,Jurriën Timber,2,DF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+475,31,Frenkie de Jong,10,MF,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+476,31,Tijjani Reijnders,14,MF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+477,31,Justin Kluivert,24,MF,Bournemouth,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+478,31,Quinten Timber,16,MF,Marseille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+479,31,Teun Koopmeiners,12,MF,Juventus,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+480,31,Ryan Gravenberch,11,MF,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+481,31,Marten de Roon,3,MF,Atalanta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+482,31,Guus Til,15,MF,PSV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+483,31,Mats Wieffer,17,MF,Brighton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+484,31,Cody Gakpo,18,FW,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+485,31,Donyell Malen,20,FW,Roma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+486,31,Brian Brobbey,21,FW,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+487,31,Noa Lang,25,FW,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+488,31,Memphis Depay,19,FW,Corinthians,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+489,31,Wout Weghorst,,FW,Ajax,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+490,31,Crysencio Summerville,26,FW,West Ham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+491,32,Tomoki Hayakawa,,GK,Kashima Antlers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+492,32,Keisuke Osako,,GK,Sanfrecce Hiroshima,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+493,32,Zion Suzuki,,GK,Parma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+494,32,Yuto Nagatomo,,DF,FC Tokyo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+495,32,Shogo Taniguchi,,DF,Sint-Truiden,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+496,32,Ko Itakura,,DF,Ajax,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+497,32,Tsuyoshi Watanabe,,DF,Feyenoord,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+498,32,Takehiro Tomiyasu,,DF,Ajax,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+499,32,Hiroki Ito,,DF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+500,32,Ayumu Seko,,DF,Le Havre,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+501,32,Yukinari Sugawara,,DF,Werder Bremen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+502,32,Junosuke Suzuki,,DF,Copenhagen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+503,32,Wataru Endo,,MF,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+504,32,Junya Ito,,MF,Genk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+505,32,Daichi Kamada,,MF,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+506,32,Koki Ogawa,,MF,NEC Nijmegen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+507,32,Daizen Maeda,,MF,Celtic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+508,32,Ritsu Doan,,MF,Eintracht Frankfurt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+509,32,Ao Tanaka,,MF,Leeds,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+510,32,Kaishu Sano,,MF,Mainz,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+511,32,Takefusa Kubo,,MF,Real Sociedad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+512,32,Ayase Ueda,,FW,Feyenoord,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+513,32,Keito Nakamura,,FW,Reims,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+514,32,Ito Suzuki,,FW,Freiburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+515,32,Kento Shiode,,FW,Wolfsburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+516,32,Keisuke Goto,,FW,Sint-Truiden,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+517,33,Viktor Johansson,,GK,Stoke,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+518,33,Kristoffer Nordfeldt,,GK,AIK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+519,33,Jacob Widell Zetterström,,GK,Derby,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+520,33,Hjalmar Ekdal,,DF,Burnley,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+521,33,Gabriel Gudmundsson,,DF,Leeds,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+522,33,Isak Hien,,DF,Atalanta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+523,33,Emil Holm,,DF,Juventus,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+524,33,Gustaf Lagerbielke,,DF,Braga,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+525,33,Victor Lindelöf,,DF,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+526,33,Erik Smith,,DF,St. Pauli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+527,33,Carl Starfelt,,DF,Celta Vigo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+528,33,Elliot Stroud,,DF,Mjällby,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+529,33,Daniel Svensson,,DF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+530,33,Taha Ali,,MF,Malmö,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+531,33,Yasin Ayari,,MF,Brighton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+532,33,Lucas Bergvall,,MF,Tottenham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+533,33,Jesper Karlström,,MF,Udinese,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+534,33,Ken Sema,,MF,Pafos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+535,33,Mattias Svanberg,,MF,Wolfsburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+536,33,Besfort Zeneli,,MF,Union Saint-Gilloise,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+537,33,Alexander Bernhardsson,,FW,Holstein Kiel,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+538,33,Anthony Elanga,,FW,Newcastle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+539,33,Viktor Gyökeres,,FW,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+540,33,Alexander Isak,,FW,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+541,33,Gustaf Nilsson,,FW,Club Brugge,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+542,33,Benjamin Nygren,,FW,Celtic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+543,34,Sabri Ben Hassen,,GK,Étoile Sahel,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+544,34,Abdelmouhib Chamakh,,GK,Club Africain,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+545,34,Aymen Dahman,,GK,CS Sfaxien,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+546,34,Ali Abdi,,DF,Nice,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+547,34,Adem Arous,,DF,Kasımpaşa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+548,34,Mohamed Amine Ben Hamida,,DF,Espérance,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+549,34,Dylan Bronn,,DF,Servette,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+550,34,Raed Chikhaoui,,DF,US Monastir,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+551,34,Moutaz Neffati,,DF,Norrköping,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+552,34,Omar Rekik,,DF,Maribor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+553,34,Montassar Talbi,,DF,Lorient,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+554,34,Yan Valery,,DF,Young Boys,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+555,34,Mortadha Ben Ouanes,,MF,Kasımpaşa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+556,34,Anis Ben Slimane,,MF,Norwich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+557,34,Ismaïl Gharbi,,MF,Augsburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+558,34,Rani Khedira,,MF,Union Berlin,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+559,34,Mohamed Hadj Mahmoud,,MF,Lugano,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+560,34,Hannibal Mejbri,,MF,Burnley,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+561,34,Ellyes Skhiri,,MF,Eintracht Frankfurt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+562,34,Elias Achouri,,FW,Copenhagen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+563,34,Khalil Ayari,,FW,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+564,34,Firas Chaouat,,FW,Club Africain,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+565,34,Rayan Elloumi,,FW,Vancouver Whitecaps,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+566,34,Hazem Mastouri,,FW,Dynamo Makhachkala,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+567,34,Elias Saad,,FW,Hannover,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+568,34,Sebastian Tounekti,,FW,Celtic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+569,35,Thibaut Courtois,,GK,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+570,35,Senne Lammens,,GK,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+571,35,Mike Penders,,GK,Racing Strasbourg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+572,35,Timothy Castagne,,DF,Fulham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+573,35,Zeno Debast,,DF,Sporting Lisbon,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+574,35,Maxim De Cuyper,,DF,Brighton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+575,35,Koni De Winter,,DF,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+576,35,Brandon Mechele,,DF,Club Brugge,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+577,35,Thomas Meunier,,DF,Lille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+578,35,Nathan Ngoy,,DF,Lille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+579,35,Joaquin Seys,,DF,Club Brugge,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+580,35,Arthur Theate,,DF,Eintracht Frankfurt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+581,35,Kevin De Bruyne,,MF,Napoli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+582,35,Amadou Onana,,MF,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+583,35,Nicolas Raskin,,MF,Rangers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+584,35,Youri Tielemans,,MF,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+585,35,Hans Vanaken,,MF,Club Brugge,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+586,35,Axel Witsel,,MF,Girona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+587,35,Charles De Ketelaere,,FW,Atalanta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+588,35,Jérémy Doku,,FW,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+589,35,Matías Fernández-Pardo,,FW,Lille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+590,35,Romelu Lukaku,,FW,Napoli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+591,35,Dodi Lukebakio,,FW,Benfica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+592,35,Diego Moreira,,FW,Strasbourg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+593,35,Alexis Saelemaekers,,FW,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+594,35,Leandro Trossard,,FW,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+595,36,Mohamed El Shenawy,,GK,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+596,36,Mostafa Shobeir,,GK,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+597,36,El Mahdi Soliman,,GK,Zamalek,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+598,36,Mohamed Hany,,DF,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+599,36,Tarek Alaa,,DF,Zed,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+600,36,Hamdy Fathy,,DF,Al Wakrah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+601,36,Rami Rabia,,DF,Al Ain,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+602,36,Yasser Ibrahim,,DF,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+603,36,Hossam Abdelmaguid,,DF,Zamalek,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+604,36,Mohamed Abdelmonem,,DF,Nice,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+605,36,Ahmed Fatouh,,DF,Zamalek,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+606,36,Karim Hafez,,DF,Pyramids,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+607,36,Marwan Ateya,,MF,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+608,36,Mohanad Lasheen,,MF,Pyramids,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+609,36,Nabil Emad,,MF,Al Najma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+610,36,Mahmoud Saber,,MF,Zed,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+611,36,Ahmed Zizo,,MF,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+612,36,Emam Ashour,,MF,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+613,36,Mostafa Ziko,,MF,Pyramids,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+614,36,Mahmoud Trezeguet,,MF,Al Ahly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+615,36,Ibrahim Adel,,MF,Nordsjaelland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+616,36,Haissem Hassan,,MF,Real Oviedo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+617,36,Omar Marmoush,,FW,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+618,36,Mohamed Salah,,FW,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+619,36,Hamza Abdelkarim,,FW,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+620,36,Aqtay Abdallah,,FW,Enppi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+621,37,Alireza Beiranvand,,GK,Tractor FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+622,37,Seyed Hossein Hosseini,,GK,Sepahan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+623,37,Payam Niazmand,,GK,Persepolis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+624,37,Danial Eiri,,DF,Malavan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+625,37,Ehsan Hajsafi,,DF,Sepahan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+626,37,Saleh Hardani,,DF,Esteghlal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+627,37,Hossein Kanaani,,DF,Persepolis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+628,37,Shoja Khalilzadeh,,DF,Tractor FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+629,37,Milad Mohammadi,,DF,Persepolis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+630,37,Ali Nemati,,DF,Foolad FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+631,37,Ramin Rezaeian,,DF,Foolad FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+632,37,Rouzbeh Cheshmi,,MF,Esteghlal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+633,37,Saeid Ezatolahi,,MF,Shabab Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+634,37,Mehdi Ghaedi,,MF,Al Nasr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+635,37,Saman Ghoddos,,MF,Kalba FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+636,37,Mohammad Ghorbani,,MF,Al Wahda,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+637,37,Alireza Jahanbakhsh,,MF,FC Dender,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+638,37,Mohammad Mohebi,,MF,Rostov,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+639,37,Amir Mohammad Razzaghinia,,MF,Esteghlal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+640,37,Mehdi Torabi,,MF,Tractor FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+641,37,Aria Yousefi,,MF,Sepahan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+642,37,Ali Alipour,,FW,Persepolis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+643,37,Dennis Dargahi,,FW,Standard Liège,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+644,37,Amirhossein Hosseinzadeh,,FW,Tractor FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+645,37,Mehdi Taremi,,FW,Olympiakos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+646,37,Shahriar Moghanlou,,FW,Kalba FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+647,38,Max Crocombe,,GK,Millwall,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+648,38,Alex Paulsen,,GK,Lechia Gdańsk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+649,38,Michael Woud,,GK,Auckland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+650,38,Tim Payne,,DF,Wellington Phoenix,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+651,38,Francis De Vries,,DF,Auckland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+652,38,Tyler Bindon,,DF,Nottingham Forest,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+653,38,Michael Boxall,,DF,Minnesota United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+654,38,Liberato Cacace,,DF,Wrexham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+655,38,Nando Pijnaker,,DF,Auckland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+656,38,Finn Surman,,DF,Portland Timbers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+657,38,Callan Elliot,,DF,Auckland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+658,38,Tommy Smith,,DF,Braintree Town,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+659,38,Joe Bell,,MF,Viking FK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+660,38,Matt Garbett,,MF,Peterborough,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+661,38,Marko Stamenic,,MF,Swansea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+662,38,Sarpreet Singh,,MF,Wellington Phoenix,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+663,38,Alex Rufer,,MF,Wellington Phoenix,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+664,38,Ryan Thomas,,MF,PEC Zwolle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+665,38,Chris Wood,,FW,Nottingham Forest,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+666,38,Eli Just,,FW,Motherwell,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+667,38,Kosta Barbarouses,,FW,Western Sydney Wanderers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+668,38,Ben Waine,,FW,Port Vale,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+669,38,Ben Old,,FW,Saint-Étienne,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+670,38,Callum McCowatt,,FW,Silkeborg IF,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+671,38,Jesse Randall,,FW,Auckland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+672,38,Lachlan Bayliss,,FW,Newcastle Jets,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+673,39,Unai Simón,23,GK,Athletic Club,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+674,39,David Raya,1,GK,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+675,39,Joan Garcia,13,GK,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+676,39,Aymeric Laporte,,DF,Athletic Club,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+677,39,Marc Cucurella,,DF,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+678,39,Marcos Llorente,,DF,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+679,39,Eric García,4,DF,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+680,39,Pedro Porro,,DF,Tottenham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+681,39,Àlex Grimaldo,,DF,Bayer Leverkusen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+682,39,Pau Cubarsí,22,DF,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+683,39,Marc Pubill,,DF,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+684,39,Rodri,16,MF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+685,39,Fabián Ruiz,,MF,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+686,39,Mikel Merino,,MF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+687,39,Pedri,20,MF,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+688,39,Gavi,9,MF,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+689,39,Martín Zubimendi,,MF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+690,39,Alex Baena,,MF,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+691,39,Ferran Torres,7,FW,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+692,39,Mikel Oyarzabal,21,FW,Real Sociedad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+693,39,Dani Olmo,10,FW,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+694,39,Nico Williams,17,FW,Athletic Club,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+695,39,Lamine Yamal,19,FW,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+696,39,Yeremy Pino,,FW,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+697,39,Borja Iglesias,,FW,Celta Vigo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+698,39,Víctor Muñoz,,FW,Osasuna,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+699,40,Vozinha,,GK,Chaves,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+700,40,Márcio Rosa,,GK,Montana,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+701,40,CJ dos Santos,,GK,San Diego,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+702,40,Stopira,,DF,Torreense,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+703,40,Roberto Lopes,,DF,Shamrock Rovers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+704,40,João Paulo,,DF,FCSB,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+705,40,Diney,,DF,Al Bataeh,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+706,40,Logan Costa,,DF,Villarreal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+707,40,Steven Moreira,,DF,Columbus Crew,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+708,40,Wagner Pina,,DF,Trabzonspor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+709,40,Sidny Lopes Cabral,,DF,Benfica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+710,40,Kelvin Pires,,DF,SJK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+711,40,Jamiro Monteiro,,MF,PEC Zwolle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+712,40,Kevin Pina,,MF,Krasnodar,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+713,40,Deroy Duarte,,MF,Ludogorets,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+714,40,Telmo Arcanjo,,MF,Vitória Guimarães,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+715,40,Laros Duarte,,MF,Puskás Akadémia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+716,40,Yannick Semedo,,MF,Farense,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+717,40,Ryan Mendes,,FW,Igdir,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+718,40,Garry Rodrigues,,FW,Apollon Limassol,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+719,40,Willy Semedo,,FW,Omonia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+720,40,Jovane Cabral,,FW,Estrela Amadora,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+721,40,Gilson Tavares,,FW,Akron Tolyatti,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+722,40,Dailon Livramento,,FW,Casa Pia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+723,40,Helio Varela,,FW,Maccabi Tel Aviv,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+724,40,Nuno da Costa,,FW,İstanbul Başakşehir,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+725,41,Mohammed Al Owais,,GK,Al Ula,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+726,41,Nawaf Al Aqidi,,GK,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+727,41,Ahmed Al Kassar,,GK,Al Qadsiah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+728,41,Abdulelah Al Amri,,DF,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+729,41,Hassan Tambakti,,DF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+730,41,Jehad Thikri,,DF,Al Qadsiah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+731,41,Ali Lajami,,DF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+732,41,Hassan Kadesh,,DF,Al Ittihad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+733,41,Saud Abdulhamid,,DF,Lens,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+734,41,Mohammed Abu Al Shamat,,DF,Al Qadsiah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+735,41,Ali Majrashi,,DF,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+736,41,Moteb Al Harbi,,DF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+737,41,Nawaf Boushal,,DF,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+738,41,Sultan Al-Ghannam,,DF,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+739,41,Mohammed Kanno,,MF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+740,41,Abdullah Al Khaibari,,MF,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+741,41,Ziyad Al Johani,,MF,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+742,41,Nasser Al Dawsari,,MF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+743,41,Musab Al Juwayr,,MF,Al Qadsiah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+744,41,Alaa Al Hajji,,MF,Neom,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+745,41,Salem Al Dawsari,,MF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+746,41,Khalid Al Ghannam,,MF,Al Ettifaq,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+747,41,Ayman Yahya,,MF,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+748,41,Firas Al Buraikan,,FW,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+749,41,Saleh Al Shehri,,FW,Al Ittihad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+750,41,Abdullah Al Hamdan,,FW,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+751,42,Sergio Rochet,,GK,Internacional,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+752,42,Fernando Muslera,,GK,Estudiantes,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+753,42,Santiago Mele,,GK,Monterrey,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+754,42,Guillermo Varela,,DF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+755,42,Ronald Araújo,,DF,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+756,42,José María Giménez,,DF,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+757,42,Santiago Bueno,,DF,Wolverhampton Wanderers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+758,42,Sebastián Cáceres,,DF,Club América,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+759,42,Mathías Olivera,,DF,Napoli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+760,42,Joaquín Piquerez,,DF,Palmeiras,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+761,42,Matías Viña,,DF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+762,42,Juan Manuel Sanabria,,DF,Real Salt Lake,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+763,42,Manuel Ugarte,,MF,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+764,42,Emiliano Martínez,,MF,Palmeiras,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+765,42,Rodrigo Bentancur,,MF,Tottenham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+766,42,Federico Valverde,,MF,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+767,42,Agustín Canobbio,,MF,Fluminense,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+768,42,Giorgian de Arrascaeta,,MF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+769,42,Nicolás de la Cruz,,MF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+770,42,Facundo Pellistri,,MF,Panathinaikos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+771,42,Rodrigo Zalazar,,MF,Braga,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+772,42,Maximiliano Araújo,,MF,Sporting,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+773,42,Brian Rodríguez,,MF,Club América,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+774,42,Rodrigo Aguirre,,FW,Club América,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+775,42,Federico Viña,,FW,Real Oviedo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+776,42,Darwin Núñez,,FW,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+777,43,Mike Maignan,16,GK,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+778,43,Robin Risser,23,GK,Lens,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+779,43,Brice Samba,1,GK,Rennes,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+780,43,Lucas Digne,3,DF,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+781,43,Malo Gusto,2,DF,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+782,43,Lucas Hernández,21,DF,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+783,43,Théo Hernández,19,DF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+784,43,Ibrahima Konaté,15,DF,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+785,43,Jules Koundé,5,DF,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+786,43,Maxence Lacroix,26,DF,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+787,43,William Saliba,17,DF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+788,43,Dayot Upamecano,4,DF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+789,43,N'Golo Kanté,13,MF,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+790,43,Manu Koné,6,MF,AS Roma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+791,43,Adrien Rabiot,14,MF,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+792,43,Aurélien Tchouaméni,8,MF,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+793,43,Warren Zaïre-Emery,18,MF,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+794,43,Maghnes Akliouche,25,FW,Monaco,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+795,43,Bradley Barcola,12,FW,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+796,43,Rayan Cherki,24,FW,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+797,43,Ousmane Dembélé,7,FW,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+798,43,Désiré Doué,20,FW,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+799,43,Jean-Philippe Mateta,22,FW,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+800,43,Kylian Mbappé,10,FW,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+801,43,Michael Olise,11,FW,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+802,43,Marcus Thuram,9,FW,Inter Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+803,44,Édouard Mendy,,GK,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+804,44,Mory Diaw,,GK,Le Havre,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+805,44,Yehvann Diouf,,GK,Nice,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+806,44,Krepin Diatta,,DF,Monaco,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+807,44,Antoine Mendy,,DF,Nice,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+808,44,Kalidou Koulibaly,,DF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+809,44,El Hadji Malick Diouf,,DF,West Ham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+810,44,Mamadou Sarr,,DF,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+811,44,Moussa Niakhaté,,DF,Lyon,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+812,44,Moustapha Mbow,,DF,Paris FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+813,44,Abdoulaye Seck,,DF,Maccabi Haifa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+814,44,Ismail Jakobs,,DF,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+815,44,Ilay Camara,,DF,Anderlecht,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+816,44,Idrissa Gana Guèye,,MF,Everton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+817,44,Pape Guèye,,MF,Villarreal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+818,44,Lamine Camara,,MF,Monaco,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+819,44,Habib Diarra,,MF,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+820,44,Pathé Ciss,,MF,Rayo Vallecano,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+821,44,Pape Matar Sarr,,MF,Tottenham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+822,44,Bara Sapoko Ndiaye,,MF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+823,44,Sadio Mané,,FW,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+824,44,Ismaïla Sarr,,FW,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+825,44,Iliman Ndiaye,,FW,Everton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+826,44,Assane Diao,,FW,Como,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+827,44,Ibrahim Mbaye,,FW,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+828,44,Nicolas Jackson,,FW,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+829,45,Ørjan Nyland,,GK,Sevilla,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+830,45,Egil Selvik,,GK,Watford,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+831,45,Sander Tangvik,,GK,Hamburger SV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+832,45,Julian Ryerson,,DF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+833,45,Marcus Holmgren Pedersen,,DF,Torino,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+834,45,David Møller Wolfe,,DF,Wolverhampton Wanderers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+835,45,Fredrik Bjørkan,,DF,Bodø/Glimt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+836,45,Kristoffer Ajer,,DF,Brentford,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+837,45,Torbjørn Heggem,,DF,Bologna,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+838,45,Leo Skiri Østigård,,DF,Genoa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+839,45,Sondre Langås,,DF,Derby,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+840,45,Henrik Falchener,,DF,Viking,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+841,45,Martin Ødegaard,,MF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+842,45,Sander Berge,,MF,Fulham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+843,45,Fredrik Aursnes,,MF,Benfica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+844,45,Patrick Berg,,MF,Bodø/Glimt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+845,45,Kristian Thorstvedt,,MF,Sassuolo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+846,45,Morten Thorsby,,MF,Cremonese,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+847,45,Thelo Aasgaard,,MF,Rangers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+848,45,Erling Haaland,,FW,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+849,45,Alexander Sørloth,,FW,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+850,45,Jørgen Strand Larsen,,FW,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+851,45,Antonio Nusa,,FW,RB Leipzig,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+852,45,Oscar Bobb,,FW,Fulham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+853,45,Andreas Schjelderup,,FW,Benfica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+854,45,Jens Petter Hauge,,FW,Bodø/Glimt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+855,46,Fahad Talib,,GK,Al Talaba,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+856,46,Jalal Hassan,,GK,Al Zawraa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+857,46,Ahmed Basil,,GK,Al Shorta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+858,46,Hussein Ali,,DF,Pogoń Szczecin,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+859,46,Manaf Younis,,DF,,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+860,46,Ahmed Yahya,,DF,,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+861,46,Mustafa Saadoon,,DF,Al Shorta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+862,46,Zaid Tahseen,,DF,Pakhtakor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+863,46,Rebin Sulaka,,DF,Port,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+864,46,Akam Hashim,,DF,Al Zawraa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+865,46,Merchas Doski,,DF,Viktoria Plzeň,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+866,46,Zaid Ismail,,DF,Al Talaba,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+867,46,Frans Putros,,DF,Persib,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+868,46,Amir Al-Ammari,,MF,Cracovia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+869,46,Kevin Yakob,,MF,Aarhus GF,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+870,46,Zidane Iqbal,,MF,Utrecht,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+871,46,Aimar Sher,,MF,Sarpsborg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+872,46,Ibrahim Bayesh,,MF,Al Dhafra,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+873,46,Ahmed Qasem,,MF,Nashville SC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+874,46,Youssef Amyn,,MF,AEK Larnaca,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+875,46,Marko Farji,,MF,Venezia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+876,46,Ali Jassim,,FW,Al Najma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+877,46,Ali Al-Hamadi,,FW,Ipswich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+878,46,Ali Yousef,,FW,Al Talaba,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+879,46,Aymen Hussein,,FW,Al Karma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+880,46,Mohanad Ali,,FW,Dibba,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+881,47,Emiliano Martínez,23,GK,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+882,47,Juan Musso,1,GK,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+883,47,Gerónimo Rulli,12,GK,Marseille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+884,47,Leonardo Balerdi,2,DF,Marseille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+885,47,Lisandro Martínez,6,DF,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+886,47,Facundo Medina,25,DF,Marseille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+887,47,Nahuel Molina,26,DF,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+888,47,Gonzalo Montiel,4,DF,River Plate,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+889,47,Nicolás Otamendi,19,DF,Benfica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+890,47,Cristian Romero,13,DF,Tottenham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+891,47,Nicolás Tagliafico,3,DF,Lyon,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+892,47,Valentín Barco,8,MF,Strasbourg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+893,47,Rodrigo De Paul,7,MF,Inter Miami,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+894,47,Enzo Fernández,24,MF,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+895,47,Giovani Lo Celso,11,MF,Real Betis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+896,47,Alexis Mac Allister,20,MF,Liverpool,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+897,47,Exequiel Palacios,14,MF,Bayer Leverkusen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+898,47,Leandro Paredes,5,MF,Boca Juniors,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+899,47,Thiago Almada,16,FW,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+900,47,Julián Álvarez,9,FW,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+901,47,Nicolás González,15,FW,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+902,47,José Manuel López,21,FW,Palmeiras,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+903,47,Lautaro Martínez,22,FW,Inter Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+904,47,Lionel Messi,10,FW,Inter Miami,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+905,47,Nicolás Paz,18,FW,Como,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+906,47,Giuliano Simeone,17,FW,Atlético Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+907,48,Luca Zidane,,GK,Granada,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+908,48,Oussama Benbot,,GK,USM Alger,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+909,48,Melvin Mastil,,GK,Stade Nyonnais,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+910,48,Aïssa Mandi,,DF,Lille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+911,48,Ramy Bensebaïni,,DF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+912,48,Mohamed Amine Tougai,,DF,Espérance de Tunis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+913,48,Rayan Ait-Nouri,,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+914,48,Jaouen Hadjam,,DF,Young Boys,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+915,48,Rafik Belghali,,DF,Hellas Verona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+916,48,Zineddine Belaid,,DF,JS Kabylie,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+917,48,Achref Abada,,DF,USM Alger,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+918,48,Samir Chergui,,DF,Paris FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+919,48,Nabil Bentaleb,,MF,Lille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+920,48,Ramiz Zerrouki,,MF,Twente,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+921,48,Hicham Boudaoui,,MF,Nice,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+922,48,Farès Chaibi,,MF,Eintracht Frankfurt,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+923,48,Houssem Aouar,,MF,Al Ittihad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+924,48,Ibrahim Maza,,MF,Bayer Leverkusen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+925,48,Yacine Titraoui,,MF,Charleroi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+926,48,Riyad Mahrez,,FW,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+927,48,Mohamed Amoura,,FW,Wolfsburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+928,48,Amine Gouiri,,FW,Marseille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+929,48,Anis Hadj Moussa,,FW,Feyenoord,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+930,48,Adil Boulbina,,FW,Al Duhail,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+931,48,Nadhir Benbouali,,FW,Győr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+932,48,Farès Ghedjemis,,FW,Frosinone,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+933,49,Alexander Schlager,,GK,Red Bull Salzburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+934,49,Florian Wiegele,,GK,Viktoria Plzeň,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+935,49,Patrick Pentz,,GK,Brøndby,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+936,49,David Affengruber,,DF,Elche,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+937,49,Kevin Danso,,DF,Tottenham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+938,49,Stefan Posch,,DF,Como,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+939,49,David Alaba,,DF,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+940,49,Philipp Lienhart,,DF,Freiburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+941,49,Phillipp Mwene,,DF,Mainz,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+942,49,Alexander Prass,,DF,Hoffenheim,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+943,49,Marco Friedl,,DF,Werder Bremen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+944,49,Michael Svoboda,,DF,Venezia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+945,49,Xaver Schlager,,MF,RB Leipzig,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+946,49,Nicolas Seiwald,,MF,RB Leipzig,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+947,49,Marcel Sabitzer,,MF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+948,49,Florian Grillitsch,,MF,Braga,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+949,49,Carney Chukwuemeka,,MF,Borussia Dortmund,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+950,49,Romano Schmid,,MF,Werder Bremen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+951,49,Konrad Laimer,,MF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+952,49,Patrick Wimmer,,MF,Wolfsburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+953,49,Paul Wanner,,MF,PSV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+954,49,Alessandro Schöpf,,MF,Wolfsberger,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+955,49,Marko Arnautović,,FW,Red Star Belgrade,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+956,49,Michael Gregoritsch,,FW,Brøndby,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+957,49,Sasa Kalajdzic,,FW,Wolverhampton Wanderers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+958,50,Yazeed Abulaila,,GK,Al Hussein,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+959,50,Abdallah Al-Fakhouri,,GK,Al Wehdat,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+960,50,Nour Bani Attiah,,GK,Al Faisaly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+961,50,Ihsan Haddad,,DF,Al Hussein,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+962,50,Yazan Al-Arab,,DF,FC Seoul,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+963,50,Abdallah Nasib,,DF,Al Zawraa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+964,50,Mohammad Abu Hashish,,DF,Al Karma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+965,50,Saed Al-Rosan,,DF,Al Hussein,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+966,50,Husam Abu Dahab,,DF,Al Faisaly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+967,50,Mo Abualnadi,,DF,Selangor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+968,50,Salim Obaid,,DF,Al Hussein,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+969,50,Anas Badawi,,DF,Al Faisaly,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+970,50,Rajaei Ayed,,MF,Al Hussein,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+971,50,Noor Al-Rawabdeh,,MF,Selangor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+972,50,Ibrahim Sadeh,,MF,Al Karma,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+973,50,Nizar Al-Rashdan,,MF,Qatar SC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+974,50,Mohannad Abu Taha,,MF,Al Quwa Al Jawiya,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+975,50,Amer Jamous,,MF,Al Zawraa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+976,50,Mohammad Al-Dawoud,,MF,Al Wehdat,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+977,50,Musa Al-Taamari,,FW,Rennes,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+978,50,Mahmoud Al-Mardi,,FW,Al Hussein,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+979,50,Ali Olwan,,FW,Al Sailiya,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+980,50,Mohammad Abu Zrayq,,FW,Raja Casablanca,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+981,50,Odeh Al-Fakhouri,,FW,Pyramids,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+982,50,Ibrahim Sabra,,FW,Lokomotiva Zagreb,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+983,50,Ali Azaizeh,,FW,Al Shabab,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+984,51,Diogo Costa,,GK,Porto,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+985,51,José Sá,,GK,Wolverhampton Wanderers,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+986,51,Rui Silva,,GK,Sporting,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+987,51,Diogo Dalot,5,DF,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+988,51,Matheus Nunes,,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+989,51,Nélson Semedo,,DF,Fenerbahçe,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+990,51,João Cancelo,,DF,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+991,51,Nuno Mendes,,DF,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+992,51,Gonçalo Inácio,,DF,Sporting,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+993,51,Renato Veiga,,DF,Villarreal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+994,51,Rúben Dias,,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+995,51,Tomás Araújo,,DF,Benfica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+996,51,Rúben Neves,21,MF,Al Hilal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+997,51,Samuel Costa,,MF,Mallorca,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+998,51,João Neves,,MF,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+999,51,Vitinha,,MF,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1000,51,Bruno Fernandes,8,MF,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1001,51,Bernardo Silva,10,MF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1002,51,João Félix,,FW,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1003,51,Francisco Trincão,,FW,Sporting,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1004,51,Francisco Conceição,,FW,Juventus,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1005,51,Pedro Neto,,FW,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1006,51,Rafael Leão,,FW,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1007,51,Gonçalo Guedes,,FW,Real Sociedad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1008,51,Gonçalo Ramos,9,FW,PSG,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1009,51,Cristiano Ronaldo,7,FW,Al Nassr,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1010,52,Matthieu Epolo,,GK,Standard Liège,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1011,52,Timothy Fayulu,,GK,Noah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1012,52,Lionel Mpasi,,GK,Le Havre,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1013,52,Dylan Batubinsika,,DF,Larisa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1014,52,Rocky Bushiri,,DF,Hibernian,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1015,52,Gedeon Kalulu,,DF,Aris Limassol,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1016,52,Steve Kapuadi,,DF,Widzew Łódź,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1017,52,Joris Kayembe,,DF,Racing Genk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1018,52,Arthur Masuaku,,DF,Racing Lens,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1019,52,Chancel Mbemba,,DF,Lille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1020,52,Axel Tuanzebe,,DF,Burnley,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1021,52,Aaron Wan-Bissaka,,DF,West Ham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1022,52,Théo Bongonda,,MF,Spartak Moscow,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1023,52,Brian Cipenga,,MF,Castellón,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1024,52,Meshack Elia,,MF,Alanyaspor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1025,52,Gaël Kakuta,,MF,Larisa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1026,52,Edo Kayembe,,MF,Watford,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1027,52,Nathanaël Mbuku,,MF,Montpellier,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1028,52,Samuel Moutoussamy,,MF,Atromitos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1029,52,Ngal'ayel Mukau,,MF,Lille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1030,52,Charles Pickel,,MF,Espanyol,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1031,52,Noah Sadiki,,MF,Sunderland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1032,52,Cédric Bakambu,,FW,Real Betis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1033,52,Simon Banza,,FW,Al Jazira,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1034,52,Fiston Mayele,,FW,Pyramids,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1035,52,Yoane Wissa,,FW,Newcastle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1036,53,Utkir Yusupov,,GK,Navbahor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1037,53,Abduvohid Nematov,,GK,Nasaf,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1038,53,Botirali Ergashev,,GK,Neftchi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1039,53,Rustam Ashurmatov,,DF,Esteghlal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1040,53,Farrukh Sayfiev,,DF,Neftchi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1041,53,Khojiakbar Alijonov,,DF,Pakhtakor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1042,53,Sherzod Nasrullaev,,DF,Nasaf,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1043,53,Umar Eshmurodov,,DF,Nasaf,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1044,53,Abdukodir Khusanov,,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1045,53,Abdulla Abdullaev,,DF,Dibba,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1046,53,Bekhruz Karimov,,DF,Surkhon,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1047,53,Jakhongir Urozov,,DF,Dinamo Samarkand,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1048,53,Avazbek Ulmasaliev,,DF,AGMK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1049,53,Otabek Shukurov,,MF,Baniyas,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1050,53,Jaloliddin Masharipov,,MF,Esteghlal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1051,53,Odiljon Hamrobekov,,MF,Tractor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1052,53,Oston Urunov,,MF,Persepolis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1053,53,Jamshid Iskanderov,,MF,Neftchi,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1054,53,Dostonbek Khamdamov,,MF,Pakhtakor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1055,53,Abbosbek Fayzullaev,,MF,İstanbul Başakşehir,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1056,53,Akmal Mozgovoy,,MF,Pakhtakor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1057,53,Azizjon Ganiev,,MF,Al Bataeh,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1058,53,Sherzod Esanov,,MF,Bukhara,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1059,53,Eldor Shomurodov,,FW,İstanbul Başakşehir,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1060,53,Igor Sergeev,,FW,Persepolis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1061,53,Azizbek Amonov,,FW,Bukhara,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1062,54,Camilo Vargas,,GK,Atlas,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1063,54,Álvaro Montero,,GK,Vélez Sarsfield,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1064,54,David Ospina,,GK,Atlético Nacional,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1065,54,Dávinson Sánchez,,DF,Galatasaray,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1066,54,Jhon Lucumí,,DF,Bologna,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1067,54,Yerry Mina,,DF,Cagliari,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1068,54,Willer Ditta,,DF,Cruz Azul,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1069,54,Daniel Muñoz,,DF,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1070,54,Santiago Arias,,DF,Independiente,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1071,54,Johan Mojica,,DF,Mallorca,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1072,54,Déiver Machado,,DF,Nantes,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1073,54,Richard Ríos,,MF,Benfica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1074,54,Jefferson Lerma,,MF,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1075,54,Kevin Castaño,,MF,River Plate,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1076,54,Juan Camilo Portilla,,MF,Athletico Paranaense,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1077,54,Gustavo Puerta,,MF,Racing de Santander,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1078,54,Jhon Arias,,MF,Palmeiras,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1079,54,Jorge Carrascal,,MF,Flamengo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1080,54,Juan Fernando Quintero,,MF,River Plate,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1081,54,James Rodríguez,,MF,Minnesota United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1082,54,Jaminton Campaz,,MF,Rosario Central,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1083,54,Juan Camilo Hernández,,FW,Real Betis,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1084,54,Luis Díaz,,FW,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1085,54,Luis Suárez,,FW,Sporting,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1086,54,Carlos Andrés Gómez,,FW,Vasco da Gama,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1087,54,Jhon Córdoba,,FW,Krasnodar,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1088,55,Jordan Pickford,1,GK,Everton,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1089,55,Dean Henderson,13,GK,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1090,55,James Trafford,23,GK,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1091,55,Reece James,24,DF,Chelsea,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1092,55,Ezri Konsa,2,DF,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1093,55,Jarell Quansah,26,DF,Bayer Leverkusen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1094,55,John Stones,5,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1095,55,Marc Guéhi,6,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1096,55,Dan Burn,15,DF,Newcastle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1097,55,Nico O'Reilly,3,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1098,55,Djed Spence,25,DF,Tottenham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1099,55,Tino Livramento,12,DF,Newcastle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1100,55,Declan Rice,4,MF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1101,55,Elliot Anderson,8,MF,Nottingham Forest,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1102,55,Kobbie Mainoo,16,MF,Manchester United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1103,55,Jordan Henderson,14,MF,Brentford,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1104,55,Morgan Rogers,17,MF,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1105,55,Jude Bellingham,10,MF,Real Madrid,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1106,55,Eberechi Eze,21,MF,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1107,55,Harry Kane,9,FW,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1108,55,Ivan Toney,22,FW,Al Ahli,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1109,55,Ollie Watkins,19,FW,Aston Villa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1110,55,Bukayo Saka,7,FW,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1111,55,Marcus Rashford,11,FW,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1112,55,Anthony Gordon,18,FW,Barcelona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1113,55,Noni Madueke,20,FW,Arsenal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1114,56,Dominik Livaković,,GK,Dinamo Zagreb,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1115,56,Dominik Kotarski,,GK,Copenhagen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1116,56,Ivor Pandur,,GK,Hull,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1117,56,Joško Gvardiol,,DF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1118,56,Duje Ćaleta-Car,,DF,Real Sociedad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1119,56,Josip Šutalo,,DF,Ajax,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1120,56,Josip Stanišić,,DF,Bayern Munich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1121,56,Marin Pongračić,,DF,Fiorentina,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1122,56,Martin Erlić,,DF,Midtjylland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1123,56,Luka Vušković,,DF,Hamburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1124,56,Luka Modrić,,MF,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1125,56,Mateo Kovačić,,MF,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1126,56,Mario Pašalić,,MF,Atalanta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1127,56,Nikola Vlašić,,MF,Torino,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1128,56,Luka Sučić,,MF,Real Sociedad,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1129,56,Martin Baturina,,MF,Como,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1130,56,Kristijan Jakić,,MF,Augsburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1131,56,Petar Sučić,,MF,Inter Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1132,56,Nikola Moro,,MF,Bologna,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1133,56,Toni Fruk,,MF,Rijeka,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1134,56,Ivan Perišić,,FW,PSV Eindhoven,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1135,56,Andrej Kramarić,,FW,Hoffenheim,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1136,56,Ante Budimir,,FW,Osasuna,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1137,56,Marco Pašalić,,FW,Orlando City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1138,56,Petar Musa,,FW,Dallas,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1139,56,Igor Matanović,,FW,Freiburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1140,57,Benjamin Asare,,GK,Hearts of Oak,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1141,57,Lawrence Ati-Zigi,,GK,St. Gallen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1142,57,Joseph Anang,,GK,St. Patrick's Athletic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1143,57,Abdul Baba Rahman,,DF,PAOK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1144,57,Gideon Mensah,,DF,Auxerre,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1145,57,Marvin Senaya,,DF,Auxerre,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1146,57,Alidu Seidu,,DF,Rennes,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1147,57,Abdul Mumin,,DF,Rayo Vallecano,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1148,57,Jerome Opoku,,DF,İstanbul Başakşehir,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1149,57,Jonas Adjetey,,DF,Wolfsburg,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1150,57,Kojo Oppong Peprah,,DF,Nice,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1151,57,Elisha Owusu,,DF,Auxerre,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1152,57,Derrick Luckassen,,DF,Pafos,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1153,57,Thomas Partey,,MF,Villarreal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1154,57,Kwasi Sibo,,MF,Real Oviedo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1155,57,Augustine Boakye,,MF,Saint-Étienne,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1156,57,Caleb Yirenkyi,,MF,Nordsjaelland,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1157,57,Abdul Fatawu Issahaku,,MF,Leicester,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1158,57,Kamaldeen Sulemana,,FW,Atalanta,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1159,57,Christopher Bonsu Baah,,FW,Al Qadsiah,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1160,57,Ernest Nuamah,,FW,Lyon,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1161,57,Antoine Semenyo,,FW,Manchester City,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1162,57,Brandon Thomas-Asante,,FW,Coventry,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1163,57,Prince Kwabena Adu,,FW,Viktoria Plzeň,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1164,57,Iñaki Williams,,FW,Athletic Club,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1165,57,Jordan Ayew,,FW,Leicester,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1166,58,Luis Mejía,,GK,Nacional,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1167,58,Orlando Mosquera,,GK,Al Fayha,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1168,58,César Samudio,,GK,Marathon,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1169,58,Eric Davis,,DF,Plaza Amador,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1170,58,Fidel Escobar,,DF,Saprissa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1171,58,Michael Amir Murillo,,DF,Beşiktaş,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1172,58,Roderick Miller,,DF,Turan Tovuz,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1173,58,Andrés Andrade,,DF,LASK,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1174,58,César Blackman,,DF,Slovan Bratislava,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1175,58,José Córdoba,,DF,Norwich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1176,58,Jiovany Ramos,,DF,Puerto Cabello,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1177,58,Jorge Gutiérrez,,DF,Deportivo La Guaira,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1178,58,Edgardo Farina,,DF,Pari Nizhny Novgorod,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1179,58,Aníbal Godoy,,MF,San Diego,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1180,58,Alberto Quintero,,MF,Plaza Amador,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1181,58,Yoel Bárcenas,,MF,Mazatlán,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1182,58,Adalberto Carrasquilla,,MF,UNAM,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1183,58,José Luis Rodríguez,,MF,Juárez,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1184,58,Cristian Martínez,,MF,Ironi Kiryat Shmona,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1185,58,César Yanis,,MF,Cobresal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1186,58,Carlos Harvey,,MF,Minnesota United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1187,58,Azarías Londoño,,MF,Universidad Católica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1188,58,José Fajardo,,FW,Universidad Católica,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1189,58,Ismael Díaz,,FW,León,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1190,58,Cecilio Waterman,,FW,Universidad de Concepción,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1191,58,Tomás Rodríguez,,FW,Saprissa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1192,3144,Chris Brady,,GK,Chicago Fire,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1193,3144,Matt Freese,,GK,New York City FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1194,3144,Matt Turner,,GK,New England Revolution,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1195,3144,Max Arfsten,,DF,Columbus Crew,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1196,3144,Sergiño Dest,,DF,PSV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1197,3144,Alex Freeman,,DF,Villarreal,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1198,3144,Mark McKenzie,,DF,Toulouse,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1199,3144,Tim Ream,,DF,Charlotte FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1200,3144,Chris Richards,,DF,Crystal Palace,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1201,3144,Antonee Robinson,,DF,Fulham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1202,3144,Miles Robinson,,DF,FC Cincinnati,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1203,3144,Joe Scally,,DF,Borussia Mönchengladbach,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1204,3144,Auston Trusty,,DF,Celtic,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1205,3144,Tyler Adams,,MF,Bournemouth,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1206,3144,Sebastian Berhalter,,MF,Vancouver Whitecaps,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1207,3144,Weston McKennie,,MF,Juventus,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1208,3144,Gio Reyna,,MF,Borussia Mönchengladbach,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1209,3144,Cristian Roldán,,MF,Seattle Sounders,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1210,3144,Malik Tillman,,MF,Bayer Leverkusen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1211,3144,Brenden Aaronson,,FW,Leeds,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1212,3144,Folarin Balogun,,FW,Monaco,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1213,3144,Ricardo Pepi,,FW,PSV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1214,3144,Christian Pulisic,,FW,AC Milan,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1215,3144,Tim Weah,,FW,Marseille,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1216,3144,Haji Wright,,FW,Coventry,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1217,3144,Alejandro Zendejas,,FW,Club América,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1218,3175,Tyrick Bodak,,GK,SC Telstar,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1219,3175,Trevor Doornbusch,,GK,VVV-Venlo,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1220,3175,Eloy Room,,GK,Miami FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1221,3175,Riechedly Bazoer,,DF,Konyaspor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1222,3175,Joshua Brenet,,DF,Kayserispor,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1223,3175,Roshon van Eijma,,DF,RKC Waalwijk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1224,3175,Sherel Floranus,,DF,PEC Zwolle,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1225,3175,Deveron Fonville,,DF,NEC Nijmegen,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1226,3175,Jurien Gaari,,DF,Abha Club,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1227,3175,Armando Obispo,,DF,PSV,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1228,3175,Shurandy Sambo,,DF,Sparta Rotterdam,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1229,3175,Juninho Bacuna,,MF,FC Volendam,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1230,3175,Leandro Bacuna,,MF,Igdir,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1231,3175,Livano Comenencia,,MF,FC Zürich,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1232,3175,Kevin Felida,,MF,FC Den Bosch,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1233,3175,Ar'Jany Martha,,MF,Rotherham,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1234,3175,Tyrese Noslin,,MF,SC Telstar,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1235,3175,Godfried Roemeratoe,,MF,RKC Waalwijk,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1236,3175,Jeremy Antonisse,,FW,AE Kifisia,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1237,3175,Tahith Chong,,FW,Sheffield United,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1238,3175,Kenji Gorre,,FW,Maccabi Haifa,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1239,3175,Sontje Hansen,,FW,Middlesbrough,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1240,3175,Gervane Kastaneer,,FW,Terengganu FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1241,3175,Brandley Kuwas,,FW,FC Volendam,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1242,3175,Jurgen Locadia,,FW,Miami FC,web,2026-06-05 12:00:00,2026-06-05 12:00:00
+1243,3175,Jearl Margaritha,,FW,SK Beveren,web,2026-06-05 12:00:00,2026-06-05 12:00:00

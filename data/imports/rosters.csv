@@ -1,3 +1,1244 @@
 team_name,player_name,shirt_number,position,club,source
-USA,Christian Pulisic,10,FW,AC Milan,manual
-USA,Tyler Adams,4,MF,Bournemouth,manual
+Mexico,Raúl Rangel,1,GK,Guadalajara,web
+Mexico,Carlos Acevedo,12,GK,Santos Laguna,web
+Mexico,Guillermo Ochoa,13,GK,AEL Limassol,web
+Mexico,Jorge Sánchez,2,DF,PAOK,web
+Mexico,César Montes,3,DF,América,web
+Mexico,Edson Álvarez,4,DF,Fenerbahçe,web
+Mexico,Johan Vásquez,5,DF,Genoa,web
+Mexico,Erik Lira,6,MF,Cruz Azul,web
+Mexico,Luis Romo,7,MF,Guadalajara,web
+Mexico,Álvaro Fidalgo,8,MF,Real Betis,web
+Mexico,Raúl Jiménez,9,FW,Fulham,web
+Mexico,Alexis Vega,10,FW,Toluca,web
+Mexico,Santiago Giménez,11,FW,AC Milan,web
+Mexico,Armando González,14,FW,Guadalajara,web
+Mexico,Israel Reyes,15,DF,América,web
+Mexico,Julián Quiñones,16,FW,Al Qadisiyah,web
+Mexico,Orbelín Pineda,17,MF,AEK,web
+Mexico,Obed Vargas,18,MF,Atlético Madrid,web
+Mexico,Gilberto Mora,19,MF,Tijuana,web
+Mexico,Mateo Chávez,20,DF,AZ Alkmaar,web
+Mexico,César Huerta,21,FW,Anderlecht,web
+Mexico,Luis Chávez,22,MF,Guadalajara,web
+Mexico,Jesús Gallardo,23,DF,Toluca,web
+Mexico,Guillermo Martínez,24,FW,Pumas,web
+Mexico,Roberto Alvarado,25,MF,Guadalajara,web
+Mexico,Brian Gutiérrez,26,MF,Guadalajara,web
+South Africa,Ronwen Williams,1,GK,Mamelodi Sundowns,web
+South Africa,Ricardo Goss,,GK,Siwele,web
+South Africa,Sipho Chaine,,GK,Orlando Pirates,web
+South Africa,Aubrey Modiba,,DF,Mamelodi Sundowns,web
+South Africa,Khuliso Mudau,,DF,Mamelodi Sundowns,web
+South Africa,Nkosinathi Sibisi,,DF,Orlando Pirates,web
+South Africa,Mbekezeli Mbokazi,,DF,Chicago Fire,web
+South Africa,Ime Okon,,DF,Hannover,web
+South Africa,Samukele Kabini,,DF,Molde,web
+South Africa,Khulumani Ndamane,,DF,Mamelodi Sundowns,web
+South Africa,Thabang Matuludi,,DF,Polokwane City,web
+South Africa,Kamogelo Sebelebele,,DF,Orlando Pirates,web
+South Africa,Bradley Cross,,DF,Kaizer Chiefs,web
+South Africa,Olwethy Makhanya,,DF,Philadelphia Union,web
+South Africa,Teboho Mokoena,4,MF,Mamelodi Sundowns,web
+South Africa,Sphephelo Sithole,,MF,Tondela,web
+South Africa,Thalente Mbatha,,MF,Orlando Pirates,web
+South Africa,Jayden Adams,,MF,Mamelodi Sundowns,web
+South Africa,Relebohile Mofokeng,10,FW,Orlando Pirates,web
+South Africa,Themba Zwane,,FW,Mamelodi Sundowns,web
+South Africa,Lyle Foster,9,FW,Burnley,web
+South Africa,Evidence Makgopa,,FW,Orlando Pirates,web
+South Africa,Oswin Appollis,,FW,Orlando Pirates,web
+South Africa,Iqraam Rayners,,FW,Mamelodi Sundowns,web
+South Africa,Thapelo Maseko,,FW,AEL Limassol,web
+South Africa,Tshepang Moremi,,FW,Orlando Pirates,web
+South Korea,Kim Seung-gyu,,GK,FC Tokyo,web
+South Korea,Jo Hyeon-woo,,GK,Ulsan,web
+South Korea,Song Bum-keun,,GK,Jeonbuk,web
+South Korea,Kim Min-jae,,DF,Bayern Munich,web
+South Korea,Kim Moon-hwan,,DF,Daejeon,web
+South Korea,Kim Tae-hyeon,,DF,Kashima Antlers,web
+South Korea,Park Jin-seob,,DF,Zhejiang,web
+South Korea,Seol Young-woo,,DF,Red Star Belgrade,web
+South Korea,Jens Castrop,,DF,Borussia Mönchengladbach,web
+South Korea,Lee Ki-hyuk,,DF,Gangwon,web
+South Korea,Lee Tae-seok,,DF,Austria Wien,web
+South Korea,Lee Han-beom,,DF,Midtjylland,web
+South Korea,Cho Yu-min,,DF,Sharjah,web
+South Korea,Kim Jin-gyu,,MF,Jeonbuk,web
+South Korea,Bae Jun-ho,,MF,Stoke,web
+South Korea,Paik Seung-ho,,MF,Birmingham,web
+South Korea,Yang Hyun-jun,,MF,Celtic,web
+South Korea,Eom Ji-sung,,MF,Swansea,web
+South Korea,Lee Kang-in,,MF,Paris Saint-Germain,web
+South Korea,Lee Dong-gyeong,,MF,Ulsan,web
+South Korea,Lee Jae-sung,,MF,Mainz,web
+South Korea,Hwang In-beom,,MF,Feyenoord,web
+South Korea,Hwang Hee-chan,,MF,Wolverhampton Wanderers,web
+South Korea,Son Heung-min,,FW,Los Angeles FC,web
+South Korea,Oh Hyeon-gyu,,FW,Beşiktaş,web
+South Korea,Cho Gue-sung,,FW,Midtjylland,web
+Czechia,Matěj Kovář,,GK,PSV Eindhoven,web
+Czechia,Lukáš Horníček,,GK,Braga,web
+Czechia,Jindřich Staněk,,GK,Slavia Prague,web
+Czechia,Vladimír Coufal,,DF,Hoffenheim,web
+Czechia,David Doudera,,DF,Slavia Prague,web
+Czechia,Tomáš Holeš,,DF,Slavia Prague,web
+Czechia,Robin Hranáč,,DF,Hoffenheim,web
+Czechia,Štěpán Chaloupek,,DF,Slavia Prague,web
+Czechia,David Jurásek,,DF,Slavia Prague,web
+Czechia,Ladislav Krejčí,,DF,Wolverhampton Wanderers,web
+Czechia,Jaroslav Zelený,,DF,Sparta Prague,web
+Czechia,David Zima,,DF,Slavia Prague,web
+Czechia,Lukáš Červ,,MF,Viktoria Plzeň,web
+Czechia,Vladimír Darida,,MF,Hradec Králové,web
+Czechia,Lukáš Provod,,MF,Slavia Prague,web
+Czechia,Michal Sadílek,,MF,Slavia Prague,web
+Czechia,Hugo Sochurek,,MF,Sparta Prague,web
+Czechia,Alexandr Sojka,,MF,Viktoria Plzeň,web
+Czechia,Tomáš Souček,,MF,West Ham United,web
+Czechia,Pavel Šulc,,MF,Olympique Lyonnais,web
+Czechia,Denis Višinský,,MF,Viktoria Plzeň,web
+Czechia,Adam Hložek,,FW,Hoffenheim,web
+Czechia,Tomáš Chorý,,FW,Slavia Prague,web
+Czechia,Mojmír Chytil,,FW,Slavia Prague,web
+Czechia,Jan Kuchta,,FW,Sparta Prague,web
+Czechia,Patrik Schick,,FW,Bayer Leverkusen,web
+Switzerland,Gregor Kobel,,GK,Borussia Dortmund,web
+Switzerland,Marvin Keller,,GK,Young Boys,web
+Switzerland,Yvon Mvogo,,GK,Lorient,web
+Switzerland,Manuel Akanji,,DF,Inter Milan,web
+Switzerland,Aurèle Amenda,,DF,Eintracht Frankfurt,web
+Switzerland,Eray Comert,,DF,Valencia,web
+Switzerland,Nico Elvedi,,DF,Borussia Mönchengladbach,web
+Switzerland,Luca Jaquez,,DF,Stuttgart,web
+Switzerland,Miro Muheim,,DF,Hamburg,web
+Switzerland,Ricardo Rodríguez,,DF,Real Betis,web
+Switzerland,Silvan Widmer,,DF,Mainz,web
+Switzerland,Michel Aebischer,,MF,Pisa,web
+Switzerland,Christian Fassnacht,,MF,Young Boys,web
+Switzerland,Remo Freuler,,MF,Bologna,web
+Switzerland,Ardon Jashari,,MF,AC Milan,web
+Switzerland,Johan Manzambi,,MF,Freiburg,web
+Switzerland,Fabian Rieder,,MF,Augsburg,web
+Switzerland,Djibril Sow,,MF,Sevilla,web
+Switzerland,Rubén Vargas,,MF,Sevilla,web
+Switzerland,Granit Xhaka,,MF,Sunderland,web
+Switzerland,Denis Zakaria,,MF,Monaco,web
+Switzerland,Zeki Amdouni,,FW,Burnley,web
+Switzerland,Breel Embolo,,FW,Rennes,web
+Switzerland,Cedric Itten,,FW,Fortuna Düsseldorf,web
+Switzerland,Dan Ndoye,,FW,Nottingham Forest,web
+Switzerland,Noah Okafor,,FW,Leeds,web
+Qatar,Meshaal Barsham,,GK,Al Sadd,web
+Qatar,Salah Zakaria,,GK,Al Duhail,web
+Qatar,Mahmoud Abunada,,GK,Al Rayyan,web
+Qatar,Hashmi Hussein,,DF,Al Arabi,web
+Qatar,Ayoub Alawi,,DF,Al Gharafa,web
+Qatar,Boualem Khoukhi,,DF,Al Sadd,web
+Qatar,Pedro Miguel,,DF,Al Sadd,web
+Qatar,Issa Laaye,,DF,Al Arabi,web
+Qatar,Lucas Mendes,,DF,Al Wakrah,web
+Qatar,Sultan Al-Brake,,DF,Al Duhail,web
+Qatar,Homam Al-Amin,,DF,Cultural Leonesa,web
+Qatar,Mohammed Al-Manai,,MF,Al Shamal,web
+Qatar,Jassem Jaber,,MF,Al Arabi,web
+Qatar,Karim Boudiaf,,MF,Al Duhail,web
+Qatar,Ahmed Fathi,,MF,Al Arabi,web
+Qatar,Abdulaziz Hatem,,MF,Al Rayyan,web
+Qatar,Assim Madibo,,MF,Al Wakrah,web
+Qatar,Hassan Al-Haydos,10,FW,Al Sadd,web
+Qatar,Akram Afif,,FW,Al Sadd,web
+Qatar,Tahseen Mohammed,,FW,Al Duhail,web
+Qatar,Edmilson Junior,,FW,Al Duhail,web
+Qatar,Almoez Ali,,FW,Al Duhail,web
+Qatar,Mohammed Muntari,,FW,Al Gharafa,web
+Qatar,Youssef Abdulrazzaq,,FW,Al Wakrah,web
+Qatar,Ahmed Alaa,,FW,Al Rayyan,web
+Qatar,Ahmed Al-Janahi,,FW,Al Gharafa,web
+Bosnia and Herzegovina,Nikola Vasilj,,GK,FC St. Pauli,web
+Bosnia and Herzegovina,Martin Zlomislić,,GK,Rijeka,web
+Bosnia and Herzegovina,Osman Hadžikadić,,GK,Slaven Belupo,web
+Bosnia and Herzegovina,Sead Kolašinac,,DF,Atalanta,web
+Bosnia and Herzegovina,Amar Dedić,,DF,Benfica,web
+Bosnia and Herzegovina,Nihad Mujakić,,DF,Gaziantep,web
+Bosnia and Herzegovina,Nikola Katić,,DF,Schalke 04,web
+Bosnia and Herzegovina,Tarik Muharemović,,DF,Sassuolo,web
+Bosnia and Herzegovina,Stjepan Radeljić,,DF,Rijeka,web
+Bosnia and Herzegovina,Dennis Hadžikadunić,,DF,Sampdoria,web
+Bosnia and Herzegovina,Nidal Čelić,,DF,Lens,web
+Bosnia and Herzegovina,Amir Hadžiahmetović,,MF,Hull,web
+Bosnia and Herzegovina,Ivan Šunjić,,MF,Pafos,web
+Bosnia and Herzegovina,Ivan Bašić,,MF,Astana,web
+Bosnia and Herzegovina,Dženis Burnić,,MF,Karlsruher,web
+Bosnia and Herzegovina,Ermin Mahmić,,MF,Slovan Liberec,web
+Bosnia and Herzegovina,Benjamin Tahirović,,MF,Brøndby,web
+Bosnia and Herzegovina,Amar Memić,,MF,Viktoria Plzeň,web
+Bosnia and Herzegovina,Armin Gigović,,MF,Young Boys,web
+Bosnia and Herzegovina,Kerim Alajbegović,,MF,RB Salzburg,web
+Bosnia and Herzegovina,Esmir Bajraktarević,,MF,PSV,web
+Bosnia and Herzegovina,Ermedin Demirović,,FW,Stuttgart,web
+Bosnia and Herzegovina,Jovo Lukić,,FW,Universitatea Cluj,web
+Bosnia and Herzegovina,Samed Baždar,,FW,Jagiellonia Białystok,web
+Bosnia and Herzegovina,Haris Tabaković,,FW,Borussia Mönchengladbach,web
+Bosnia and Herzegovina,Edin Džeko,,FW,Schalke 04,web
+Canada,Maxime Crépeau,,GK,Orlando City,web
+Canada,Owen Goodman,,GK,Barnsley,web
+Canada,Dayne St. Clair,,GK,Inter Miami,web
+Canada,Moisé Bombito,,DF,Nice,web
+Canada,Derek Cornelius,,DF,Rangers,web
+Canada,Alphonso Davies,,DF,Bayern Munich,web
+Canada,Luc de Fougerolles,,DF,Dender EH,web
+Canada,Alistair Johnston,,DF,Celtic,web
+Canada,Alfie Jones,,DF,Middlesbrough,web
+Canada,Richie Laryea,,DF,Toronto,web
+Canada,Niko Sigur,,DF,Hajduk Split,web
+Canada,Joel Waterman,,DF,Chicago Fire,web
+Canada,Ali Ahmed,,MF,Norwich,web
+Canada,Tajon Buchanan,,MF,Villarreal,web
+Canada,Mathieu Choinière,,MF,LAFC,web
+Canada,Stephen Eustáquio,,MF,LAFC,web
+Canada,Marcelo Flores,,MF,Tigres UANL,web
+Canada,Ismaël Koné,,MF,Sassuolo,web
+Canada,Liam Millar,,MF,Hull,web
+Canada,Jonathan Osorio,,MF,Toronto,web
+Canada,Nathan-Dylan Saliba,,MF,Anderlecht,web
+Canada,Jacob Shaffelburg,,MF,LAFC,web
+Canada,Jonathan David,,FW,Juventus,web
+Canada,Promise David,,FW,Union Saint-Gilloise,web
+Canada,Cyle Larin,,FW,Southampton,web
+Canada,Tani Oluwaseyi,,FW,Villarreal,web
+Brazil,Alisson,1,GK,Liverpool,web
+Brazil,Ederson,,GK,Fenerbahçe,web
+Brazil,Weverton,,GK,Grêmio,web
+Brazil,Marquinhos,,DF,Paris Saint-Germain,web
+Brazil,Gabriel,,DF,Arsenal,web
+Brazil,Bremer,,DF,Juventus,web
+Brazil,Ibañez,,DF,Al Ahli,web
+Brazil,Leo Pereira,,DF,Flamengo,web
+Brazil,Wesley,,DF,Roma,web
+Brazil,Danilo,,DF,Flamengo,web
+Brazil,Alex Sandro,,DF,Flamengo,web
+Brazil,Douglas Santos,,DF,Zenit Saint Petersburg,web
+Brazil,Casemiro,,MF,Manchester United,web
+Brazil,Bruno Guimarães,,MF,Newcastle,web
+Brazil,Fabinho,,MF,Al Ittihad,web
+Brazil,Lucas Paquetá,,MF,Flamengo,web
+Brazil,Vinicius Junior,7,FW,Real Madrid,web
+Brazil,Raphinha,11,FW,Barcelona,web
+Brazil,Matheus Cunha,,FW,Manchester United,web
+Brazil,Luiz Henrique,,FW,Zenit Saint Petersburg,web
+Brazil,Igor Thiago,,FW,Brentford,web
+Brazil,Endrick,,FW,Real Madrid,web
+Brazil,Gabriel Martinelli,,FW,Arsenal,web
+Brazil,Rayan,,FW,Bournemouth,web
+Brazil,Neymar,10,FW,Santos,web
+Brazil,Rodrygo,,FW,Real Madrid,web
+Morocco,Yassine Bounou,,GK,Al Hilal,web
+Morocco,Munir Mohamedi,,GK,RS Berkane,web
+Morocco,Ahmed Tagnaouti,,GK,Royal Armed Forces,web
+Morocco,Noussair Mazraoui,,DF,Manchester United,web
+Morocco,Anass Salah-Eddine,,DF,PSV,web
+Morocco,Youssef Belammari,,DF,Al Ahly,web
+Morocco,Nayef Aguerd,,DF,Marseille,web
+Morocco,Chadi Riad,,DF,Crystal Palace,web
+Morocco,Issa Diop,,DF,Fulham,web
+Morocco,Redouane Halhal,,DF,KV Mechelen,web
+Morocco,Achraf Hakimi,,DF,PSG,web
+Morocco,Zakaria El Ouahdi,,DF,Genk,web
+Morocco,Samir El Mourabet,,MF,Strasbourg,web
+Morocco,Ayyoub Bouaddi,,MF,Lille,web
+Morocco,Neil El Aynaoui,,MF,Roma,web
+Morocco,Sofyan Amrabat,,MF,Real Betis,web
+Morocco,Azzedine Ounahi,,MF,Girona,web
+Morocco,Bilal El Khannouss,,MF,Stuttgart,web
+Morocco,Ismael Saibari,,MF,PSV,web
+Morocco,Abdessamad Ezzalzouli,,FW,Real Betis,web
+Morocco,Chemsdine Talbi,,FW,Sunderland,web
+Morocco,Soufiane Rahimi,,FW,Al Ain,web
+Morocco,Ayoub El Kaabi,,FW,Olympiacos,web
+Morocco,Brahim Díaz,,FW,Real Madrid,web
+Morocco,Yassine Gessime,,FW,Strasbourg,web
+Morocco,Ayoub Amaimouni-Echghouyabe,,FW,Eintracht Frankfurt,web
+Haiti,Johnny Placide,,GK,Bastia,web
+Haiti,Alexandre Pierre,,GK,Sochaux,web
+Haiti,Josue Duverger,,GK,FC Cosmos Koblenz,web
+Haiti,Carlens Arcus,,DF,Angers,web
+Haiti,Wilguens Pauguain,,DF,Zulte Waregem,web
+Haiti,Duke Lacroix,,DF,Colorado Springs,web
+Haiti,Martin Experience,,DF,Nancy,web
+Haiti,Jean-Kevin Duverne,,DF,Gent,web
+Haiti,Ricardo Ade,,DF,LDU Quito,web
+Haiti,Hannes Delcroix,,DF,Lugano,web
+Haiti,Keeto Thermoncy,,DF,Young Boys,web
+Haiti,Leverton Pierre,,MF,Vizela,web
+Haiti,Carl-Fred Sainthe,,MF,El Paso Locomotive,web
+Haiti,Jean-Jacques Danley,,MF,Philadelphia Union,web
+Haiti,Jean-Ricner Bellegarde,,MF,Wolverhampton Wanderers,web
+Haiti,Pierre Woodenski,,MF,Violette,web
+Haiti,Dominique Simon,,MF,Tatran Prešov,web
+Haiti,Louicius Deedson,,FW,Dallas,web
+Haiti,Ruben Providence,,FW,Almere City,web
+Haiti,Josue Casimir,,FW,Auxerre,web
+Haiti,Derrick Etienne,,FW,Toronto,web
+Haiti,Wilson Isidor,,FW,Sunderland,web
+Haiti,Duckens Nazon,,FW,Esteghlal,web
+Haiti,Frantzdy Pierrot,,FW,Çaykur Rizespor,web
+Haiti,Yassin Fortune,,FW,Vizela,web
+Haiti,Lenny Joseph,,FW,Ferencváros,web
+Scotland,Craig Gordon,,GK,Hearts,web
+Scotland,Angus Gunn,,GK,Nottingham Forest,web
+Scotland,Liam Kelly,,GK,Rangers,web
+Scotland,Grant Hanley,,DF,Hibernian,web
+Scotland,Jack Hendry,,DF,Al Etiffaq,web
+Scotland,Aaron Hickey,,DF,Brentford,web
+Scotland,Dom Hyam,,DF,Wrexham,web
+Scotland,Scott McKenna,,DF,Dinamo Zagreb,web
+Scotland,Nathan Patterson,,DF,Everton,web
+Scotland,Anthony Ralston,,DF,Celtic,web
+Scotland,Andy Robertson,,DF,Liverpool,web
+Scotland,John Souttar,,DF,Rangers,web
+Scotland,Kieran Tierney,,DF,Celtic,web
+Scotland,Ryan Christie,,MF,Bournemouth,web
+Scotland,Findlay Curtis,,MF,Rangers,web
+Scotland,Lewis Ferguson,,MF,Bologna,web
+Scotland,Ben Doak,,MF,Bournemouth,web
+Scotland,Tyler Fletcher,,MF,Manchester United,web
+Scotland,John McGinn,,MF,Aston Villa,web
+Scotland,Kenny McLean,,MF,Norwich,web
+Scotland,Scott McTominay,,MF,Napoli,web
+Scotland,Che Adams,,FW,Torino,web
+Scotland,Lyndon Dykes,,FW,Charlton,web
+Scotland,George Hirst,,FW,Ipswich,web
+Scotland,Lawrence Shankland,,FW,Rangers,web
+Scotland,Ross Stewart,,FW,Southampton,web
+Paraguay,Roberto Junior Fernandez,,GK,Cerro Porteño,web
+Paraguay,Orlando Gill,,GK,San Lorenzo,web
+Paraguay,Gastón Olveira,,GK,Olimpia,web
+Paraguay,Omar Alderete,,DF,Sunderland,web
+Paraguay,Junior Alonso,,DF,Atlético Mineiro,web
+Paraguay,Fabián Balbuena,,DF,Grêmio,web
+Paraguay,Juan José Cáceres,,DF,Dinamo Moscow,web
+Paraguay,José Canale,,DF,Lanús,web
+Paraguay,Gustavo Gómez,,DF,Palmeiras,web
+Paraguay,Alexandro Maidana,,DF,Talleres,web
+Paraguay,Gustavo Velázquez,,DF,Cerro Porteño,web
+Paraguay,Damián Bobadilla,,MF,São Paulo,web
+Paraguay,Gustavo Caballero,,MF,Portsmouth,web
+Paraguay,Andrés Cubas,,MF,Vancouver Whitecaps,web
+Paraguay,Matías Galarza,,MF,Atlanta United,web
+Paraguay,Diego Gómez,,MF,Brighton,web
+Paraguay,Mauricio Magalhães,,MF,Palmeiras,web
+Paraguay,Brjaian Ojeda,,MF,Orlando City,web
+Paraguay,Alejandro Romero,,MF,Al Ain,web
+Paraguay,Miguel Almirón,,FW,Atlanta United,web
+Paraguay,Gabriel Avalos,,FW,Independiente,web
+Paraguay,Álex Arce,,FW,Independiente Rivadavia,web
+Paraguay,Julio Enciso,,FW,Strasbourg,web
+Paraguay,Isidro Pitta,,FW,Bragantino,web
+Paraguay,Antonio Sanabria,,FW,Cremonese,web
+Paraguay,Ramón Sosa,,FW,Palmeiras,web
+Australia,Maty Ryan,,GK,Levante,web
+Australia,Paul Izzo,,GK,Randers,web
+Australia,Patrick Beach,,GK,Melbourne City,web
+Australia,Aziz Behich,,DF,Melbourne City,web
+Australia,Jordan Bos,,DF,Feyenoord,web
+Australia,Cameron Burgess,,DF,Swansea City,web
+Australia,Alessandro Circati,,DF,Parma,web
+Australia,Miloš Degenek,,DF,APOEL,web
+Australia,Jason Geria,,DF,Albirex Niigata,web
+Australia,Lucas Herrington,,DF,Colorado Rapids,web
+Australia,Jacob Italiano,,DF,Grazer AK,web
+Australia,Harry Souttar,,DF,Leicester City,web
+Australia,Kai Trewin,,DF,New York City,web
+Australia,Cameron Devlin,,MF,Hearts,web
+Australia,Ajdin Hrustić,,MF,Heracles Almelo,web
+Australia,Jackson Irvine,,MF,St. Pauli,web
+Australia,Connor Metcalfe,,MF,St. Pauli,web
+Australia,Aiden O'Neill,,MF,New York City,web
+Australia,Paul Okon-Engstler,,MF,Sydney FC,web
+Australia,Nestory Irankunda,,FW,Watford,web
+Australia,Mathew Leckie,,FW,Melbourne City,web
+Australia,Awer Mabil,,FW,CD Castellón,web
+Australia,Mohamed Toure,,FW,Norwich City,web
+Australia,Nishan Velupillay,,FW,Melbourne Victory,web
+Australia,Cristian Volpato,,FW,Sassuolo,web
+Australia,Tete Yengi,,FW,Machida Zelvia,web
+Türkiye,Uğurcan Çakır,,GK,Galatasaray,web
+Türkiye,Altay Bayındır,,GK,Manchester United,web
+Türkiye,Mert Günok,,GK,Beşiktaş,web
+Türkiye,Ferdi Kadıoğlu,,DF,Brighton,web
+Türkiye,Merih Demiral,,DF,Al Ahli,web
+Türkiye,Zeki Çelik,,DF,Roma,web
+Türkiye,Ozan Kabak,,DF,Hoffenheim,web
+Türkiye,Mert Müldür,,DF,Fenerbahçe,web
+Türkiye,Abdülkerim Bardakcı,,DF,Galatasaray,web
+Türkiye,Eren Elmalı,,DF,Galatasaray,web
+Türkiye,Çağlar Söyüncü,,DF,Fenerbahçe,web
+Türkiye,Samet Akaydın,,DF,Rizespor,web
+Türkiye,Arda Güler,,MF,Real Madrid,web
+Türkiye,Can Uzun,,MF,Eintracht Frankfurt,web
+Türkiye,Orkun Kökçü,,MF,Beşiktaş,web
+Türkiye,Hakan Çalhanoğlu,,MF,Inter Milan,web
+Türkiye,İsmail Yüksek,,MF,Fenerbahçe,web
+Türkiye,Kaan Ayhan,,MF,Galatasaray,web
+Türkiye,Salih Özcan,,MF,Borussia Dortmund,web
+Türkiye,Kenan Yıldız,,FW,Juventus,web
+Türkiye,Barış Alper Yılmaz,,FW,Galatasaray,web
+Türkiye,Kerem Aktürkoğlu,,FW,Fenerbahçe,web
+Türkiye,Yunus Akgün,,FW,Galatasaray,web
+Türkiye,Oğuz Aydın,,FW,Fenerbahçe,web
+Türkiye,Deniz Gül,,FW,Porto,web
+Türkiye,İrfan Can Kahveci,,FW,Fenerbahçe,web
+Germany,Manuel Neuer,1,GK,Bayern Munich,web
+Germany,Oliver Baumann,12,GK,Hoffenheim,web
+Germany,Alexander Nübel,21,GK,Bayern Munich,web
+Germany,Waldemar Anton,,DF,Borussia Dortmund,web
+Germany,Nathaniel Brown,,DF,Eintracht Frankfurt,web
+Germany,David Raum,,DF,RB Leipzig,web
+Germany,Antonio Rüdiger,2,DF,Real Madrid,web
+Germany,Nico Schlotterbeck,15,DF,Borussia Dortmund,web
+Germany,Jonathan Tah,,DF,Bayern Munich,web
+Germany,Malick Thiaw,24,DF,Newcastle,web
+Germany,Pascal Groß,,MF,Brighton,web
+Germany,Joshua Kimmich,6,MF,Bayern Munich,web
+Germany,Felix Nmecha,,MF,Borussia Dortmund,web
+Germany,Aleksandar Pavlović,,MF,Bayern Munich,web
+Germany,Angelo Stiller,,MF,Stuttgart,web
+Germany,Leon Goretzka,,MF,Bayern Munich,web
+Germany,Florian Wirtz,17,MF,Liverpool,web
+Germany,Jamie Leweling,9,FW,Stuttgart,web
+Germany,Maximilian Beier,,FW,Borussia Dortmund,web
+Germany,Kai Havertz,,FW,Arsenal,web
+Germany,Lennart Karl,25,FW,Bayern Munich,web
+Germany,Jamal Musiala,10,FW,Bayern Munich,web
+Germany,Leroy Sané,19,FW,Galatasaray,web
+Germany,Deniz Undav,26,FW,Stuttgart,web
+Germany,Nick Woltemade,11,FW,Newcastle,web
+Côte d'Ivoire,Yahia Fofana,,GK,Çaykur Rizespor,web
+Côte d'Ivoire,Mohamed Koné,,GK,Charleroi,web
+Côte d'Ivoire,Alban Lafont,,GK,Panathinaikos,web
+Côte d'Ivoire,Emmanuel Agbadou,,DF,Beşiktaş,web
+Côte d'Ivoire,Clément Akpa,,DF,Auxerre,web
+Côte d'Ivoire,Ousmane Diomandé,,DF,Sporting,web
+Côte d'Ivoire,Guela Doué,,DF,Strasbourg,web
+Côte d'Ivoire,Ghislain Konan,,DF,Gil Vicente,web
+Côte d'Ivoire,Odilon Kossounou,,DF,Atalanta,web
+Côte d'Ivoire,Evan Ndicka,,DF,Roma,web
+Côte d'Ivoire,Wilfried Singo,,DF,Galatasaray,web
+Côte d'Ivoire,Seko Fofana,,MF,Porto,web
+Côte d'Ivoire,Parfait Guiagon,,MF,Charleroi,web
+Côte d'Ivoire,Christ Inao Oulai,,MF,Trabzonspor,web
+Côte d'Ivoire,Franck Kessié,,MF,Al Ahli,web
+Côte d'Ivoire,Ibrahim Sangaré,,MF,Nottingham Forest,web
+Côte d'Ivoire,Jean-Michael Séri,,MF,Maribor,web
+Côte d'Ivoire,Simon Adingra,,FW,Monaco,web
+Côte d'Ivoire,Ange-Yoan Bonny,,FW,Inter Milan,web
+Côte d'Ivoire,Amad Diallo,,FW,Manchester United,web
+Côte d'Ivoire,Oumar Diakité,,FW,Cercle Brugge,web
+Côte d'Ivoire,Yan Diomandé,,FW,RB Leipzig,web
+Côte d'Ivoire,Evann Guessand,,FW,Aston Villa,web
+Côte d'Ivoire,Nicolas Pépé,,FW,Villarreal,web
+Côte d'Ivoire,Bazoumana Touré,,FW,Hoffenheim,web
+Côte d'Ivoire,Elye Wahi,,FW,Nice,web
+Ecuador,Hernán Galíndez,,GK,Huracán,web
+Ecuador,Moisés Ramírez,,GK,Kifisia,web
+Ecuador,Gonzalo Valle,,GK,LDU Quito,web
+Ecuador,Piero Hincapié,,DF,Arsenal,web
+Ecuador,Willian Pacho,,DF,PSG,web
+Ecuador,Pervis Estupiñán,,DF,AC Milan,web
+Ecuador,Félix Torres,,DF,Internacional,web
+Ecuador,Joel Ordóñez,,DF,Club Brugge,web
+Ecuador,Jackson Porozo,,DF,Tijuana,web
+Ecuador,Ángelo Preciado,,DF,Atlético Mineiro,web
+Ecuador,Moisés Caicedo,,MF,Chelsea,web
+Ecuador,Alan Franco,,MF,Atlético Mineiro,web
+Ecuador,Kendry Páez,,MF,River Plate,web
+Ecuador,Pedro Vite,,MF,UNAM,web
+Ecuador,Jordy Alcívar,,MF,Independiente del Valle,web
+Ecuador,Denil Castillo,,MF,Midtjylland,web
+Ecuador,Yaimar Medina,,MF,Genk,web
+Ecuador,Enner Valencia,,FW,Pachuca,web
+Ecuador,Kevin Rodríguez,,FW,Union Saint-Gilloise,web
+Ecuador,Jordy Caicedo,,FW,Huracán,web
+Ecuador,Nilson Angulo,,FW,Sunderland,web
+Ecuador,Anthony Valencia,,FW,Antwerp,web
+Ecuador,Jérémy Arévalo,,FW,Stuttgart,web
+Netherlands,Bart Verbruggen,1,GK,Brighton,web
+Netherlands,Robin Roefs,13,GK,Sunderland,web
+Netherlands,Mark Flekken,23,GK,Bayer Leverkusen,web
+Netherlands,Virgil van Dijk,4,DF,Liverpool,web
+Netherlands,Jan Paul van Hecke,9,DF,Brighton,web
+Netherlands,Nathan Aké,5,DF,Manchester City,web
+Netherlands,Micky van de Ven,8,DF,Tottenham,web
+Netherlands,Denzel Dumfries,6,DF,Inter Milan,web
+Netherlands,Jorrel Hato,7,DF,Chelsea,web
+Netherlands,Jurriën Timber,2,DF,Arsenal,web
+Netherlands,Frenkie de Jong,10,MF,Barcelona,web
+Netherlands,Tijjani Reijnders,14,MF,Manchester City,web
+Netherlands,Justin Kluivert,24,MF,Bournemouth,web
+Netherlands,Quinten Timber,16,MF,Marseille,web
+Netherlands,Teun Koopmeiners,12,MF,Juventus,web
+Netherlands,Ryan Gravenberch,11,MF,Liverpool,web
+Netherlands,Marten de Roon,3,MF,Atalanta,web
+Netherlands,Guus Til,15,MF,PSV,web
+Netherlands,Mats Wieffer,17,MF,Brighton,web
+Netherlands,Cody Gakpo,18,FW,Liverpool,web
+Netherlands,Donyell Malen,20,FW,Roma,web
+Netherlands,Brian Brobbey,21,FW,Sunderland,web
+Netherlands,Noa Lang,25,FW,Galatasaray,web
+Netherlands,Memphis Depay,19,FW,Corinthians,web
+Netherlands,Wout Weghorst,,FW,Ajax,web
+Netherlands,Crysencio Summerville,26,FW,West Ham,web
+Japan,Tomoki Hayakawa,,GK,Kashima Antlers,web
+Japan,Keisuke Osako,,GK,Sanfrecce Hiroshima,web
+Japan,Zion Suzuki,,GK,Parma,web
+Japan,Yuto Nagatomo,,DF,FC Tokyo,web
+Japan,Shogo Taniguchi,,DF,Sint-Truiden,web
+Japan,Ko Itakura,,DF,Ajax,web
+Japan,Tsuyoshi Watanabe,,DF,Feyenoord,web
+Japan,Takehiro Tomiyasu,,DF,Ajax,web
+Japan,Hiroki Ito,,DF,Bayern Munich,web
+Japan,Ayumu Seko,,DF,Le Havre,web
+Japan,Yukinari Sugawara,,DF,Werder Bremen,web
+Japan,Junosuke Suzuki,,DF,Copenhagen,web
+Japan,Wataru Endo,,MF,Liverpool,web
+Japan,Junya Ito,,MF,Genk,web
+Japan,Daichi Kamada,,MF,Crystal Palace,web
+Japan,Koki Ogawa,,MF,NEC Nijmegen,web
+Japan,Daizen Maeda,,MF,Celtic,web
+Japan,Ritsu Doan,,MF,Eintracht Frankfurt,web
+Japan,Ao Tanaka,,MF,Leeds,web
+Japan,Kaishu Sano,,MF,Mainz,web
+Japan,Takefusa Kubo,,MF,Real Sociedad,web
+Japan,Ayase Ueda,,FW,Feyenoord,web
+Japan,Keito Nakamura,,FW,Reims,web
+Japan,Ito Suzuki,,FW,Freiburg,web
+Japan,Kento Shiode,,FW,Wolfsburg,web
+Japan,Keisuke Goto,,FW,Sint-Truiden,web
+Sweden,Viktor Johansson,,GK,Stoke,web
+Sweden,Kristoffer Nordfeldt,,GK,AIK,web
+Sweden,Jacob Widell Zetterström,,GK,Derby,web
+Sweden,Hjalmar Ekdal,,DF,Burnley,web
+Sweden,Gabriel Gudmundsson,,DF,Leeds,web
+Sweden,Isak Hien,,DF,Atalanta,web
+Sweden,Emil Holm,,DF,Juventus,web
+Sweden,Gustaf Lagerbielke,,DF,Braga,web
+Sweden,Victor Lindelöf,,DF,Aston Villa,web
+Sweden,Erik Smith,,DF,St. Pauli,web
+Sweden,Carl Starfelt,,DF,Celta Vigo,web
+Sweden,Elliot Stroud,,DF,Mjällby,web
+Sweden,Daniel Svensson,,DF,Borussia Dortmund,web
+Sweden,Taha Ali,,MF,Malmö,web
+Sweden,Yasin Ayari,,MF,Brighton,web
+Sweden,Lucas Bergvall,,MF,Tottenham,web
+Sweden,Jesper Karlström,,MF,Udinese,web
+Sweden,Ken Sema,,MF,Pafos,web
+Sweden,Mattias Svanberg,,MF,Wolfsburg,web
+Sweden,Besfort Zeneli,,MF,Union Saint-Gilloise,web
+Sweden,Alexander Bernhardsson,,FW,Holstein Kiel,web
+Sweden,Anthony Elanga,,FW,Newcastle,web
+Sweden,Viktor Gyökeres,,FW,Arsenal,web
+Sweden,Alexander Isak,,FW,Liverpool,web
+Sweden,Gustaf Nilsson,,FW,Club Brugge,web
+Sweden,Benjamin Nygren,,FW,Celtic,web
+Tunisia,Sabri Ben Hassen,,GK,Étoile Sahel,web
+Tunisia,Abdelmouhib Chamakh,,GK,Club Africain,web
+Tunisia,Aymen Dahman,,GK,CS Sfaxien,web
+Tunisia,Ali Abdi,,DF,Nice,web
+Tunisia,Adem Arous,,DF,Kasımpaşa,web
+Tunisia,Mohamed Amine Ben Hamida,,DF,Espérance,web
+Tunisia,Dylan Bronn,,DF,Servette,web
+Tunisia,Raed Chikhaoui,,DF,US Monastir,web
+Tunisia,Moutaz Neffati,,DF,Norrköping,web
+Tunisia,Omar Rekik,,DF,Maribor,web
+Tunisia,Montassar Talbi,,DF,Lorient,web
+Tunisia,Yan Valery,,DF,Young Boys,web
+Tunisia,Mortadha Ben Ouanes,,MF,Kasımpaşa,web
+Tunisia,Anis Ben Slimane,,MF,Norwich,web
+Tunisia,Ismaïl Gharbi,,MF,Augsburg,web
+Tunisia,Rani Khedira,,MF,Union Berlin,web
+Tunisia,Mohamed Hadj Mahmoud,,MF,Lugano,web
+Tunisia,Hannibal Mejbri,,MF,Burnley,web
+Tunisia,Ellyes Skhiri,,MF,Eintracht Frankfurt,web
+Tunisia,Elias Achouri,,FW,Copenhagen,web
+Tunisia,Khalil Ayari,,FW,PSG,web
+Tunisia,Firas Chaouat,,FW,Club Africain,web
+Tunisia,Rayan Elloumi,,FW,Vancouver Whitecaps,web
+Tunisia,Hazem Mastouri,,FW,Dynamo Makhachkala,web
+Tunisia,Elias Saad,,FW,Hannover,web
+Tunisia,Sebastian Tounekti,,FW,Celtic,web
+Belgium,Thibaut Courtois,,GK,Real Madrid,web
+Belgium,Senne Lammens,,GK,Manchester United,web
+Belgium,Mike Penders,,GK,Racing Strasbourg,web
+Belgium,Timothy Castagne,,DF,Fulham,web
+Belgium,Zeno Debast,,DF,Sporting Lisbon,web
+Belgium,Maxim De Cuyper,,DF,Brighton,web
+Belgium,Koni De Winter,,DF,AC Milan,web
+Belgium,Brandon Mechele,,DF,Club Brugge,web
+Belgium,Thomas Meunier,,DF,Lille,web
+Belgium,Nathan Ngoy,,DF,Lille,web
+Belgium,Joaquin Seys,,DF,Club Brugge,web
+Belgium,Arthur Theate,,DF,Eintracht Frankfurt,web
+Belgium,Kevin De Bruyne,,MF,Napoli,web
+Belgium,Amadou Onana,,MF,Aston Villa,web
+Belgium,Nicolas Raskin,,MF,Rangers,web
+Belgium,Youri Tielemans,,MF,Aston Villa,web
+Belgium,Hans Vanaken,,MF,Club Brugge,web
+Belgium,Axel Witsel,,MF,Girona,web
+Belgium,Charles De Ketelaere,,FW,Atalanta,web
+Belgium,Jérémy Doku,,FW,Manchester City,web
+Belgium,Matías Fernández-Pardo,,FW,Lille,web
+Belgium,Romelu Lukaku,,FW,Napoli,web
+Belgium,Dodi Lukebakio,,FW,Benfica,web
+Belgium,Diego Moreira,,FW,Strasbourg,web
+Belgium,Alexis Saelemaekers,,FW,AC Milan,web
+Belgium,Leandro Trossard,,FW,Arsenal,web
+Egypt,Mohamed El Shenawy,,GK,Al Ahly,web
+Egypt,Mostafa Shobeir,,GK,Al Ahly,web
+Egypt,El Mahdi Soliman,,GK,Zamalek,web
+Egypt,Mohamed Hany,,DF,Al Ahly,web
+Egypt,Tarek Alaa,,DF,Zed,web
+Egypt,Hamdy Fathy,,DF,Al Wakrah,web
+Egypt,Rami Rabia,,DF,Al Ain,web
+Egypt,Yasser Ibrahim,,DF,Al Ahly,web
+Egypt,Hossam Abdelmaguid,,DF,Zamalek,web
+Egypt,Mohamed Abdelmonem,,DF,Nice,web
+Egypt,Ahmed Fatouh,,DF,Zamalek,web
+Egypt,Karim Hafez,,DF,Pyramids,web
+Egypt,Marwan Ateya,,MF,Al Ahly,web
+Egypt,Mohanad Lasheen,,MF,Pyramids,web
+Egypt,Nabil Emad,,MF,Al Najma,web
+Egypt,Mahmoud Saber,,MF,Zed,web
+Egypt,Ahmed Zizo,,MF,Al Ahly,web
+Egypt,Emam Ashour,,MF,Al Ahly,web
+Egypt,Mostafa Ziko,,MF,Pyramids,web
+Egypt,Mahmoud Trezeguet,,MF,Al Ahly,web
+Egypt,Ibrahim Adel,,MF,Nordsjaelland,web
+Egypt,Haissem Hassan,,MF,Real Oviedo,web
+Egypt,Omar Marmoush,,FW,Manchester City,web
+Egypt,Mohamed Salah,,FW,Liverpool,web
+Egypt,Hamza Abdelkarim,,FW,Barcelona,web
+Egypt,Aqtay Abdallah,,FW,Enppi,web
+IR Iran,Alireza Beiranvand,,GK,Tractor FC,web
+IR Iran,Seyed Hossein Hosseini,,GK,Sepahan,web
+IR Iran,Payam Niazmand,,GK,Persepolis,web
+IR Iran,Danial Eiri,,DF,Malavan,web
+IR Iran,Ehsan Hajsafi,,DF,Sepahan,web
+IR Iran,Saleh Hardani,,DF,Esteghlal,web
+IR Iran,Hossein Kanaani,,DF,Persepolis,web
+IR Iran,Shoja Khalilzadeh,,DF,Tractor FC,web
+IR Iran,Milad Mohammadi,,DF,Persepolis,web
+IR Iran,Ali Nemati,,DF,Foolad FC,web
+IR Iran,Ramin Rezaeian,,DF,Foolad FC,web
+IR Iran,Rouzbeh Cheshmi,,MF,Esteghlal,web
+IR Iran,Saeid Ezatolahi,,MF,Shabab Al Ahli,web
+IR Iran,Mehdi Ghaedi,,MF,Al Nasr,web
+IR Iran,Saman Ghoddos,,MF,Kalba FC,web
+IR Iran,Mohammad Ghorbani,,MF,Al Wahda,web
+IR Iran,Alireza Jahanbakhsh,,MF,FC Dender,web
+IR Iran,Mohammad Mohebi,,MF,Rostov,web
+IR Iran,Amir Mohammad Razzaghinia,,MF,Esteghlal,web
+IR Iran,Mehdi Torabi,,MF,Tractor FC,web
+IR Iran,Aria Yousefi,,MF,Sepahan,web
+IR Iran,Ali Alipour,,FW,Persepolis,web
+IR Iran,Dennis Dargahi,,FW,Standard Liège,web
+IR Iran,Amirhossein Hosseinzadeh,,FW,Tractor FC,web
+IR Iran,Mehdi Taremi,,FW,Olympiakos,web
+IR Iran,Shahriar Moghanlou,,FW,Kalba FC,web
+New Zealand,Max Crocombe,,GK,Millwall,web
+New Zealand,Alex Paulsen,,GK,Lechia Gdańsk,web
+New Zealand,Michael Woud,,GK,Auckland,web
+New Zealand,Tim Payne,,DF,Wellington Phoenix,web
+New Zealand,Francis De Vries,,DF,Auckland,web
+New Zealand,Tyler Bindon,,DF,Nottingham Forest,web
+New Zealand,Michael Boxall,,DF,Minnesota United,web
+New Zealand,Liberato Cacace,,DF,Wrexham,web
+New Zealand,Nando Pijnaker,,DF,Auckland,web
+New Zealand,Finn Surman,,DF,Portland Timbers,web
+New Zealand,Callan Elliot,,DF,Auckland,web
+New Zealand,Tommy Smith,,DF,Braintree Town,web
+New Zealand,Joe Bell,,MF,Viking FK,web
+New Zealand,Matt Garbett,,MF,Peterborough,web
+New Zealand,Marko Stamenic,,MF,Swansea,web
+New Zealand,Sarpreet Singh,,MF,Wellington Phoenix,web
+New Zealand,Alex Rufer,,MF,Wellington Phoenix,web
+New Zealand,Ryan Thomas,,MF,PEC Zwolle,web
+New Zealand,Chris Wood,,FW,Nottingham Forest,web
+New Zealand,Eli Just,,FW,Motherwell,web
+New Zealand,Kosta Barbarouses,,FW,Western Sydney Wanderers,web
+New Zealand,Ben Waine,,FW,Port Vale,web
+New Zealand,Ben Old,,FW,Saint-Étienne,web
+New Zealand,Callum McCowatt,,FW,Silkeborg IF,web
+New Zealand,Jesse Randall,,FW,Auckland,web
+New Zealand,Lachlan Bayliss,,FW,Newcastle Jets,web
+Spain,Unai Simón,23,GK,Athletic Club,web
+Spain,David Raya,1,GK,Arsenal,web
+Spain,Joan Garcia,13,GK,Barcelona,web
+Spain,Aymeric Laporte,,DF,Athletic Club,web
+Spain,Marc Cucurella,,DF,Chelsea,web
+Spain,Marcos Llorente,,DF,Atlético Madrid,web
+Spain,Eric García,4,DF,Barcelona,web
+Spain,Pedro Porro,,DF,Tottenham,web
+Spain,Àlex Grimaldo,,DF,Bayer Leverkusen,web
+Spain,Pau Cubarsí,22,DF,Barcelona,web
+Spain,Marc Pubill,,DF,Atlético Madrid,web
+Spain,Rodri,16,MF,Manchester City,web
+Spain,Fabián Ruiz,,MF,PSG,web
+Spain,Mikel Merino,,MF,Arsenal,web
+Spain,Pedri,20,MF,Barcelona,web
+Spain,Gavi,9,MF,Barcelona,web
+Spain,Martín Zubimendi,,MF,Arsenal,web
+Spain,Alex Baena,,MF,Atlético Madrid,web
+Spain,Ferran Torres,7,FW,Barcelona,web
+Spain,Mikel Oyarzabal,21,FW,Real Sociedad,web
+Spain,Dani Olmo,10,FW,Barcelona,web
+Spain,Nico Williams,17,FW,Athletic Club,web
+Spain,Lamine Yamal,19,FW,Barcelona,web
+Spain,Yeremy Pino,,FW,Crystal Palace,web
+Spain,Borja Iglesias,,FW,Celta Vigo,web
+Spain,Víctor Muñoz,,FW,Osasuna,web
+Cabo Verde,Vozinha,,GK,Chaves,web
+Cabo Verde,Márcio Rosa,,GK,Montana,web
+Cabo Verde,CJ dos Santos,,GK,San Diego,web
+Cabo Verde,Stopira,,DF,Torreense,web
+Cabo Verde,Roberto Lopes,,DF,Shamrock Rovers,web
+Cabo Verde,João Paulo,,DF,FCSB,web
+Cabo Verde,Diney,,DF,Al Bataeh,web
+Cabo Verde,Logan Costa,,DF,Villarreal,web
+Cabo Verde,Steven Moreira,,DF,Columbus Crew,web
+Cabo Verde,Wagner Pina,,DF,Trabzonspor,web
+Cabo Verde,Sidny Lopes Cabral,,DF,Benfica,web
+Cabo Verde,Kelvin Pires,,DF,SJK,web
+Cabo Verde,Jamiro Monteiro,,MF,PEC Zwolle,web
+Cabo Verde,Kevin Pina,,MF,Krasnodar,web
+Cabo Verde,Deroy Duarte,,MF,Ludogorets,web
+Cabo Verde,Telmo Arcanjo,,MF,Vitória Guimarães,web
+Cabo Verde,Laros Duarte,,MF,Puskás Akadémia,web
+Cabo Verde,Yannick Semedo,,MF,Farense,web
+Cabo Verde,Ryan Mendes,,FW,Igdir,web
+Cabo Verde,Garry Rodrigues,,FW,Apollon Limassol,web
+Cabo Verde,Willy Semedo,,FW,Omonia,web
+Cabo Verde,Jovane Cabral,,FW,Estrela Amadora,web
+Cabo Verde,Gilson Tavares,,FW,Akron Tolyatti,web
+Cabo Verde,Dailon Livramento,,FW,Casa Pia,web
+Cabo Verde,Helio Varela,,FW,Maccabi Tel Aviv,web
+Cabo Verde,Nuno da Costa,,FW,İstanbul Başakşehir,web
+Saudi Arabia,Mohammed Al Owais,,GK,Al Ula,web
+Saudi Arabia,Nawaf Al Aqidi,,GK,Al Nassr,web
+Saudi Arabia,Ahmed Al Kassar,,GK,Al Qadsiah,web
+Saudi Arabia,Abdulelah Al Amri,,DF,Al Nassr,web
+Saudi Arabia,Hassan Tambakti,,DF,Al Hilal,web
+Saudi Arabia,Jehad Thikri,,DF,Al Qadsiah,web
+Saudi Arabia,Ali Lajami,,DF,Al Hilal,web
+Saudi Arabia,Hassan Kadesh,,DF,Al Ittihad,web
+Saudi Arabia,Saud Abdulhamid,,DF,Lens,web
+Saudi Arabia,Mohammed Abu Al Shamat,,DF,Al Qadsiah,web
+Saudi Arabia,Ali Majrashi,,DF,Al Ahli,web
+Saudi Arabia,Moteb Al Harbi,,DF,Al Hilal,web
+Saudi Arabia,Nawaf Boushal,,DF,Al Nassr,web
+Saudi Arabia,Sultan Al-Ghannam,,DF,Al Nassr,web
+Saudi Arabia,Mohammed Kanno,,MF,Al Hilal,web
+Saudi Arabia,Abdullah Al Khaibari,,MF,Al Nassr,web
+Saudi Arabia,Ziyad Al Johani,,MF,Al Ahli,web
+Saudi Arabia,Nasser Al Dawsari,,MF,Al Hilal,web
+Saudi Arabia,Musab Al Juwayr,,MF,Al Qadsiah,web
+Saudi Arabia,Alaa Al Hajji,,MF,Neom,web
+Saudi Arabia,Salem Al Dawsari,,MF,Al Hilal,web
+Saudi Arabia,Khalid Al Ghannam,,MF,Al Ettifaq,web
+Saudi Arabia,Ayman Yahya,,MF,Al Nassr,web
+Saudi Arabia,Firas Al Buraikan,,FW,Al Ahli,web
+Saudi Arabia,Saleh Al Shehri,,FW,Al Ittihad,web
+Saudi Arabia,Abdullah Al Hamdan,,FW,Al Nassr,web
+Uruguay,Sergio Rochet,,GK,Internacional,web
+Uruguay,Fernando Muslera,,GK,Estudiantes,web
+Uruguay,Santiago Mele,,GK,Monterrey,web
+Uruguay,Guillermo Varela,,DF,Flamengo,web
+Uruguay,Ronald Araújo,,DF,Barcelona,web
+Uruguay,José María Giménez,,DF,Atlético Madrid,web
+Uruguay,Santiago Bueno,,DF,Wolverhampton Wanderers,web
+Uruguay,Sebastián Cáceres,,DF,Club América,web
+Uruguay,Mathías Olivera,,DF,Napoli,web
+Uruguay,Joaquín Piquerez,,DF,Palmeiras,web
+Uruguay,Matías Viña,,DF,Flamengo,web
+Uruguay,Juan Manuel Sanabria,,DF,Real Salt Lake,web
+Uruguay,Manuel Ugarte,,MF,Manchester United,web
+Uruguay,Emiliano Martínez,,MF,Palmeiras,web
+Uruguay,Rodrigo Bentancur,,MF,Tottenham,web
+Uruguay,Federico Valverde,,MF,Real Madrid,web
+Uruguay,Agustín Canobbio,,MF,Fluminense,web
+Uruguay,Giorgian de Arrascaeta,,MF,Flamengo,web
+Uruguay,Nicolás de la Cruz,,MF,Flamengo,web
+Uruguay,Facundo Pellistri,,MF,Panathinaikos,web
+Uruguay,Rodrigo Zalazar,,MF,Braga,web
+Uruguay,Maximiliano Araújo,,MF,Sporting,web
+Uruguay,Brian Rodríguez,,MF,Club América,web
+Uruguay,Rodrigo Aguirre,,FW,Club América,web
+Uruguay,Federico Viña,,FW,Real Oviedo,web
+Uruguay,Darwin Núñez,,FW,Al Hilal,web
+France,Mike Maignan,16,GK,AC Milan,web
+France,Robin Risser,23,GK,Lens,web
+France,Brice Samba,1,GK,Rennes,web
+France,Lucas Digne,3,DF,Aston Villa,web
+France,Malo Gusto,2,DF,Chelsea,web
+France,Lucas Hernández,21,DF,PSG,web
+France,Théo Hernández,19,DF,Al Hilal,web
+France,Ibrahima Konaté,15,DF,Liverpool,web
+France,Jules Koundé,5,DF,Barcelona,web
+France,Maxence Lacroix,26,DF,Crystal Palace,web
+France,William Saliba,17,DF,Arsenal,web
+France,Dayot Upamecano,4,DF,Bayern Munich,web
+France,N'Golo Kanté,13,MF,Fenerbahçe,web
+France,Manu Koné,6,MF,AS Roma,web
+France,Adrien Rabiot,14,MF,AC Milan,web
+France,Aurélien Tchouaméni,8,MF,Real Madrid,web
+France,Warren Zaïre-Emery,18,MF,PSG,web
+France,Maghnes Akliouche,25,FW,Monaco,web
+France,Bradley Barcola,12,FW,PSG,web
+France,Rayan Cherki,24,FW,Manchester City,web
+France,Ousmane Dembélé,7,FW,PSG,web
+France,Désiré Doué,20,FW,PSG,web
+France,Jean-Philippe Mateta,22,FW,Crystal Palace,web
+France,Kylian Mbappé,10,FW,Real Madrid,web
+France,Michael Olise,11,FW,Bayern Munich,web
+France,Marcus Thuram,9,FW,Inter Milan,web
+Senegal,Édouard Mendy,,GK,Al Ahli,web
+Senegal,Mory Diaw,,GK,Le Havre,web
+Senegal,Yehvann Diouf,,GK,Nice,web
+Senegal,Krepin Diatta,,DF,Monaco,web
+Senegal,Antoine Mendy,,DF,Nice,web
+Senegal,Kalidou Koulibaly,,DF,Al Hilal,web
+Senegal,El Hadji Malick Diouf,,DF,West Ham,web
+Senegal,Mamadou Sarr,,DF,Chelsea,web
+Senegal,Moussa Niakhaté,,DF,Lyon,web
+Senegal,Moustapha Mbow,,DF,Paris FC,web
+Senegal,Abdoulaye Seck,,DF,Maccabi Haifa,web
+Senegal,Ismail Jakobs,,DF,Galatasaray,web
+Senegal,Ilay Camara,,DF,Anderlecht,web
+Senegal,Idrissa Gana Guèye,,MF,Everton,web
+Senegal,Pape Guèye,,MF,Villarreal,web
+Senegal,Lamine Camara,,MF,Monaco,web
+Senegal,Habib Diarra,,MF,Sunderland,web
+Senegal,Pathé Ciss,,MF,Rayo Vallecano,web
+Senegal,Pape Matar Sarr,,MF,Tottenham,web
+Senegal,Bara Sapoko Ndiaye,,MF,Bayern Munich,web
+Senegal,Sadio Mané,,FW,Al Nassr,web
+Senegal,Ismaïla Sarr,,FW,Crystal Palace,web
+Senegal,Iliman Ndiaye,,FW,Everton,web
+Senegal,Assane Diao,,FW,Como,web
+Senegal,Ibrahim Mbaye,,FW,PSG,web
+Senegal,Nicolas Jackson,,FW,Chelsea,web
+Norway,Ørjan Nyland,,GK,Sevilla,web
+Norway,Egil Selvik,,GK,Watford,web
+Norway,Sander Tangvik,,GK,Hamburger SV,web
+Norway,Julian Ryerson,,DF,Borussia Dortmund,web
+Norway,Marcus Holmgren Pedersen,,DF,Torino,web
+Norway,David Møller Wolfe,,DF,Wolverhampton Wanderers,web
+Norway,Fredrik Bjørkan,,DF,Bodø/Glimt,web
+Norway,Kristoffer Ajer,,DF,Brentford,web
+Norway,Torbjørn Heggem,,DF,Bologna,web
+Norway,Leo Skiri Østigård,,DF,Genoa,web
+Norway,Sondre Langås,,DF,Derby,web
+Norway,Henrik Falchener,,DF,Viking,web
+Norway,Martin Ødegaard,,MF,Arsenal,web
+Norway,Sander Berge,,MF,Fulham,web
+Norway,Fredrik Aursnes,,MF,Benfica,web
+Norway,Patrick Berg,,MF,Bodø/Glimt,web
+Norway,Kristian Thorstvedt,,MF,Sassuolo,web
+Norway,Morten Thorsby,,MF,Cremonese,web
+Norway,Thelo Aasgaard,,MF,Rangers,web
+Norway,Erling Haaland,,FW,Manchester City,web
+Norway,Alexander Sørloth,,FW,Atlético Madrid,web
+Norway,Jørgen Strand Larsen,,FW,Crystal Palace,web
+Norway,Antonio Nusa,,FW,RB Leipzig,web
+Norway,Oscar Bobb,,FW,Fulham,web
+Norway,Andreas Schjelderup,,FW,Benfica,web
+Norway,Jens Petter Hauge,,FW,Bodø/Glimt,web
+Iraq,Fahad Talib,,GK,Al Talaba,web
+Iraq,Jalal Hassan,,GK,Al Zawraa,web
+Iraq,Ahmed Basil,,GK,Al Shorta,web
+Iraq,Hussein Ali,,DF,Pogoń Szczecin,web
+Iraq,Manaf Younis,,DF,,web
+Iraq,Ahmed Yahya,,DF,,web
+Iraq,Mustafa Saadoon,,DF,Al Shorta,web
+Iraq,Zaid Tahseen,,DF,Pakhtakor,web
+Iraq,Rebin Sulaka,,DF,Port,web
+Iraq,Akam Hashim,,DF,Al Zawraa,web
+Iraq,Merchas Doski,,DF,Viktoria Plzeň,web
+Iraq,Zaid Ismail,,DF,Al Talaba,web
+Iraq,Frans Putros,,DF,Persib,web
+Iraq,Amir Al-Ammari,,MF,Cracovia,web
+Iraq,Kevin Yakob,,MF,Aarhus GF,web
+Iraq,Zidane Iqbal,,MF,Utrecht,web
+Iraq,Aimar Sher,,MF,Sarpsborg,web
+Iraq,Ibrahim Bayesh,,MF,Al Dhafra,web
+Iraq,Ahmed Qasem,,MF,Nashville SC,web
+Iraq,Youssef Amyn,,MF,AEK Larnaca,web
+Iraq,Marko Farji,,MF,Venezia,web
+Iraq,Ali Jassim,,FW,Al Najma,web
+Iraq,Ali Al-Hamadi,,FW,Ipswich,web
+Iraq,Ali Yousef,,FW,Al Talaba,web
+Iraq,Aymen Hussein,,FW,Al Karma,web
+Iraq,Mohanad Ali,,FW,Dibba,web
+Argentina,Emiliano Martínez,23,GK,Aston Villa,web
+Argentina,Juan Musso,1,GK,Atlético Madrid,web
+Argentina,Gerónimo Rulli,12,GK,Marseille,web
+Argentina,Leonardo Balerdi,2,DF,Marseille,web
+Argentina,Lisandro Martínez,6,DF,Manchester United,web
+Argentina,Facundo Medina,25,DF,Marseille,web
+Argentina,Nahuel Molina,26,DF,Atlético Madrid,web
+Argentina,Gonzalo Montiel,4,DF,River Plate,web
+Argentina,Nicolás Otamendi,19,DF,Benfica,web
+Argentina,Cristian Romero,13,DF,Tottenham,web
+Argentina,Nicolás Tagliafico,3,DF,Lyon,web
+Argentina,Valentín Barco,8,MF,Strasbourg,web
+Argentina,Rodrigo De Paul,7,MF,Inter Miami,web
+Argentina,Enzo Fernández,24,MF,Chelsea,web
+Argentina,Giovani Lo Celso,11,MF,Real Betis,web
+Argentina,Alexis Mac Allister,20,MF,Liverpool,web
+Argentina,Exequiel Palacios,14,MF,Bayer Leverkusen,web
+Argentina,Leandro Paredes,5,MF,Boca Juniors,web
+Argentina,Thiago Almada,16,FW,Atlético Madrid,web
+Argentina,Julián Álvarez,9,FW,Atlético Madrid,web
+Argentina,Nicolás González,15,FW,Atlético Madrid,web
+Argentina,José Manuel López,21,FW,Palmeiras,web
+Argentina,Lautaro Martínez,22,FW,Inter Milan,web
+Argentina,Lionel Messi,10,FW,Inter Miami,web
+Argentina,Nicolás Paz,18,FW,Como,web
+Argentina,Giuliano Simeone,17,FW,Atlético Madrid,web
+Algeria,Luca Zidane,,GK,Granada,web
+Algeria,Oussama Benbot,,GK,USM Alger,web
+Algeria,Melvin Mastil,,GK,Stade Nyonnais,web
+Algeria,Aïssa Mandi,,DF,Lille,web
+Algeria,Ramy Bensebaïni,,DF,Borussia Dortmund,web
+Algeria,Mohamed Amine Tougai,,DF,Espérance de Tunis,web
+Algeria,Rayan Ait-Nouri,,DF,Manchester City,web
+Algeria,Jaouen Hadjam,,DF,Young Boys,web
+Algeria,Rafik Belghali,,DF,Hellas Verona,web
+Algeria,Zineddine Belaid,,DF,JS Kabylie,web
+Algeria,Achref Abada,,DF,USM Alger,web
+Algeria,Samir Chergui,,DF,Paris FC,web
+Algeria,Nabil Bentaleb,,MF,Lille,web
+Algeria,Ramiz Zerrouki,,MF,Twente,web
+Algeria,Hicham Boudaoui,,MF,Nice,web
+Algeria,Farès Chaibi,,MF,Eintracht Frankfurt,web
+Algeria,Houssem Aouar,,MF,Al Ittihad,web
+Algeria,Ibrahim Maza,,MF,Bayer Leverkusen,web
+Algeria,Yacine Titraoui,,MF,Charleroi,web
+Algeria,Riyad Mahrez,,FW,Al Ahli,web
+Algeria,Mohamed Amoura,,FW,Wolfsburg,web
+Algeria,Amine Gouiri,,FW,Marseille,web
+Algeria,Anis Hadj Moussa,,FW,Feyenoord,web
+Algeria,Adil Boulbina,,FW,Al Duhail,web
+Algeria,Nadhir Benbouali,,FW,Győr,web
+Algeria,Farès Ghedjemis,,FW,Frosinone,web
+Austria,Alexander Schlager,,GK,Red Bull Salzburg,web
+Austria,Florian Wiegele,,GK,Viktoria Plzeň,web
+Austria,Patrick Pentz,,GK,Brøndby,web
+Austria,David Affengruber,,DF,Elche,web
+Austria,Kevin Danso,,DF,Tottenham,web
+Austria,Stefan Posch,,DF,Como,web
+Austria,David Alaba,,DF,Real Madrid,web
+Austria,Philipp Lienhart,,DF,Freiburg,web
+Austria,Phillipp Mwene,,DF,Mainz,web
+Austria,Alexander Prass,,DF,Hoffenheim,web
+Austria,Marco Friedl,,DF,Werder Bremen,web
+Austria,Michael Svoboda,,DF,Venezia,web
+Austria,Xaver Schlager,,MF,RB Leipzig,web
+Austria,Nicolas Seiwald,,MF,RB Leipzig,web
+Austria,Marcel Sabitzer,,MF,Borussia Dortmund,web
+Austria,Florian Grillitsch,,MF,Braga,web
+Austria,Carney Chukwuemeka,,MF,Borussia Dortmund,web
+Austria,Romano Schmid,,MF,Werder Bremen,web
+Austria,Konrad Laimer,,MF,Bayern Munich,web
+Austria,Patrick Wimmer,,MF,Wolfsburg,web
+Austria,Paul Wanner,,MF,PSV,web
+Austria,Alessandro Schöpf,,MF,Wolfsberger,web
+Austria,Marko Arnautović,,FW,Red Star Belgrade,web
+Austria,Michael Gregoritsch,,FW,Brøndby,web
+Austria,Sasa Kalajdzic,,FW,Wolverhampton Wanderers,web
+Jordan,Yazeed Abulaila,,GK,Al Hussein,web
+Jordan,Abdallah Al-Fakhouri,,GK,Al Wehdat,web
+Jordan,Nour Bani Attiah,,GK,Al Faisaly,web
+Jordan,Ihsan Haddad,,DF,Al Hussein,web
+Jordan,Yazan Al-Arab,,DF,FC Seoul,web
+Jordan,Abdallah Nasib,,DF,Al Zawraa,web
+Jordan,Mohammad Abu Hashish,,DF,Al Karma,web
+Jordan,Saed Al-Rosan,,DF,Al Hussein,web
+Jordan,Husam Abu Dahab,,DF,Al Faisaly,web
+Jordan,Mo Abualnadi,,DF,Selangor,web
+Jordan,Salim Obaid,,DF,Al Hussein,web
+Jordan,Anas Badawi,,DF,Al Faisaly,web
+Jordan,Rajaei Ayed,,MF,Al Hussein,web
+Jordan,Noor Al-Rawabdeh,,MF,Selangor,web
+Jordan,Ibrahim Sadeh,,MF,Al Karma,web
+Jordan,Nizar Al-Rashdan,,MF,Qatar SC,web
+Jordan,Mohannad Abu Taha,,MF,Al Quwa Al Jawiya,web
+Jordan,Amer Jamous,,MF,Al Zawraa,web
+Jordan,Mohammad Al-Dawoud,,MF,Al Wehdat,web
+Jordan,Musa Al-Taamari,,FW,Rennes,web
+Jordan,Mahmoud Al-Mardi,,FW,Al Hussein,web
+Jordan,Ali Olwan,,FW,Al Sailiya,web
+Jordan,Mohammad Abu Zrayq,,FW,Raja Casablanca,web
+Jordan,Odeh Al-Fakhouri,,FW,Pyramids,web
+Jordan,Ibrahim Sabra,,FW,Lokomotiva Zagreb,web
+Jordan,Ali Azaizeh,,FW,Al Shabab,web
+Portugal,Diogo Costa,,GK,Porto,web
+Portugal,José Sá,,GK,Wolverhampton Wanderers,web
+Portugal,Rui Silva,,GK,Sporting,web
+Portugal,Diogo Dalot,5,DF,Manchester United,web
+Portugal,Matheus Nunes,,DF,Manchester City,web
+Portugal,Nélson Semedo,,DF,Fenerbahçe,web
+Portugal,João Cancelo,,DF,Barcelona,web
+Portugal,Nuno Mendes,,DF,PSG,web
+Portugal,Gonçalo Inácio,,DF,Sporting,web
+Portugal,Renato Veiga,,DF,Villarreal,web
+Portugal,Rúben Dias,,DF,Manchester City,web
+Portugal,Tomás Araújo,,DF,Benfica,web
+Portugal,Rúben Neves,21,MF,Al Hilal,web
+Portugal,Samuel Costa,,MF,Mallorca,web
+Portugal,João Neves,,MF,PSG,web
+Portugal,Vitinha,,MF,PSG,web
+Portugal,Bruno Fernandes,8,MF,Manchester United,web
+Portugal,Bernardo Silva,10,MF,Manchester City,web
+Portugal,João Félix,,FW,Al Nassr,web
+Portugal,Francisco Trincão,,FW,Sporting,web
+Portugal,Francisco Conceição,,FW,Juventus,web
+Portugal,Pedro Neto,,FW,Chelsea,web
+Portugal,Rafael Leão,,FW,AC Milan,web
+Portugal,Gonçalo Guedes,,FW,Real Sociedad,web
+Portugal,Gonçalo Ramos,9,FW,PSG,web
+Portugal,Cristiano Ronaldo,7,FW,Al Nassr,web
+Congo DR,Matthieu Epolo,,GK,Standard Liège,web
+Congo DR,Timothy Fayulu,,GK,Noah,web
+Congo DR,Lionel Mpasi,,GK,Le Havre,web
+Congo DR,Dylan Batubinsika,,DF,Larisa,web
+Congo DR,Rocky Bushiri,,DF,Hibernian,web
+Congo DR,Gedeon Kalulu,,DF,Aris Limassol,web
+Congo DR,Steve Kapuadi,,DF,Widzew Łódź,web
+Congo DR,Joris Kayembe,,DF,Racing Genk,web
+Congo DR,Arthur Masuaku,,DF,Racing Lens,web
+Congo DR,Chancel Mbemba,,DF,Lille,web
+Congo DR,Axel Tuanzebe,,DF,Burnley,web
+Congo DR,Aaron Wan-Bissaka,,DF,West Ham,web
+Congo DR,Théo Bongonda,,MF,Spartak Moscow,web
+Congo DR,Brian Cipenga,,MF,Castellón,web
+Congo DR,Meshack Elia,,MF,Alanyaspor,web
+Congo DR,Gaël Kakuta,,MF,Larisa,web
+Congo DR,Edo Kayembe,,MF,Watford,web
+Congo DR,Nathanaël Mbuku,,MF,Montpellier,web
+Congo DR,Samuel Moutoussamy,,MF,Atromitos,web
+Congo DR,Ngal'ayel Mukau,,MF,Lille,web
+Congo DR,Charles Pickel,,MF,Espanyol,web
+Congo DR,Noah Sadiki,,MF,Sunderland,web
+Congo DR,Cédric Bakambu,,FW,Real Betis,web
+Congo DR,Simon Banza,,FW,Al Jazira,web
+Congo DR,Fiston Mayele,,FW,Pyramids,web
+Congo DR,Yoane Wissa,,FW,Newcastle,web
+Uzbekistan,Utkir Yusupov,,GK,Navbahor,web
+Uzbekistan,Abduvohid Nematov,,GK,Nasaf,web
+Uzbekistan,Botirali Ergashev,,GK,Neftchi,web
+Uzbekistan,Rustam Ashurmatov,,DF,Esteghlal,web
+Uzbekistan,Farrukh Sayfiev,,DF,Neftchi,web
+Uzbekistan,Khojiakbar Alijonov,,DF,Pakhtakor,web
+Uzbekistan,Sherzod Nasrullaev,,DF,Nasaf,web
+Uzbekistan,Umar Eshmurodov,,DF,Nasaf,web
+Uzbekistan,Abdukodir Khusanov,,DF,Manchester City,web
+Uzbekistan,Abdulla Abdullaev,,DF,Dibba,web
+Uzbekistan,Bekhruz Karimov,,DF,Surkhon,web
+Uzbekistan,Jakhongir Urozov,,DF,Dinamo Samarkand,web
+Uzbekistan,Avazbek Ulmasaliev,,DF,AGMK,web
+Uzbekistan,Otabek Shukurov,,MF,Baniyas,web
+Uzbekistan,Jaloliddin Masharipov,,MF,Esteghlal,web
+Uzbekistan,Odiljon Hamrobekov,,MF,Tractor,web
+Uzbekistan,Oston Urunov,,MF,Persepolis,web
+Uzbekistan,Jamshid Iskanderov,,MF,Neftchi,web
+Uzbekistan,Dostonbek Khamdamov,,MF,Pakhtakor,web
+Uzbekistan,Abbosbek Fayzullaev,,MF,İstanbul Başakşehir,web
+Uzbekistan,Akmal Mozgovoy,,MF,Pakhtakor,web
+Uzbekistan,Azizjon Ganiev,,MF,Al Bataeh,web
+Uzbekistan,Sherzod Esanov,,MF,Bukhara,web
+Uzbekistan,Eldor Shomurodov,,FW,İstanbul Başakşehir,web
+Uzbekistan,Igor Sergeev,,FW,Persepolis,web
+Uzbekistan,Azizbek Amonov,,FW,Bukhara,web
+Colombia,Camilo Vargas,,GK,Atlas,web
+Colombia,Álvaro Montero,,GK,Vélez Sarsfield,web
+Colombia,David Ospina,,GK,Atlético Nacional,web
+Colombia,Dávinson Sánchez,,DF,Galatasaray,web
+Colombia,Jhon Lucumí,,DF,Bologna,web
+Colombia,Yerry Mina,,DF,Cagliari,web
+Colombia,Willer Ditta,,DF,Cruz Azul,web
+Colombia,Daniel Muñoz,,DF,Crystal Palace,web
+Colombia,Santiago Arias,,DF,Independiente,web
+Colombia,Johan Mojica,,DF,Mallorca,web
+Colombia,Déiver Machado,,DF,Nantes,web
+Colombia,Richard Ríos,,MF,Benfica,web
+Colombia,Jefferson Lerma,,MF,Crystal Palace,web
+Colombia,Kevin Castaño,,MF,River Plate,web
+Colombia,Juan Camilo Portilla,,MF,Athletico Paranaense,web
+Colombia,Gustavo Puerta,,MF,Racing de Santander,web
+Colombia,Jhon Arias,,MF,Palmeiras,web
+Colombia,Jorge Carrascal,,MF,Flamengo,web
+Colombia,Juan Fernando Quintero,,MF,River Plate,web
+Colombia,James Rodríguez,,MF,Minnesota United,web
+Colombia,Jaminton Campaz,,MF,Rosario Central,web
+Colombia,Juan Camilo Hernández,,FW,Real Betis,web
+Colombia,Luis Díaz,,FW,Bayern Munich,web
+Colombia,Luis Suárez,,FW,Sporting,web
+Colombia,Carlos Andrés Gómez,,FW,Vasco da Gama,web
+Colombia,Jhon Córdoba,,FW,Krasnodar,web
+England,Jordan Pickford,1,GK,Everton,web
+England,Dean Henderson,13,GK,Crystal Palace,web
+England,James Trafford,23,GK,Manchester City,web
+England,Reece James,24,DF,Chelsea,web
+England,Ezri Konsa,2,DF,Aston Villa,web
+England,Jarell Quansah,26,DF,Bayer Leverkusen,web
+England,John Stones,5,DF,Manchester City,web
+England,Marc Guéhi,6,DF,Manchester City,web
+England,Dan Burn,15,DF,Newcastle,web
+England,Nico O'Reilly,3,DF,Manchester City,web
+England,Djed Spence,25,DF,Tottenham,web
+England,Tino Livramento,12,DF,Newcastle,web
+England,Declan Rice,4,MF,Arsenal,web
+England,Elliot Anderson,8,MF,Nottingham Forest,web
+England,Kobbie Mainoo,16,MF,Manchester United,web
+England,Jordan Henderson,14,MF,Brentford,web
+England,Morgan Rogers,17,MF,Aston Villa,web
+England,Jude Bellingham,10,MF,Real Madrid,web
+England,Eberechi Eze,21,MF,Arsenal,web
+England,Harry Kane,9,FW,Bayern Munich,web
+England,Ivan Toney,22,FW,Al Ahli,web
+England,Ollie Watkins,19,FW,Aston Villa,web
+England,Bukayo Saka,7,FW,Arsenal,web
+England,Marcus Rashford,11,FW,Barcelona,web
+England,Anthony Gordon,18,FW,Barcelona,web
+England,Noni Madueke,20,FW,Arsenal,web
+Croatia,Dominik Livaković,,GK,Dinamo Zagreb,web
+Croatia,Dominik Kotarski,,GK,Copenhagen,web
+Croatia,Ivor Pandur,,GK,Hull,web
+Croatia,Joško Gvardiol,,DF,Manchester City,web
+Croatia,Duje Ćaleta-Car,,DF,Real Sociedad,web
+Croatia,Josip Šutalo,,DF,Ajax,web
+Croatia,Josip Stanišić,,DF,Bayern Munich,web
+Croatia,Marin Pongračić,,DF,Fiorentina,web
+Croatia,Martin Erlić,,DF,Midtjylland,web
+Croatia,Luka Vušković,,DF,Hamburg,web
+Croatia,Luka Modrić,,MF,AC Milan,web
+Croatia,Mateo Kovačić,,MF,Manchester City,web
+Croatia,Mario Pašalić,,MF,Atalanta,web
+Croatia,Nikola Vlašić,,MF,Torino,web
+Croatia,Luka Sučić,,MF,Real Sociedad,web
+Croatia,Martin Baturina,,MF,Como,web
+Croatia,Kristijan Jakić,,MF,Augsburg,web
+Croatia,Petar Sučić,,MF,Inter Milan,web
+Croatia,Nikola Moro,,MF,Bologna,web
+Croatia,Toni Fruk,,MF,Rijeka,web
+Croatia,Ivan Perišić,,FW,PSV Eindhoven,web
+Croatia,Andrej Kramarić,,FW,Hoffenheim,web
+Croatia,Ante Budimir,,FW,Osasuna,web
+Croatia,Marco Pašalić,,FW,Orlando City,web
+Croatia,Petar Musa,,FW,Dallas,web
+Croatia,Igor Matanović,,FW,Freiburg,web
+Ghana,Benjamin Asare,,GK,Hearts of Oak,web
+Ghana,Lawrence Ati-Zigi,,GK,St. Gallen,web
+Ghana,Joseph Anang,,GK,St. Patrick's Athletic,web
+Ghana,Abdul Baba Rahman,,DF,PAOK,web
+Ghana,Gideon Mensah,,DF,Auxerre,web
+Ghana,Marvin Senaya,,DF,Auxerre,web
+Ghana,Alidu Seidu,,DF,Rennes,web
+Ghana,Abdul Mumin,,DF,Rayo Vallecano,web
+Ghana,Jerome Opoku,,DF,İstanbul Başakşehir,web
+Ghana,Jonas Adjetey,,DF,Wolfsburg,web
+Ghana,Kojo Oppong Peprah,,DF,Nice,web
+Ghana,Elisha Owusu,,DF,Auxerre,web
+Ghana,Derrick Luckassen,,DF,Pafos,web
+Ghana,Thomas Partey,,MF,Villarreal,web
+Ghana,Kwasi Sibo,,MF,Real Oviedo,web
+Ghana,Augustine Boakye,,MF,Saint-Étienne,web
+Ghana,Caleb Yirenkyi,,MF,Nordsjaelland,web
+Ghana,Abdul Fatawu Issahaku,,MF,Leicester,web
+Ghana,Kamaldeen Sulemana,,FW,Atalanta,web
+Ghana,Christopher Bonsu Baah,,FW,Al Qadsiah,web
+Ghana,Ernest Nuamah,,FW,Lyon,web
+Ghana,Antoine Semenyo,,FW,Manchester City,web
+Ghana,Brandon Thomas-Asante,,FW,Coventry,web
+Ghana,Prince Kwabena Adu,,FW,Viktoria Plzeň,web
+Ghana,Iñaki Williams,,FW,Athletic Club,web
+Ghana,Jordan Ayew,,FW,Leicester,web
+Panama,Luis Mejía,,GK,Nacional,web
+Panama,Orlando Mosquera,,GK,Al Fayha,web
+Panama,César Samudio,,GK,Marathon,web
+Panama,Eric Davis,,DF,Plaza Amador,web
+Panama,Fidel Escobar,,DF,Saprissa,web
+Panama,Michael Amir Murillo,,DF,Beşiktaş,web
+Panama,Roderick Miller,,DF,Turan Tovuz,web
+Panama,Andrés Andrade,,DF,LASK,web
+Panama,César Blackman,,DF,Slovan Bratislava,web
+Panama,José Córdoba,,DF,Norwich,web
+Panama,Jiovany Ramos,,DF,Puerto Cabello,web
+Panama,Jorge Gutiérrez,,DF,Deportivo La Guaira,web
+Panama,Edgardo Farina,,DF,Pari Nizhny Novgorod,web
+Panama,Aníbal Godoy,,MF,San Diego,web
+Panama,Alberto Quintero,,MF,Plaza Amador,web
+Panama,Yoel Bárcenas,,MF,Mazatlán,web
+Panama,Adalberto Carrasquilla,,MF,UNAM,web
+Panama,José Luis Rodríguez,,MF,Juárez,web
+Panama,Cristian Martínez,,MF,Ironi Kiryat Shmona,web
+Panama,César Yanis,,MF,Cobresal,web
+Panama,Carlos Harvey,,MF,Minnesota United,web
+Panama,Azarías Londoño,,MF,Universidad Católica,web
+Panama,José Fajardo,,FW,Universidad Católica,web
+Panama,Ismael Díaz,,FW,León,web
+Panama,Cecilio Waterman,,FW,Universidad de Concepción,web
+Panama,Tomás Rodríguez,,FW,Saprissa,web
+USA,Chris Brady,,GK,Chicago Fire,web
+USA,Matt Freese,,GK,New York City FC,web
+USA,Matt Turner,,GK,New England Revolution,web
+USA,Max Arfsten,,DF,Columbus Crew,web
+USA,Sergiño Dest,,DF,PSV,web
+USA,Alex Freeman,,DF,Villarreal,web
+USA,Mark McKenzie,,DF,Toulouse,web
+USA,Tim Ream,,DF,Charlotte FC,web
+USA,Chris Richards,,DF,Crystal Palace,web
+USA,Antonee Robinson,,DF,Fulham,web
+USA,Miles Robinson,,DF,FC Cincinnati,web
+USA,Joe Scally,,DF,Borussia Mönchengladbach,web
+USA,Auston Trusty,,DF,Celtic,web
+USA,Tyler Adams,,MF,Bournemouth,web
+USA,Sebastian Berhalter,,MF,Vancouver Whitecaps,web
+USA,Weston McKennie,,MF,Juventus,web
+USA,Gio Reyna,,MF,Borussia Mönchengladbach,web
+USA,Cristian Roldán,,MF,Seattle Sounders,web
+USA,Malik Tillman,,MF,Bayer Leverkusen,web
+USA,Brenden Aaronson,,FW,Leeds,web
+USA,Folarin Balogun,,FW,Monaco,web
+USA,Ricardo Pepi,,FW,PSV,web
+USA,Christian Pulisic,,FW,AC Milan,web
+USA,Tim Weah,,FW,Marseille,web
+USA,Haji Wright,,FW,Coventry,web
+USA,Alejandro Zendejas,,FW,Club América,web
+Curaçao,Tyrick Bodak,,GK,SC Telstar,web
+Curaçao,Trevor Doornbusch,,GK,VVV-Venlo,web
+Curaçao,Eloy Room,,GK,Miami FC,web
+Curaçao,Riechedly Bazoer,,DF,Konyaspor,web
+Curaçao,Joshua Brenet,,DF,Kayserispor,web
+Curaçao,Roshon van Eijma,,DF,RKC Waalwijk,web
+Curaçao,Sherel Floranus,,DF,PEC Zwolle,web
+Curaçao,Deveron Fonville,,DF,NEC Nijmegen,web
+Curaçao,Jurien Gaari,,DF,Abha Club,web
+Curaçao,Armando Obispo,,DF,PSV,web
+Curaçao,Shurandy Sambo,,DF,Sparta Rotterdam,web
+Curaçao,Juninho Bacuna,,MF,FC Volendam,web
+Curaçao,Leandro Bacuna,,MF,Igdir,web
+Curaçao,Livano Comenencia,,MF,FC Zürich,web
+Curaçao,Kevin Felida,,MF,FC Den Bosch,web
+Curaçao,Ar'Jany Martha,,MF,Rotherham,web
+Curaçao,Tyrese Noslin,,MF,SC Telstar,web
+Curaçao,Godfried Roemeratoe,,MF,RKC Waalwijk,web
+Curaçao,Jeremy Antonisse,,FW,AE Kifisia,web
+Curaçao,Tahith Chong,,FW,Sheffield United,web
+Curaçao,Kenji Gorre,,FW,Maccabi Haifa,web
+Curaçao,Sontje Hansen,,FW,Middlesbrough,web
+Curaçao,Gervane Kastaneer,,FW,Terengganu FC,web
+Curaçao,Brandley Kuwas,,FW,FC Volendam,web
+Curaçao,Jurgen Locadia,,FW,Miami FC,web
+Curaçao,Jearl Margaritha,,FW,SK Beveren,web
