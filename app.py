@@ -7,7 +7,7 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
-from src.config import ensure_app_directories, get_app_config, get_secret, is_deployed, is_shared_core_read_only_mode
+from src.config import ensure_app_directories, get_app_config, get_secret, is_shared_core_read_only_mode
 from src.database import fetch_df, initialize_database
 from src.pages import bracket, dashboard, fixtures, groups, history, rankings, teams, wcq, work_competition
 from src.pages import odds
@@ -499,7 +499,11 @@ def _prepare_local_data_store() -> None:
     try:
         ensure_app_directories()
         initialize_database()
-        if core_snapshots_available() and (is_shared_core_read_only_mode() or is_deployed() or _core_data_is_empty()):
+        # Always reload when committed snapshots are present. load_core_snapshots()
+        # no-ops internally unless the snapshot hash changed, so this is cheap and
+        # ensures the hosted app picks up updated CSVs without relying on
+        # is_deployed() env detection (which Streamlit Community Cloud doesn't set).
+        if core_snapshots_available():
             load_core_snapshots()
         if not is_shared_core_read_only_mode() or _core_data_is_empty():
             seed_world_cup_2026_reference_data()
