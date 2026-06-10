@@ -8,6 +8,7 @@ from src.city_backgrounds import city_background_card_data_uri, city_background_
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches
+from src.jersey_assets import team_jersey_data_uri
 from src.navigation import remember_detail_origin, return_to_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.storage.storage import (
@@ -146,7 +147,7 @@ def _team_focus(team) -> None:
     else:
         st.subheader("Fixtures")
         _render_team_fixture_cards(team, fixtures)
-    _roster_section(int(team["id"]))
+    _roster_section(int(team["id"]), team["team"])
 
 
 def _ranking_context(team_name: str) -> None:
@@ -199,7 +200,7 @@ def _ranking_context_row(row, focus_team: str) -> str:
     return f'<tr class="{focus_class}"><td>{team}</td><td>#{rank}</td></tr>'
 
 
-def _roster_section(team_id: int) -> None:
+def _roster_section(team_id: int, team_name: str = "") -> None:
     roster = fetch_df(
         """
         SELECT player_name, shirt_number, position, club, source, updated_at
@@ -244,14 +245,21 @@ def _roster_section(team_id: int) -> None:
 
     sort_key = "position"
     roster = _sort_roster(roster, sort_key)
-    st.markdown(_roster_markup(roster, sort_key), unsafe_allow_html=True)
+    st.markdown(_roster_markup(roster, sort_key, team_jersey_data_uri(team_name)), unsafe_allow_html=True)
     _roster_sort_script()
 
 
-def _roster_markup(roster: pd.DataFrame, sort_key: str) -> str:
+def _roster_markup(roster: pd.DataFrame, sort_key: str, jersey_uri: str = "") -> str:
     rows = "".join(_roster_row(row) for _, row in roster.iterrows())
+    shell_style = ""
+    if jersey_uri:
+        shell_style = (
+            ' style="background-image: linear-gradient(rgba(8,10,18,.82), rgba(8,10,18,.88)), '
+            f"url('{jersey_uri}'); background-size: cover; background-position: center 14%; "
+            'background-repeat: no-repeat;"'
+        )
     return f"""
-    <section class="team-roster-shell">
+    <section class="team-roster-shell"{shell_style}>
         <div class="team-roster-header">
             <div>
                 <h3>Roster</h3>
