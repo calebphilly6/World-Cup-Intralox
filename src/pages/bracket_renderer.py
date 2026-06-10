@@ -21,48 +21,54 @@ from src.pages.bracket_data import (
 from src.pages.rankings import FLAG_CODES
 
 
-CARD_W = 276
-CARD_H = 142
-FINAL_W = 350
-FINAL_H = 180
-THIRD_W = 350
-THIRD_H = 126
-CANVAS_W = 2790
-CANVAS_H = 1420
+# Single-direction bracket: the tournament flows left -> right. The two halves of
+# the official draw concatenate top-to-bottom into one continuous column order,
+# so each later-round match sits centered between the two matches that feed it.
+R32_ORDER = R32_LEFT + R32_RIGHT      # 16 first-round matches, top -> bottom
+R16_ORDER = R16_LEFT + R16_RIGHT      # 8
+QF_ORDER = QF_LEFT + QF_RIGHT         # 4
+SF_ORDER = SF_LEFT + SF_RIGHT         # 2
+
+CARD_W = 250
+CARD_H = 132
+FINAL_W = 330
+FINAL_H = 168
+THIRD_W = 330
+THIRD_H = 120
+
+PITCH = 156          # vertical distance between consecutive first-round cards
+TOP = 14             # top padding inside the canvas
+HEADER_H = 64        # sticky round-label strip height
+COL_STEP = 360       # horizontal distance between rounds
 
 COL_X = {
-    "r32_left": 46,
-    "r16_left": 336,
-    "qf_left": 626,
-    "sf_left": 916,
-    "final": 1220,
-    "sf_right": 1598,
-    "qf_right": 1888,
-    "r16_right": 2178,
-    "r32_right": 2468,
+    "r32": 40,
+    "r16": 40 + COL_STEP,
+    "qf": 40 + COL_STEP * 2,
+    "sf": 40 + COL_STEP * 3,
+    "final": 40 + COL_STEP * 4,
 }
 
-R32_Y = [124, 274, 424, 574, 724, 874, 1024, 1174]
-R16_Y = [199, 499, 799, 1099]
-QF_Y = [349, 949]
-SF_Y = [649]
-FINAL_Y = 630
-THIRD_PLACE_Y = 1250
+R32_Y = [TOP + i * PITCH for i in range(16)]
+R16_Y = [int(TOP + (2 * j + 0.5) * PITCH) for j in range(8)]
+QF_Y = [int(TOP + (4 * k + 1.5) * PITCH) for k in range(4)]
+SF_Y = [int(TOP + (8 * m + 3.5) * PITCH) for m in range(2)]
+FINAL_Y = int(TOP + 7.5 * PITCH + (CARD_H - FINAL_H) / 2)
+THIRD_Y = int(FINAL_Y + FINAL_H + 70)
+
+CANVAS_W = COL_X["final"] + FINAL_W + 40
+CANVAS_H = R32_Y[-1] + CARD_H + 40
 
 
 def render_live_bracket_html(fixtures: pd.DataFrame, flag_lookup: dict[str, str], background_uri: str | None = None) -> str:
     match_models = _build_match_models(fixtures, flag_lookup)
     cards = []
-    cards.extend(_cards_for(R32_LEFT, COL_X["r32_left"], R32_Y, match_models, "left"))
-    cards.extend(_cards_for(R16_LEFT, COL_X["r16_left"], R16_Y, match_models, "left"))
-    cards.extend(_cards_for(QF_LEFT, COL_X["qf_left"], QF_Y, match_models, "left"))
-    cards.extend(_cards_for(SF_LEFT, COL_X["sf_left"], SF_Y, match_models, "left"))
-    cards.append(_card_html(104, COL_X["final"], FINAL_Y, match_models[104], "final", final=True))
-    cards.append(_card_html(103, COL_X["final"], THIRD_PLACE_Y, match_models[103], "third", third=True))
-    cards.extend(_cards_for(SF_RIGHT, COL_X["sf_right"], SF_Y, match_models, "right"))
-    cards.extend(_cards_for(QF_RIGHT, COL_X["qf_right"], QF_Y, match_models, "right"))
-    cards.extend(_cards_for(R16_RIGHT, COL_X["r16_right"], R16_Y, match_models, "right"))
-    cards.extend(_cards_for(R32_RIGHT, COL_X["r32_right"], R32_Y, match_models, "right"))
+    cards.extend(_cards_for(R32_ORDER, COL_X["r32"], R32_Y, match_models))
+    cards.extend(_cards_for(R16_ORDER, COL_X["r16"], R16_Y, match_models))
+    cards.extend(_cards_for(QF_ORDER, COL_X["qf"], QF_Y, match_models))
+    cards.extend(_cards_for(SF_ORDER, COL_X["sf"], SF_Y, match_models))
+    cards.append(_card_html(104, COL_X["final"], FINAL_Y, match_models[104], final=True))
+    cards.append(_card_html(103, COL_X["final"], THIRD_Y, match_models[103], third=True))
 
     return f"""
     <!doctype html>
@@ -74,65 +80,16 @@ def render_live_bracket_html(fixtures: pd.DataFrame, flag_lookup: dict[str, str]
       <body>
         <main class="bracket-shell">
           <section class="bracket-viewport">
-            <div class="zoom-controls">
-              <button id="zoom-fit" type="button">Fit</button>
-              <button id="zoom-out" type="button">-</button>
-              <span id="zoom-readout">100%</span>
-              <button id="zoom-in" type="button">+</button>
-            </div>
-            <div id="bracket-zoom-space" class="bracket-zoom-space">
-              <div id="bracket-canvas" class="bracket-canvas">
-                {_background_layer(background_uri)}
-                {_connector_svg()}
-                {_column_headers()}
-                {''.join(cards)}
-                {_final_glow()}
-              </div>
+            <div class="bracket-header-row">{_column_headers()}</div>
+            <div class="bracket-canvas">
+              {_connector_svg()}
+              {''.join(cards)}
             </div>
           </section>
         </main>
-        <script>
-          const viewport = document.querySelector(".bracket-viewport");
-          const space = document.getElementById("bracket-zoom-space");
-          const canvas = document.getElementById("bracket-canvas");
-          const readout = document.getElementById("zoom-readout");
-          const baseWidth = {CANVAS_W};
-          const baseHeight = {CANVAS_H};
-          let zoom = 1;
-
-          function fitZoom() {{
-            const widthFit = (viewport.clientWidth - 36) / baseWidth;
-            const heightFit = (viewport.clientHeight - 44) / baseHeight;
-            return Math.min(widthFit, heightFit, 1);
-          }}
-
-          function setZoom(nextZoom, center = true) {{
-            zoom = Math.max(0.28, Math.min(1.6, nextZoom));
-            canvas.style.transform = `scale(${{zoom}})`;
-            space.style.width = `${{baseWidth * zoom}}px`;
-            space.style.height = `${{baseHeight * zoom}}px`;
-            readout.textContent = `${{Math.round(zoom * 100)}}%`;
-            if (center) {{
-              const horizontalOverflow = Math.max(0, space.clientWidth - viewport.clientWidth);
-              const verticalOverflow = Math.max(0, space.clientHeight - viewport.clientHeight);
-              viewport.scrollLeft = horizontalOverflow / 2;
-              viewport.scrollTop = verticalOverflow / 2;
-            }}
-          }}
-
-          document.getElementById("zoom-fit").addEventListener("click", () => setZoom(fitZoom()));
-          document.getElementById("zoom-out").addEventListener("click", () => setZoom(zoom - 0.12, false));
-          document.getElementById("zoom-in").addEventListener("click", () => setZoom(zoom + 0.12, false));
-          window.addEventListener("resize", () => setZoom(fitZoom()));
-          window.requestAnimationFrame(() => setZoom(fitZoom()));
-        </script>
       </body>
     </html>
     """
-
-
-def _background_layer(background_uri: str | None) -> str:
-    return '<div class="bracket-bg"></div>'
 
 
 def _build_match_models(fixtures: pd.DataFrame, flag_lookup: dict[str, str]) -> dict[int, dict]:
@@ -254,11 +211,11 @@ def _winner_index(row: pd.Series | None, scores: tuple[int | None, int | None]) 
     return None
 
 
-def _cards_for(match_numbers: list[int], x: int, ys: list[int], models: dict[int, dict], side: str) -> list[str]:
-    return [_card_html(number, x, y, models[number], side) for number, y in zip(match_numbers, ys)]
+def _cards_for(match_numbers: list[int], x: int, ys: list[int], models: dict[int, dict]) -> list[str]:
+    return [_card_html(number, x, y, models[number]) for number, y in zip(match_numbers, ys)]
 
 
-def _card_html(match_number: int, x: int, y: int, model: dict, side: str, final: bool = False, third: bool = False) -> str:
+def _card_html(match_number: int, x: int, y: int, model: dict, final: bool = False, third: bool = False) -> str:
     size_class = " final-card" if final else " third-card" if third else ""
     style = f"left:{x}px;top:{y}px;"
     if final:
@@ -271,7 +228,7 @@ def _card_html(match_number: int, x: int, y: int, model: dict, side: str, final:
         for idx, participant in enumerate(model["participants"])
     )
     return (
-        f'<article class="bracket-card {side}{size_class}" style="{style}">'
+        f'<article class="bracket-card{size_class}" style="{style}">'
         '<div class="match-head">'
         f'<span>M{match_number}</span>'
         f'<strong>{html.escape(badge)}</strong>'
@@ -344,39 +301,27 @@ def _round_badge(value: str) -> str:
 
 def _connector_svg() -> str:
     paths = []
-    paths.extend(_pair_connectors_left(COL_X["r32_left"] + CARD_W, COL_X["r16_left"], R32_Y, R16_Y, "left-blue"))
-    paths.extend(_pair_connectors_left(COL_X["r16_left"] + CARD_W, COL_X["qf_left"], R16_Y, QF_Y, "left-blue"))
-    paths.extend(_pair_connectors_left(COL_X["qf_left"] + CARD_W, COL_X["sf_left"], QF_Y, SF_Y, "gold"))
-    paths.extend(_pair_connectors_right(COL_X["r32_right"], COL_X["r16_right"], R32_Y, R16_Y, "right-red"))
-    paths.extend(_pair_connectors_right(COL_X["r16_right"], COL_X["qf_right"], R16_Y, QF_Y, "right-red"))
-    paths.extend(_pair_connectors_right(COL_X["qf_right"], COL_X["sf_right"], QF_Y, SF_Y, "gold"))
-    paths.append(_line(COL_X["sf_left"] + CARD_W, _center_y(SF_Y[0]), COL_X["final"], FINAL_Y + FINAL_H / 2, "gold strong"))
-    paths.append(_line(COL_X["final"] + FINAL_W, FINAL_Y + FINAL_H / 2, COL_X["sf_right"], _center_y(SF_Y[0]), "gold strong"))
+    paths.extend(_connect(COL_X["r32"] + CARD_W, COL_X["r16"], R32_Y, R16_Y, "line"))
+    paths.extend(_connect(COL_X["r16"] + CARD_W, COL_X["qf"], R16_Y, QF_Y, "line"))
+    paths.extend(_connect(COL_X["qf"] + CARD_W, COL_X["sf"], QF_Y, SF_Y, "line"))
+    paths.extend(_connect_final(COL_X["sf"] + CARD_W, COL_X["final"], SF_Y, "line strong"))
     return f'<svg class="connector-layer" viewBox="0 0 {CANVAS_W} {CANVAS_H}" aria-hidden="true">{"".join(paths)}</svg>'
 
 
-def _pair_connectors_left(x_from: int, x_to: int, outer_ys: list[int], inner_ys: list[int], class_name: str) -> list[str]:
+def _connect(x_from: int, x_to: int, feeder_ys: list[int], child_ys: list[int], class_name: str) -> list[str]:
     paths = []
     mid = x_from + ((x_to - x_from) / 2)
-    for index, inner_y in enumerate(inner_ys):
-        for outer_y in (outer_ys[index * 2], outer_ys[(index * 2) + 1]):
-            paths.append(_path(f"M{x_from},{_center_y(outer_y)} H{mid} V{_center_y(inner_y)} H{x_to}", class_name))
+    for index, child_y in enumerate(child_ys):
+        child_center = _center_y(child_y)
+        for feeder_y in (feeder_ys[index * 2], feeder_ys[index * 2 + 1]):
+            paths.append(_path(f"M{x_from},{_center_y(feeder_y)} H{mid} V{child_center} H{x_to}", class_name))
     return paths
 
 
-def _pair_connectors_right(x_from: int, x_to: int, outer_ys: list[int], inner_ys: list[int], class_name: str) -> list[str]:
-    paths = []
-    inner_edge = x_to + CARD_W
-    mid = inner_edge + ((x_from - inner_edge) / 2)
-    for index, inner_y in enumerate(inner_ys):
-        for outer_y in (outer_ys[index * 2], outer_ys[(index * 2) + 1]):
-            paths.append(_path(f"M{x_from},{_center_y(outer_y)} H{mid} V{_center_y(inner_y)} H{inner_edge}", class_name))
-    return paths
-
-
-def _line(x1: float, y1: float, x2: float, y2: float, class_name: str) -> str:
-    mid = x1 + ((x2 - x1) / 2)
-    return _path(f"M{x1},{y1} H{mid} V{y2} H{x2}", class_name)
+def _connect_final(x_from: int, x_to: int, feeder_ys: list[int], class_name: str) -> list[str]:
+    mid = x_from + ((x_to - x_from) / 2)
+    child_center = FINAL_Y + FINAL_H / 2
+    return [_path(f"M{x_from},{_center_y(feeder_y)} H{mid} V{child_center} H{x_to}", class_name) for feeder_y in feeder_ys]
 
 
 def _path(d: str, class_name: str) -> str:
@@ -389,20 +334,16 @@ def _center_y(y: int) -> float:
 
 def _column_headers() -> str:
     headers = [
-        (COL_X["r32_left"], "Round of 32"), (COL_X["r16_left"], "Round of 16"),
-        (COL_X["qf_left"], "Quarterfinals"), (COL_X["sf_left"], "Semifinals"),
+        (COL_X["r32"], "Round of 32"),
+        (COL_X["r16"], "Round of 16"),
+        (COL_X["qf"], "Quarterfinals"),
+        (COL_X["sf"], "Semifinals"),
         (COL_X["final"], "Final"),
-        (COL_X["sf_right"], "Semifinals"), (COL_X["qf_right"], "Quarterfinals"),
-        (COL_X["r16_right"], "Round of 16"), (COL_X["r32_right"], "Round of 32"),
     ]
     return "".join(
-        f'<div class="round-header" style="left:{x}px;top:80px;width:{FINAL_W if label == "Final" else CARD_W}px;">{html.escape(label)}</div>'
+        f'<div class="round-header" style="left:{x}px;width:{FINAL_W if label == "Final" else CARD_W}px;">{html.escape(label)}</div>'
         for x, label in headers
     )
-
-
-def _final_glow() -> str:
-    return ""
 
 
 def _display_date(value: str) -> str:
@@ -418,90 +359,61 @@ def _styles() -> str:
     * {{ box-sizing: border-box; }}
     html, body {{
         margin: 0;
-        background: #050505;
-        color: #FFFFFF;
-        font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+        background: #0B1120;
+        color: #E8EDF6;
+        font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
     }}
     .bracket-shell {{
-        min-height: 100vh;
+        height: 100vh;
         overflow: hidden;
-        padding: 12px;
+        padding: 10px;
         position: relative;
-        background:
-            radial-gradient(circle at 50% 8%, rgba(214,168,58,.18), transparent 26%),
-            radial-gradient(circle at 18% 40%, rgba(35,215,215,.09), transparent 22%),
-            radial-gradient(circle at 82% 42%, rgba(255,59,31,.10), transparent 22%),
-            linear-gradient(135deg, #030712, #0B1020 48%, #050505);
-    }}
-    .bracket-bg {{
-        background:
-            radial-gradient(circle at 50% 42%, rgba(214,168,58,.10), transparent 22%),
-            radial-gradient(circle at 28% 36%, rgba(35,215,215,.08), transparent 24%),
-            radial-gradient(circle at 72% 38%, rgba(255,59,31,.08), transparent 24%);
-        inset: 0;
-        position: absolute;
-        z-index: 0;
+        background: #0B1120;
     }}
     .bracket-viewport {{
-        border: 1px solid rgba(214,168,58,.34);
-        border-radius: 8px;
-        height: calc(100vh - 24px);
-        min-height: 780px;
+        border: 1px solid rgba(148,163,184,.16);
+        border-radius: 12px;
+        height: calc(100vh - 20px);
+        min-height: 740px;
         overflow: auto;
         background:
-            linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
-            linear-gradient(180deg, rgba(5,5,5,.42), rgba(5,5,5,.64));
-        background-size: 92px 92px;
-        box-shadow: inset 0 0 90px rgba(0,0,0,.54), 0 18px 40px rgba(0,0,0,.34);
+            linear-gradient(rgba(148,163,184,.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(148,163,184,.05) 1px, transparent 1px),
+            #0E1626;
+        background-size: 120px 120px;
         position: relative;
         z-index: 2;
     }}
-    .zoom-controls {{
-        align-items: center;
-        border: 1px solid rgba(214,168,58,.28);
-        border-radius: 999px;
-        background: rgba(5,5,5,.84);
-        box-shadow: 0 12px 28px rgba(0,0,0,.34);
-        display: flex;
-        gap: 6px;
-        padding: 6px;
+    .bracket-header-row {{
         position: sticky;
-        top: 12px;
-        left: 12px;
-        width: max-content;
-        z-index: 20;
-    }}
-    .zoom-controls button,
-    .zoom-controls span {{
-        border: 1px solid rgba(214,168,58,.30);
-        border-radius: 999px;
-        background: rgba(11,16,32,.88);
-        color: #D6A83A;
-        font-size: 12px;
-        font-weight: 950;
-        min-width: 34px;
-        padding: 7px 10px;
-    }}
-    .zoom-controls button {{
-        cursor: pointer;
-    }}
-    .zoom-controls button:hover {{
-        background: rgba(214,168,58,.18);
-    }}
-    .bracket-zoom-space {{
-        height: {CANVAS_H}px;
-        margin-left: auto;
-        margin-right: auto;
-        min-height: 1px;
-        position: relative;
+        top: 0;
+        left: 0;
         width: {CANVAS_W}px;
+        height: {HEADER_H}px;
+        z-index: 10;
+        background: #0E1626;
+        border-bottom: 1px solid rgba(148,163,184,.14);
+    }}
+    .round-header {{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 1px solid rgba(148,163,184,.18);
+        border-radius: 8px;
+        background: rgba(20,29,48,.92);
+        color: #94A3B8;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: .08em;
+        padding: 9px 10px;
+        text-align: center;
+        text-transform: uppercase;
     }}
     .bracket-canvas {{
         height: {CANVAS_H}px;
         min-width: {CANVAS_W}px;
         position: relative;
-        transform-origin: top left;
         width: {CANVAS_W}px;
     }}
     .connector-layer {{
@@ -513,188 +425,151 @@ def _styles() -> str:
         z-index: 1;
     }}
     .connector {{
-        stroke-width: 2.5;
+        stroke: #33415C;
+        stroke-width: 2;
         stroke-linecap: round;
         stroke-linejoin: round;
-        opacity: .44;
-        filter: drop-shadow(0 0 8px rgba(214,168,58,.10));
     }}
-    .connector.left-blue {{ stroke: #5CE8F0; }}
-    .connector.right-red {{ stroke: #FF6652; }}
-    .connector.gold {{ stroke: #D6A83A; }}
-    .connector.strong {{ stroke-width: 4.5; opacity: .78; }}
-    .round-header {{
-        border: 1px solid rgba(214,168,58,.28);
-        border-radius: 8px;
-        background:
-            linear-gradient(180deg, rgba(214,168,58,.16), rgba(5,5,5,.72)),
-            rgba(5,5,5,.78);
-        box-shadow: 0 12px 26px rgba(0,0,0,.28);
-        color: #D6A83A;
-        font-size: 15px;
-        font-weight: 950;
-        letter-spacing: .02em;
-        padding: 10px 10px;
-        position: absolute;
-        text-align: center;
-        text-shadow: 0 2px 10px rgba(0,0,0,.72);
-        text-transform: uppercase;
-        z-index: 3;
-    }}
+    .connector.strong {{ stroke: #D6A83A; stroke-width: 3; }}
     .bracket-card {{
-        border: 1px solid rgba(255,255,255,.20);
-        border-radius: 8px;
-        background:
-            linear-gradient(180deg, rgba(8,13,25,.94), rgba(3,5,12,.91)),
-            radial-gradient(circle at 100% 0%, rgba(36,88,255,.24), transparent 36%);
-        box-shadow: 0 18px 36px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.06);
+        border: 1px solid rgba(148,163,184,.18);
+        border-radius: 10px;
+        background: #141D30;
+        box-shadow: 0 6px 18px rgba(0,0,0,.30);
         min-height: {CARD_H}px;
         overflow: hidden;
-        padding: 11px;
+        padding: 11px 12px;
         position: absolute;
+        transition: border-color .15s ease, box-shadow .15s ease;
         width: {CARD_W}px;
         z-index: 4;
     }}
-    .bracket-card::before {{
-        background: linear-gradient(90deg, rgba(35,215,215,.92), rgba(214,168,58,.42));
-        border-radius: 999px;
-        content: "";
-        height: 3px;
-        left: 12px;
-        position: absolute;
-        right: 12px;
-        top: 0;
-    }}
-    .bracket-card.right {{
-        background:
-            linear-gradient(180deg, rgba(8,13,25,.94), rgba(3,5,12,.91)),
-            radial-gradient(circle at 0% 0%, rgba(255,59,31,.22), transparent 34%);
-    }}
-    .bracket-card.right::before {{
-        background: linear-gradient(90deg, rgba(214,168,58,.42), rgba(255,59,31,.92));
+    .bracket-card:hover {{
+        border-color: rgba(214,168,58,.50);
+        box-shadow: 0 10px 26px rgba(0,0,0,.42);
+        z-index: 7;
     }}
     .bracket-card.final-card {{
-        border-color: rgba(214,168,58,.74);
+        border-color: rgba(214,168,58,.55);
         background:
-            linear-gradient(180deg, rgba(39,28,9,.96), rgba(5,5,5,.94)),
-            radial-gradient(circle at 50% 0%, rgba(214,168,58,.30), transparent 52%);
-        box-shadow: 0 24px 58px rgba(0,0,0,.54), 0 0 44px rgba(214,168,58,.14), inset 0 1px 0 rgba(255,255,255,.08);
+            linear-gradient(180deg, rgba(214,168,58,.10), transparent 60%),
+            #161F33;
+        box-shadow: 0 14px 36px rgba(0,0,0,.48), 0 0 0 1px rgba(214,168,58,.12);
         min-height: {FINAL_H}px;
-        padding: 14px;
+        padding: 14px 16px;
         z-index: 6;
     }}
-    .bracket-card.final-card::before {{
-        background: linear-gradient(90deg, transparent, #D6A83A, transparent);
-        height: 4px;
-    }}
     .bracket-card.third-card {{
-        border-color: rgba(255,255,255,.20);
-        background:
-            linear-gradient(180deg, rgba(8,13,25,.88), rgba(5,5,5,.86)),
-            radial-gradient(circle at 50% 0%, rgba(214,168,58,.12), transparent 44%);
         min-height: {THIRD_H}px;
-        padding: 11px;
     }}
     .match-head {{
         align-items: center;
         display: flex;
         justify-content: space-between;
         gap: 10px;
+        margin-bottom: 2px;
     }}
     .match-head span {{
-        color: #D6A83A;
-        font-size: 13px;
-        font-weight: 950;
+        color: #64748B;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .04em;
     }}
     .match-head strong {{
-        border: 1px solid rgba(214,168,58,.28);
-        border-radius: 999px;
-        color: #F8FAFC;
+        border-radius: 5px;
+        background: rgba(148,163,184,.14);
+        color: #CBD5E1;
         font-size: 10px;
-        font-weight: 950;
-        letter-spacing: .04em;
+        font-weight: 800;
+        letter-spacing: .05em;
         line-height: 1;
         padding: 4px 7px;
         text-transform: uppercase;
     }}
     .match-meta {{
-        color: #CBD5E1;
-        font-size: 11px;
-        font-weight: 800;
-        margin: 5px 0 8px;
-        min-height: 14px;
+        color: #7C8AA3;
+        font-size: 10.5px;
+        font-weight: 600;
+        margin: 4px 0 9px;
+        min-height: 13px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }}
     .team-stack {{
         display: grid;
-        gap: 6px;
+        gap: 5px;
     }}
     .team-row {{
         align-items: center;
-        border: 1px solid rgba(255,255,255,.15);
-        border-radius: 7px;
-        background: rgba(255,255,255,.065);
+        border: 1px solid transparent;
+        border-left: 3px solid transparent;
+        border-radius: 6px;
+        background: rgba(255,255,255,.04);
         display: grid;
-        grid-template-columns: 38px 1fr 32px;
-        gap: 9px;
+        grid-template-columns: 34px 1fr 26px;
+        gap: 10px;
         min-height: 40px;
-        padding: 5px 7px;
+        padding: 5px 9px 5px 7px;
+        transition: background .15s ease;
     }}
     .team-row.winner {{
-        border-color: rgba(214,168,58,.72);
-        background: rgba(214,168,58,.17);
-        box-shadow: inset 0 0 0 1px rgba(214,168,58,.10);
+        border-left-color: #D6A83A;
+        background: rgba(214,168,58,.14);
     }}
+    .team-row.winner .team-copy span {{ color: #F4D789; }}
+    .team-row.winner .team-score {{ color: #F4D789; }}
     .team-row.loser {{
-        opacity: .58;
+        opacity: .50;
     }}
     .team-row.placeholder {{
-        border-color: rgba(214,168,58,.20);
-        background: rgba(5,5,5,.42);
+        background: rgba(255,255,255,.02);
     }}
     .team-flag, .slot-emblem {{
         align-items: center;
         aspect-ratio: 3 / 2;
-        border-radius: 4px;
+        border-radius: 3px;
         display: grid;
         font-size: 10px;
-        font-weight: 950;
-        height: 25px;
+        font-weight: 800;
+        height: 23px;
         justify-content: center;
         object-fit: cover;
         object-position: center;
-        width: 38px;
+        width: 34px;
     }}
     .team-flag:not(.flag-fallback) {{
-        border: 1px solid rgba(255,255,255,.52);
+        border: 1px solid rgba(255,255,255,.22);
         display: block;
     }}
     .slot-emblem, .flag-fallback {{
-        border: 1px solid rgba(214,168,58,.42);
-        background: linear-gradient(135deg, rgba(214,168,58,.34), rgba(36,88,255,.18));
-        color: #FFFFFF;
+        border: 1px solid rgba(148,163,184,.24);
+        background: rgba(148,163,184,.10);
+        color: #94A3B8;
     }}
     .hidden {{ display: none; }}
     .team-copy {{
         min-width: 0;
     }}
     .team-copy span {{
-        color: #FFFFFF;
+        color: #EAF0FA;
         display: block;
-        font-size: 14px;
-        font-weight: 950;
-        line-height: 1;
+        font-size: 13.5px;
+        font-weight: 700;
+        line-height: 1.1;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }}
+    .team-row.placeholder .team-copy span {{
+        color: #8C9AB3;
+        font-weight: 600;
+    }}
     .team-copy small {{
-        color: #D6A83A;
+        color: #6B7A93;
         display: block;
         font-size: 9.5px;
-        font-weight: 850;
+        font-weight: 600;
         line-height: 1.05;
         margin-top: 2px;
         overflow: hidden;
@@ -702,36 +577,37 @@ def _styles() -> str:
         white-space: nowrap;
     }}
     .team-score {{
-        color: #FFFFFF;
-        font-size: 22px;
-        font-weight: 950;
+        color: #EAF0FA;
+        font-size: 20px;
+        font-weight: 800;
         text-align: right;
     }}
     .final-card .match-head span {{
-        font-size: 15px;
+        color: #D6A83A;
+        font-size: 12px;
     }}
     .final-card .match-head strong {{
         background: rgba(214,168,58,.18);
-        color: #D6A83A;
+        color: #F4D789;
         font-size: 11px;
     }}
     .final-card .match-meta {{
-        font-size: 12px;
+        font-size: 11.5px;
         margin-bottom: 10px;
     }}
     .final-card .team-row {{
-        grid-template-columns: 44px 1fr 38px;
+        grid-template-columns: 40px 1fr 34px;
         min-height: 46px;
     }}
     .final-card .team-flag,
     .final-card .slot-emblem {{
-        height: 29px;
-        width: 44px;
+        height: 27px;
+        width: 40px;
     }}
     .final-card .team-copy span {{
         font-size: 15px;
     }}
     .final-card .team-score {{
-        font-size: 25px;
+        font-size: 24px;
     }}
     """

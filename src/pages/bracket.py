@@ -26,7 +26,7 @@ def render() -> None:
 
     st.iframe(
         render_live_bracket_html(fixtures, _flag_lookup(), _bracket_background_uri()),
-        height=960,
+        height=1040,
     )
 
 
