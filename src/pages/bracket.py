@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 from data_sources.football_data_client import FootballDataError
 from src.database import fetch_df
@@ -25,10 +24,9 @@ def render() -> None:
     if warning:
         st.warning(warning)
 
-    components.html(
+    st.iframe(
         render_live_bracket_html(fixtures, _flag_lookup(), _bracket_background_uri()),
         height=960,
-        scrolling=False,
     )
 
 

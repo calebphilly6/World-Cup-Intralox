@@ -5,7 +5,6 @@ import re
 
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 from src.components.clickable_cards import clickable_cards
 from src.database import fetch_df
@@ -181,7 +180,7 @@ def _render_full_rankings(global_rankings: pd.DataFrame) -> None:
 
 
 def _activate_full_rankings_tab() -> None:
-    components.html(
+    st.iframe(
         """
         <script>
         (() => {

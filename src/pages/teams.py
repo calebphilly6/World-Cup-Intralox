@@ -3,7 +3,6 @@ from __future__ import annotations
 import html
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
@@ -322,7 +321,7 @@ def _roster_row(row) -> str:
 
 
 def _roster_sort_script() -> None:
-    components.html(
+    st.iframe(
         """
         <script>
         (() => {
