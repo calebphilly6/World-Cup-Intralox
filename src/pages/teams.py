@@ -377,7 +377,7 @@ def _roster_sort_script() -> None:
         })();
         </script>
         """,
-        height=0,
+        height=1,  # st.iframe requires height >= 1; this iframe only runs JS
     )
 
 

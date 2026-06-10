@@ -207,7 +207,7 @@ def _activate_full_rankings_tab() -> None:
         })();
         </script>
         """,
-        height=0,
+        height=1,  # st.iframe requires height >= 1; this iframe only runs JS
     )
 
 
