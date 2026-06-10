@@ -22,6 +22,7 @@ def apply_official_match_reference(fixtures: pd.DataFrame) -> pd.DataFrame:
         return fixtures
 
     pair_lookup = _reference_pair_lookup(reference)
+    kickoff_lookup = _kickoff_match_number_lookup()
     chronological_numbers = reference["match_number"].tolist()
     used_numbers: set[int] = set()
     official_numbers = []
@@ -34,7 +35,15 @@ def apply_official_match_reference(fixtures: pd.DataFrame) -> pd.DataFrame:
         matched = pair_lookup.get(key)
         match_number = int(matched["match_number"]) if matched is not None else None
         if match_number is None or match_number in used_numbers:
-            match_number = _next_unused_match_number(chronological_numbers, used_numbers)
+            # Knockout matches have no teams yet, so they cannot be paired by name.
+            # Map them to their official number by their unique kickoff time before
+            # falling back to chronological order (which would shuffle times against
+            # the numeric match/city labels).
+            by_kickoff = kickoff_lookup.get(_normalize_kickoff(row.get("utc_date")))
+            if by_kickoff is not None and by_kickoff not in used_numbers:
+                match_number = by_kickoff
+            else:
+                match_number = _next_unused_match_number(chronological_numbers, used_numbers)
         used_numbers.add(match_number)
         official_numbers.append(match_number)
         city_row = reference[reference["match_number"] == match_number]
@@ -125,6 +134,31 @@ def normalize_team_key(value) -> str:
     normalized = normalized.lower().replace("&", "and").replace("'", "").replace(".", "").replace("?", "")
     normalized = " ".join(normalized.split())
     return aliases.get(normalized, normalized)
+
+
+def _kickoff_match_number_lookup() -> dict[str, int]:
+    """Map a normalized kickoff time to its official match number.
+
+    Built from the canonical fixtures schedule and limited to kickoff times that
+    belong to a single match (knockout slots are unique; group-stage games share
+    slots and are intentionally excluded so they keep matching by team pairing).
+    """
+    schedule = fetch_df("SELECT match_number, kickoff_utc FROM fixtures")
+    if schedule.empty:
+        return {}
+    schedule = schedule.copy()
+    schedule["_kickoff"] = schedule["kickoff_utc"].map(_normalize_kickoff)
+    schedule = schedule[schedule["_kickoff"].notna()]
+    counts = schedule["_kickoff"].value_counts()
+    unique = schedule[schedule["_kickoff"].map(lambda value: counts.get(value, 0) == 1)]
+    return {row["_kickoff"]: int(row["match_number"]) for _, row in unique.iterrows()}
+
+
+def _normalize_kickoff(value) -> str | None:
+    parsed = pd.to_datetime(value, utc=True, errors="coerce")
+    if pd.isna(parsed):
+        return None
+    return parsed.isoformat()
 
 
 def _next_unused_match_number(match_numbers: list[int], used_numbers: set[int]) -> int:
