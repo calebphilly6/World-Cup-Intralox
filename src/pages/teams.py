@@ -8,7 +8,7 @@ from src.city_backgrounds import city_background_card_data_uri, city_background_
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches
-from src.jersey_assets import team_jersey_data_uri
+from src.jersey_assets import team_jersey_data_uri, team_jersey_header_data_uri
 from src.navigation import remember_detail_origin, return_to_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.storage.storage import (
@@ -122,10 +122,10 @@ def _team_focus(team) -> None:
             return
         st.session_state.pop("selected_match_id", None)
 
-    flag_url = _flag_url(team)
+    header_image = team_jersey_header_data_uri(team["team"]) or _flag_url(team)
     st.markdown(
         f"""
-        <div class="team-focus" style="background-image: linear-gradient(90deg, rgba(3,7,18,.88), rgba(3,7,18,.70)), url('{flag_url}');">
+        <div class="team-focus" style="background-image: linear-gradient(90deg, rgba(3,7,18,.92), rgba(3,7,18,.58)), url('{header_image}');">
           <div class="team-focus-title">{team['team']}</div>
           <div class="team-focus-subtitle">Group {team['group_name'] or 'Unassigned'} | FIFA Rank {_display_rank(team['fifa_rank'])}</div>
         </div>
@@ -783,7 +783,7 @@ def _styles() -> None:
             margin-top: .25rem;
         }
         .team-focus {
-            min-height: 420px;
+            min-height: 520px;
             border-radius: 22px;
             background-size: cover;
             background-position: center;
