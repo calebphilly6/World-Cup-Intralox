@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-05-16T04:22:02.849148+00:00",
-  "snapshot_id": "70a8a6f71beab0e6a2da146432263196159e57e421d93dfbf28954e6fd4df1eb",
+  "generated_at": "2026-06-12T12:29:24.542720+00:00",
+  "snapshot_id": "040fdf84eb660bd0ab9a5572066285f7d78ffcbcc97fe7e9c72053a879e4107c",
   "tables": {
     "teams": 48,
-    "roster_players": 234,
+    "roster_players": 1243,
     "venues": 17,
     "groups": 48,
     "fixtures": 104,
     "match_city_reference": 104,
-    "fifa_rankings": 51,
-    "global_fifa_rankings": 214,
+    "fifa_rankings": 99,
+    "global_fifa_rankings": 425,
     "standings": 45,
     "odds_snapshots": 378,
     "fixture_odds_snapshots": 455

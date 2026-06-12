@@ -1,49 +1,212 @@
-team,ranking_date,rank,points,previous_rank,source,notes
-Mexico,2026-04-01,,,manual,
-South Africa,2026-04-01,,,manual,
-South Korea,2026-04-01,,,manual,
-Czechia,2026-04-01,,,manual,
-Canada,2026-04-01,,,manual,
-Switzerland,2026-04-01,,,manual,
-Qatar,2026-04-01,,,manual,
-Bosnia and Herzegovina,2026-04-01,,,manual,
-Brazil,2026-04-01,,,manual,
-Morocco,2026-04-01,,,manual,
-Haiti,2026-04-01,,,manual,
-Scotland,2026-04-01,,,manual,
-United States,2026-04-01,,,manual,
-Paraguay,2026-04-01,,,manual,
-Australia,2026-04-01,,,manual,
-Turkiye,2026-04-01,,,manual,
-Germany,2026-04-01,,,manual,
-Curacao,2026-04-01,,,manual,
-Côte d'Ivoire,2026-04-01,,,manual,
-Ecuador,2026-04-01,,,manual,
-Netherlands,2026-04-01,,,manual,
-Japan,2026-04-01,,,manual,
-Sweden,2026-04-01,,,manual,
-Tunisia,2026-04-01,,,manual,
-Belgium,2026-04-01,,,manual,
-Egypt,2026-04-01,,,manual,
-Iran,2026-04-01,,,manual,
-New Zealand,2026-04-01,,,manual,
-Spain,2026-04-01,,,manual,
-Cabo Verde,2026-04-01,,,manual,
-Saudi Arabia,2026-04-01,,,manual,
-Uruguay,2026-04-01,,,manual,
-France,2026-04-01,,,manual,
-Senegal,2026-04-01,,,manual,
-Norway,2026-04-01,,,manual,
-Iraq,2026-04-01,,,manual,
-Argentina,2026-04-01,,,manual,
-Algeria,2026-04-01,,,manual,
-Austria,2026-04-01,,,manual,
-Jordan,2026-04-01,,,manual,
-Portugal,2026-04-01,,,manual,
-DR Congo,2026-04-01,,,manual,
-Uzbekistan,2026-04-01,,,manual,
-Colombia,2026-04-01,,,manual,
-England,2026-04-01,,,manual,
-Croatia,2026-04-01,,,manual,
-Ghana,2026-04-01,,,manual,
-Panama,2026-04-01,,,manual,
+team,ranking_date,rank,source
+Argentina,2026-06-11,1,FIFA.com
+Spain,2026-06-11,2,FIFA.com
+France,2026-06-11,3,FIFA.com
+England,2026-06-11,4,FIFA.com
+Portugal,2026-06-11,5,FIFA.com
+Brazil,2026-06-11,6,FIFA.com
+Morocco,2026-06-11,7,FIFA.com
+Netherlands,2026-06-11,8,FIFA.com
+Belgium,2026-06-11,9,FIFA.com
+Germany,2026-06-11,10,FIFA.com
+Croatia,2026-06-11,11,FIFA.com
+Italy,2026-06-11,12,FIFA.com
+Colombia,2026-06-11,13,FIFA.com
+Mexico,2026-06-11,14,FIFA.com
+Senegal,2026-06-11,15,FIFA.com
+Uruguay,2026-06-11,16,FIFA.com
+USA,2026-06-11,17,FIFA.com
+Japan,2026-06-11,18,FIFA.com
+Switzerland,2026-06-11,19,FIFA.com
+IR Iran,2026-06-11,20,FIFA.com
+Denmark,2026-06-11,21,FIFA.com
+Türkiye,2026-06-11,22,FIFA.com
+Ecuador,2026-06-11,23,FIFA.com
+Austria,2026-06-11,24,FIFA.com
+Korea Republic,2026-06-11,25,FIFA.com
+Nigeria,2026-06-11,26,FIFA.com
+Australia,2026-06-11,27,FIFA.com
+Algeria,2026-06-11,28,FIFA.com
+Egypt,2026-06-11,29,FIFA.com
+Canada,2026-06-11,30,FIFA.com
+Norway,2026-06-11,31,FIFA.com
+Ukraine,2026-06-11,32,FIFA.com
+Côte d'Ivoire,2026-06-11,33,FIFA.com
+Panama,2026-06-11,34,FIFA.com
+Russia,2026-06-11,35,FIFA.com
+Poland,2026-06-11,36,FIFA.com
+Wales,2026-06-11,37,FIFA.com
+Sweden,2026-06-11,38,FIFA.com
+Hungary,2026-06-11,39,FIFA.com
+Czechia,2026-06-11,40,FIFA.com
+Paraguay,2026-06-11,41,FIFA.com
+Scotland,2026-06-11,42,FIFA.com
+Serbia,2026-06-11,43,FIFA.com
+Cameroon,2026-06-11,44,FIFA.com
+Tunisia,2026-06-11,45,FIFA.com
+Congo DR,2026-06-11,46,FIFA.com
+Slovakia,2026-06-11,47,FIFA.com
+Greece,2026-06-11,48,FIFA.com
+Venezuela,2026-06-11,49,FIFA.com
+Uzbekistan,2026-06-11,50,FIFA.com
+Chile,2026-06-11,51,FIFA.com
+Peru,2026-06-11,52,FIFA.com
+Costa Rica,2026-06-11,53,FIFA.com
+Romania,2026-06-11,54,FIFA.com
+Mali,2026-06-11,55,FIFA.com
+Qatar,2026-06-11,56,FIFA.com
+Iraq,2026-06-11,57,FIFA.com
+Republic of Ireland,2026-06-11,58,FIFA.com
+Slovenia,2026-06-11,59,FIFA.com
+South Africa,2026-06-11,60,FIFA.com
+Saudi Arabia,2026-06-11,61,FIFA.com
+Burkina Faso,2026-06-11,62,FIFA.com
+Jordan,2026-06-11,63,FIFA.com
+Bosnia and Herzegovina,2026-06-11,64,FIFA.com
+Honduras,2026-06-11,65,FIFA.com
+Albania,2026-06-11,66,FIFA.com
+Cabo Verde,2026-06-11,67,FIFA.com
+United Arab Emirates,2026-06-11,68,FIFA.com
+North Macedonia,2026-06-11,69,FIFA.com
+Northern Ireland,2026-06-11,70,FIFA.com
+Jamaica,2026-06-11,71,FIFA.com
+Georgia,2026-06-11,72,FIFA.com
+Ghana,2026-06-11,73,FIFA.com
+Iceland,2026-06-11,74,FIFA.com
+Finland,2026-06-11,75,FIFA.com
+Israel,2026-06-11,76,FIFA.com
+Bolivia,2026-06-11,77,FIFA.com
+Kosovo,2026-06-11,78,FIFA.com
+Oman,2026-06-11,79,FIFA.com
+Montenegro,2026-06-11,80,FIFA.com
+Guinea,2026-06-11,81,FIFA.com
+Curaçao,2026-06-11,82,FIFA.com
+Haiti,2026-06-11,83,FIFA.com
+Syria,2026-06-11,84,FIFA.com
+New Zealand,2026-06-11,85,FIFA.com
+Gabon,2026-06-11,86,FIFA.com
+Bulgaria,2026-06-11,87,FIFA.com
+Angola,2026-06-11,88,FIFA.com
+Uganda,2026-06-11,89,FIFA.com
+Zambia,2026-06-11,90,FIFA.com
+China PR,2026-06-11,91,FIFA.com
+Bahrain,2026-06-11,92,FIFA.com
+Benin,2026-06-11,93,FIFA.com
+Thailand,2026-06-11,94,FIFA.com
+Palestine,2026-06-11,95,FIFA.com
+Belarus,2026-06-11,96,FIFA.com
+Guatemala,2026-06-11,97,FIFA.com
+Luxembourg,2026-06-11,98,FIFA.com
+Vietnam,2026-06-11,99,FIFA.com
+El Salvador,2026-06-11,100,FIFA.com
+Tajikistan,2026-06-11,101,FIFA.com
+Trinidad and Tobago,2026-06-11,102,FIFA.com
+Mozambique,2026-06-11,103,FIFA.com
+Madagascar,2026-06-11,104,FIFA.com
+Equatorial Guinea,2026-06-11,105,FIFA.com
+Kyrgyz Republic,2026-06-11,106,FIFA.com
+Armenia,2026-06-11,107,FIFA.com
+Comoros,2026-06-11,108,FIFA.com
+Kenya,2026-06-11,109,FIFA.com
+Libya,2026-06-11,110,FIFA.com
+Kazakhstan,2026-06-11,111,FIFA.com
+Tanzania,2026-06-11,112,FIFA.com
+Mauritania,2026-06-11,113,FIFA.com
+Niger,2026-06-11,114,FIFA.com
+Lebanon,2026-06-11,115,FIFA.com
+The Gambia,2026-06-11,116,FIFA.com
+Sudan,2026-06-11,117,FIFA.com
+Indonesia,2026-06-11,118,FIFA.com
+Togo,2026-06-11,119,FIFA.com
+Korea DPR,2026-06-11,120,FIFA.com
+Namibia,2026-06-11,121,FIFA.com
+Sierra Leone,2026-06-11,122,FIFA.com
+Faroe Islands,2026-06-11,123,FIFA.com
+Cyprus,2026-06-11,124,FIFA.com
+Suriname,2026-06-11,125,FIFA.com
+Azerbaijan,2026-06-11,126,FIFA.com
+Estonia,2026-06-11,127,FIFA.com
+Rwanda,2026-06-11,128,FIFA.com
+Malawi,2026-06-11,129,FIFA.com
+Zimbabwe,2026-06-11,130,FIFA.com
+Nicaragua,2026-06-11,131,FIFA.com
+Guinea-Bissau,2026-06-11,132,FIFA.com
+Kuwait,2026-06-11,133,FIFA.com
+Congo,2026-06-11,134,FIFA.com
+Philippines,2026-06-11,135,FIFA.com
+Malaysia,2026-06-11,136,FIFA.com
+Latvia,2026-06-11,137,FIFA.com
+India,2026-06-11,138,FIFA.com
+Central African Republic,2026-06-11,139,FIFA.com
+Liberia,2026-06-11,140,FIFA.com
+Turkmenistan,2026-06-11,141,FIFA.com
+Burundi,2026-06-11,142,FIFA.com
+Ethiopia,2026-06-11,143,FIFA.com
+Dominican Republic,2026-06-11,144,FIFA.com
+Yemen,2026-06-11,145,FIFA.com
+Lesotho,2026-06-11,146,FIFA.com
+Botswana,2026-06-11,147,FIFA.com
+Singapore,2026-06-11,148,FIFA.com
+Lithuania,2026-06-11,149,FIFA.com
+Guyana,2026-06-11,150,FIFA.com
+New Caledonia,2026-06-11,151,FIFA.com
+St Kitts and Nevis,2026-06-11,152,FIFA.com
+Solomon Islands,2026-06-11,153,FIFA.com
+Puerto Rico,2026-06-11,154,FIFA.com
+Fiji,2026-06-11,155,FIFA.com
+"Hong Kong, China",2026-06-11,156,FIFA.com
+Tahiti,2026-06-11,157,FIFA.com
+Myanmar,2026-06-11,158,FIFA.com
+Moldova,2026-06-11,159,FIFA.com
+Vanuatu,2026-06-11,160,FIFA.com
+Malta,2026-06-11,161,FIFA.com
+Antigua and Barbuda,2026-06-11,162,FIFA.com
+Grenada,2026-06-11,163,FIFA.com
+Cuba,2026-06-11,164,FIFA.com
+Eswatini,2026-06-11,165,FIFA.com
+St Lucia,2026-06-11,166,FIFA.com
+Bermuda,2026-06-11,167,FIFA.com
+Papua New Guinea,2026-06-11,168,FIFA.com
+South Sudan,2026-06-11,169,FIFA.com
+St Vincent and the Grenadines,2026-06-11,170,FIFA.com
+Afghanistan,2026-06-11,171,FIFA.com
+Andorra,2026-06-11,172,FIFA.com
+Maldives,2026-06-11,173,FIFA.com
+Chinese Taipei,2026-06-11,174,FIFA.com
+Cambodia,2026-06-11,175,FIFA.com
+Montserrat,2026-06-11,176,FIFA.com
+Nepal,2026-06-11,177,FIFA.com
+Mauritius,2026-06-11,178,FIFA.com
+Barbados,2026-06-11,179,FIFA.com
+Belize,2026-06-11,180,FIFA.com
+Bangladesh,2026-06-11,181,FIFA.com
+Dominica,2026-06-11,182,FIFA.com
+Chad,2026-06-11,183,FIFA.com
+Eritrea,2026-06-11,184,FIFA.com
+Laos,2026-06-11,185,FIFA.com
+Cook Islands,2026-06-11,186,FIFA.com
+Sri Lanka,2026-06-11,187,FIFA.com
+Samoa,2026-06-11,188,FIFA.com
+Aruba,2026-06-11,189,FIFA.com
+Mongolia,2026-06-11,190,FIFA.com
+American Samoa,2026-06-11,191,FIFA.com
+Bhutan,2026-06-11,192,FIFA.com
+Macau,2026-06-11,193,FIFA.com
+Brunei Darussalam,2026-06-11,194,FIFA.com
+São Tomé and Príncipe,2026-06-11,195,FIFA.com
+Djibouti,2026-06-11,196,FIFA.com
+Cayman Islands,2026-06-11,197,FIFA.com
+Pakistan,2026-06-11,198,FIFA.com
+Somalia,2026-06-11,199,FIFA.com
+Tonga,2026-06-11,200,FIFA.com
+Timor-Leste,2026-06-11,201,FIFA.com
+Gibraltar,2026-06-11,202,FIFA.com
+Guam,2026-06-11,203,FIFA.com
+Seychelles,2026-06-11,204,FIFA.com
+Turks and Caicos Islands,2026-06-11,205,FIFA.com
+Liechtenstein,2026-06-11,206,FIFA.com
+Bahamas,2026-06-11,207,FIFA.com
+US Virgin Islands,2026-06-11,208,FIFA.com
+British Virgin Islands,2026-06-11,209,FIFA.com
+Anguilla,2026-06-11,210,FIFA.com
+San Marino,2026-06-11,211,FIFA.com
