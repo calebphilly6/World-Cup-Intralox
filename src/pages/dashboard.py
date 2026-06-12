@@ -10,8 +10,8 @@ import streamlit as st
 from src.database import fetch_df
 from src.city_backgrounds import city_background_card_data_uri
 from src.config import is_shared_core_read_only_mode
-from src.fixture_display import enrich_fixture_participants
-from src.football_data_service import cached_matches
+from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
+from src.football_data_service import cached_matches, daily_fixture_refresh_key
 from src.navigation import remember_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.pages.rankings import FLAG_CODES
@@ -52,7 +52,7 @@ def render() -> None:
 
     if not is_shared_core_read_only_mode():
         _ensure_results_for_world_cup_teams()
-    _, intralox = _daily_competition_state(daily_score_refresh_key())
+    _, intralox = _daily_competition_state(daily_score_refresh_key(), daily_fixture_refresh_key())
     _render_intralox_snapshot(intralox)
 
 
@@ -350,7 +350,7 @@ def _home_fixture_team(value) -> str:
 
 
 def _home_fixture_flag(team: str) -> str:
-    code = FLAG_CODES.get(str(team), "")
+    code = flag_code_for_team(team, _team_flag_lookup())
     initials = "".join(part[0] for part in str(team).replace("-", " ").split()[:2]).upper() or "?"
     if not code:
         return f'<div class="home-fixture-flag flag-fallback">{html.escape(initials)}</div>'
@@ -359,6 +359,12 @@ def _home_fixture_flag(team: str) -> str:
         f'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\';">'
         f'<div class="home-fixture-flag flag-fallback hidden">{html.escape(initials)}</div>'
     )
+
+
+@st.cache_data(show_spinner=False)
+def _team_flag_lookup() -> dict[str, str]:
+    teams = fetch_df("SELECT name, country_code FROM teams")
+    return flag_lookup_with_aliases(teams)
 
 
 def _safe_key(value: str) -> str:
@@ -474,7 +480,7 @@ def _score_text(row) -> str:
 
 
 def _fixtures_from_api() -> pd.DataFrame:
-    fixtures = apply_official_match_reference(cached_matches())
+    fixtures = enrich_fixture_participants(apply_official_match_reference(cached_matches()))
     if fixtures.empty:
         return fixtures
     mapped = fixtures.rename(

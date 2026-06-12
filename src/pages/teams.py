@@ -7,10 +7,11 @@ import streamlit as st
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
-from src.football_data_service import cached_matches
+from src.football_data_service import daily_fixture_refresh_key
 from src.jersey_assets import team_jersey_data_uri, team_jersey_header_data_uri
 from src.navigation import remember_detail_origin, return_to_detail_origin
-from src.official_match_reference import apply_official_match_reference, normalize_team_key
+from src.official_match_reference import normalize_team_key
+from src.pages.fixtures import _fixture_data
 from src.storage.storage import (
     load_favorite_teams,
     personal_preferences_use_browser_storage,
@@ -444,6 +445,36 @@ def _clean_roster_value(value, fallback: str) -> str:
 
 
 def _fixtures_for_team(team) -> pd.DataFrame:
+    # Prefer the live fixtures feed (same source as the Fixtures tab) so scores stay
+    # in sync. Fall back to the local schedule only when the feed is unavailable.
+    provider_matches = _provider_fixtures_for_team(team)
+    if not provider_matches.empty:
+        return provider_matches
+    return _local_fixtures_for_team(team)
+
+
+def _provider_fixtures_for_team(team) -> pd.DataFrame:
+    try:
+        fixtures, _warning = _fixture_data(daily_fixture_refresh_key())
+    except Exception:
+        return pd.DataFrame()
+    if fixtures is None or fixtures.empty:
+        return pd.DataFrame()
+    team_key = normalize_team_key(team["team"])
+    matched = fixtures[
+        fixtures["home_team"].map(normalize_team_key).eq(team_key)
+        | fixtures["away_team"].map(normalize_team_key).eq(team_key)
+    ].copy()
+    if matched.empty:
+        return matched
+    if "kickoff_utc" not in matched.columns and "utc_date" in matched.columns:
+        matched["kickoff_utc"] = matched["utc_date"]
+    if "group_name" not in matched.columns and "group" in matched.columns:
+        matched["group_name"] = matched["group"]
+    return matched
+
+
+def _local_fixtures_for_team(team) -> pd.DataFrame:
     local_fixtures = fetch_df(
         """
         SELECT f.match_number AS match_id, f.kickoff_utc,
@@ -461,37 +492,13 @@ def _fixtures_for_team(team) -> pd.DataFrame:
         """
     )
     local_fixtures = enrich_fixture_participants(local_fixtures)
-    if not local_fixtures.empty:
-        team_key = normalize_team_key(team["team"])
-        local_fixtures = local_fixtures[
-            local_fixtures["home_team"].map(normalize_team_key).eq(team_key)
-            | local_fixtures["away_team"].map(normalize_team_key).eq(team_key)
-        ].copy()
-    if not local_fixtures.empty:
+    if local_fixtures.empty:
         return local_fixtures
-
-    try:
-        matches = cached_matches()
-    except Exception:
-        return local_fixtures
-    if matches.empty:
-        return local_fixtures
-    matches = apply_official_match_reference(matches)
-    team_name = normalize_team_key(team["team"])
-    provider_matches = matches[
-        matches["home_team"].map(normalize_team_key).eq(team_name)
-        | matches["away_team"].map(normalize_team_key).eq(team_name)
+    team_key = normalize_team_key(team["team"])
+    return local_fixtures[
+        local_fixtures["home_team"].map(normalize_team_key).eq(team_key)
+        | local_fixtures["away_team"].map(normalize_team_key).eq(team_key)
     ].copy()
-    if provider_matches.empty:
-        return local_fixtures
-    provider_matches = provider_matches.rename(
-        columns={
-            "utc_date": "kickoff_utc",
-            "group": "group_name",
-        }
-    )
-    provider_matches["match_id"] = provider_matches["official_match_number"]
-    return provider_matches
 
 
 def _render_team_fixture_cards(team, fixtures: pd.DataFrame) -> None:
@@ -561,8 +568,10 @@ def _team_fixture_center(fixture) -> str:
 
 
 def _fixture_stage_label(fixture) -> str:
-    group = str(fixture.get("group_name", fixture.get("group", "")) or "").strip()
-    if group:
+    group = str(fixture.get("group_name", fixture.get("group", "")) or "").strip().replace("_", " ").title()
+    if group and group.lower() != "nan":
+        if group.lower().startswith("group "):
+            return group
         return f"Group {group}" if len(group) == 1 else group
     stage = str(fixture.get("stage") or "").replace("_", " ").strip().title()
     return stage or "Stage TBD"

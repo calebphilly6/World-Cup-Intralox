@@ -1,14 +1,20 @@
 from __future__ import annotations
 
 import html
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import streamlit as st
 
 from src.config import is_shared_core_read_only_mode
 from src.database import fetch_df, get_connection
+from src.football_data_service import daily_fixture_refresh_key
+from src.intralox_results import derive_intralox_results
 from src.odds_service import latest_tournament_winner_odds_lookup, odds_source_text
+from src.official_match_reference import normalize_team_key
+from src.pages.fixtures import _fixture_data
 from src.pages.rankings import FLAG_CODES
 from src.utils.team_names import display_team_name
 from src.world_cup_scoring import (
@@ -31,8 +37,8 @@ def render() -> None:
         _ensure_results_for_world_cup_teams()
 
     assignments = _assignment_rows()
-    results = _result_rows()
-    scores, leaderboard = _daily_competition_state(daily_score_refresh_key())
+    _todays_games_line(assignments, daily_fixture_refresh_key())
+    scores, leaderboard = _daily_competition_state(daily_score_refresh_key(), daily_fixture_refresh_key())
 
     validation_errors = validate_assignments(assignments.to_dict("records")) if not assignments.empty else ["Exactly 12 competitors are required."]
     if validation_errors:
@@ -47,13 +53,114 @@ def render() -> None:
 
 
 @st.cache_data(show_spinner=False)
-def _daily_competition_state(refresh_key: str) -> tuple[list[TeamScore], list[dict]]:
+def _daily_competition_state(score_refresh_key: str, fixture_refresh_key: str) -> tuple[list[TeamScore], list[dict]]:
+    # ``fixture_refresh_key`` busts this cache whenever the Fixtures feed refreshes,
+    # so the scoreboard tracks the same results the Fixtures tab shows.
     assignments = _assignment_rows()
-    results = _result_rows()
-    scores = _team_scores(assignments, results)
+    derived = _derived_team_results(fixture_refresh_key)
+    scores = _team_scores(assignments, derived)
     leaderboard = calculate_owner_leaderboard(scores, _previous_ranks())
-    _save_snapshot(leaderboard, refresh_key)
+    _save_snapshot(leaderboard, score_refresh_key)
     return scores, leaderboard
+
+
+def _derived_team_results(fixture_refresh_key: str) -> dict[str, dict]:
+    """Compute each team's results from the live fixtures, keyed by team-name key."""
+    try:
+        fixtures, _warning = _fixture_data(fixture_refresh_key)
+    except Exception:
+        return {}
+    return derive_intralox_results(fixtures)
+
+
+def _todays_games_line(assignments: pd.DataFrame, fixture_refresh_key: str) -> None:
+    """Show today's World Cup games and which competitor owns each team."""
+    try:
+        fixtures, _warning = _fixture_data(fixture_refresh_key)
+    except Exception:
+        return
+
+    games = _todays_games(fixtures)
+    owners = _team_owner_lookup(assignments)
+    if not games:
+        st.markdown(
+            '<section class="intralox-today empty">'
+            '<span class="intralox-today-head">Today\'s Games</span>'
+            '<span class="intralox-today-none">No World Cup games today.</span>'
+            '</section>',
+            unsafe_allow_html=True,
+        )
+        return
+
+    rows = "".join(_todays_game_markup(game, owners) for game in games)
+    st.markdown(
+        '<section class="intralox-today">'
+        '<span class="intralox-today-head">Today\'s Games</span>'
+        f'<div class="intralox-today-list">{rows}</div>'
+        '</section>',
+        unsafe_allow_html=True,
+    )
+
+
+def _todays_games(fixtures: pd.DataFrame) -> list[dict]:
+    if fixtures is None or fixtures.empty or "local_date" not in fixtures:
+        return []
+    today = datetime.now(ZoneInfo("America/Chicago")).date().isoformat()
+    todays = fixtures[fixtures["local_date"].astype(str) == today].copy()
+    if todays.empty:
+        return []
+    todays = todays.sort_values("utc_date")
+    games = []
+    for _, row in todays.iterrows():
+        games.append(
+            {
+                "home": str(row.get("home_team") or "TBD"),
+                "away": str(row.get("away_team") or "TBD"),
+                "time": _short_kickoff(row.get("local_time")),
+            }
+        )
+    return games
+
+
+def _short_kickoff(local_time) -> str:
+    text = str(local_time or "").strip()
+    if not text:
+        return ""
+    return text.lstrip("0")
+
+
+def _team_owner_lookup(assignments: pd.DataFrame) -> dict[str, str]:
+    if assignments is None or assignments.empty:
+        return {}
+    owners: dict[str, str] = {}
+    for _, row in assignments.iterrows():
+        team = str(row.get("team") or "").strip()
+        person = str(row.get("person_name") or "").strip()
+        if team and person:
+            owners[normalize_team_key(team)] = person
+    return owners
+
+
+def _todays_game_markup(game: dict, owners: dict[str, str]) -> str:
+    time_markup = f'<span class="intralox-today-time">{html.escape(game["time"])}</span>' if game["time"] else ""
+    return (
+        '<div class="intralox-today-game">'
+        f'{time_markup}'
+        f'{_todays_team_markup(game["home"], owners)}'
+        '<span class="intralox-today-vs">v</span>'
+        f'{_todays_team_markup(game["away"], owners)}'
+        '</div>'
+    )
+
+
+def _todays_team_markup(team: str, owners: dict[str, str]) -> str:
+    owner = owners.get(normalize_team_key(team), "")
+    owner_markup = f'<em>{html.escape(owner)}</em>' if owner else ""
+    return (
+        '<span class="intralox-today-team">'
+        f'<strong>{html.escape(display_team_name(team))}</strong>{owner_markup}'
+        '</span>'
+    )
 
 
 def _assignment_rows() -> pd.DataFrame:
@@ -82,39 +189,29 @@ def _result_rows() -> pd.DataFrame:
     )
 
 
-def _team_scores(assignments: pd.DataFrame, results: pd.DataFrame) -> list[TeamScore]:
+def _team_scores(assignments: pd.DataFrame, derived: dict[str, dict]) -> list[TeamScore]:
     if assignments.empty:
         return []
-    merged = assignments.merge(results, on="team", how="left").fillna(
-        {
-            "group_wins": 0,
-            "group_draws": 0,
-            "advanced": 0,
-            "won_round_of_32": 0,
-            "won_round_of_16": 0,
-            "won_quarterfinal": 0,
-            "won_semifinal": 0,
-            "won_final": 0,
-            "eliminated": 0,
-        }
-    )
     scores: list[TeamScore] = []
-    for _, row in merged.iterrows():
+    for _, row in assignments.iterrows():
+        team = str(row["team"])
+        data = derived.get(normalize_team_key(team), {})
+        finish = data.get("group_finish")
         scores.append(
             TeamScore(
-                team=str(row["team"]),
+                team=team,
                 owner=str(row["person_name"]),
                 pot=int(row["pot"]),
-                group_wins=int(row["group_wins"] or 0),
-                group_draws=int(row["group_draws"] or 0),
-                group_finish=None if pd.isna(row.get("group_finish")) else int(row["group_finish"]),
-                advanced=bool(int(row["advanced"] or 0)),
-                won_round_of_32=bool(int(row["won_round_of_32"] or 0)),
-                won_round_of_16=bool(int(row["won_round_of_16"] or 0)),
-                won_quarterfinal=bool(int(row["won_quarterfinal"] or 0)),
-                won_semifinal=bool(int(row["won_semifinal"] or 0)),
-                won_final=bool(int(row["won_final"] or 0)),
-                eliminated=bool(int(row["eliminated"] or 0)),
+                group_wins=int(data.get("group_wins", 0) or 0),
+                group_draws=int(data.get("group_draws", 0) or 0),
+                group_finish=None if finish is None else int(finish),
+                advanced=bool(data.get("advanced", False)),
+                won_round_of_32=bool(data.get("won_round_of_32", False)),
+                won_round_of_16=bool(data.get("won_round_of_16", False)),
+                won_quarterfinal=bool(data.get("won_quarterfinal", False)),
+                won_semifinal=bool(data.get("won_semifinal", False)),
+                won_final=bool(data.get("won_final", False)),
+                eliminated=bool(data.get("eliminated", False)),
             )
         )
     return scores
@@ -530,6 +627,82 @@ def _styles() -> None:
         [data-testid="stExpander"] svg {
             color: #D6A83A !important;
             fill: #D6A83A !important;
+        }
+        .intralox-today {
+            border: 1px solid rgba(214,168,58,.24);
+            border-radius: 8px;
+            background: rgba(5,5,5,.34);
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+            margin: .2rem 0 1rem;
+            padding: .6rem .8rem;
+        }
+        .intralox-today.empty {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: .45rem .9rem;
+        }
+        .intralox-today-head {
+            color: #D6A83A;
+            font-size: .72rem;
+            font-weight: 950;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .intralox-today-none {
+            color: #CBD5E1;
+            font-weight: 800;
+        }
+        .intralox-today-list {
+            display: flex;
+            flex-direction: column;
+            gap: .3rem;
+        }
+        .intralox-today-game {
+            align-items: baseline;
+            border-top: 1px solid rgba(255,255,255,.08);
+            display: flex;
+            flex-wrap: wrap;
+            gap: .3rem .45rem;
+            padding-top: .3rem;
+        }
+        .intralox-today-game:first-child {
+            border-top: 0;
+            padding-top: 0;
+        }
+        .intralox-today-time {
+            color: #23D7D7;
+            font-size: .72rem;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+        .intralox-today-team {
+            color: #FFFFFF;
+            white-space: nowrap;
+        }
+        .intralox-today-team strong {
+            color: #FFFFFF;
+            font-weight: 900;
+        }
+        .intralox-today-team em {
+            color: #D6A83A;
+            font-style: normal;
+            font-weight: 850;
+            margin-left: .3rem;
+        }
+        .intralox-today-team em::before {
+            content: "(";
+        }
+        .intralox-today-team em::after {
+            content: ")";
+        }
+        .intralox-today-vs {
+            color: #94A3B8;
+            font-size: .78rem;
+            font-weight: 800;
         }
         .intralox-board {
             display: grid;
