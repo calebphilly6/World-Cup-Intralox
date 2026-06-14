@@ -16,3 +16,5 @@ data/imports/*export*
 data/imports/*.tmp
 
 *.log
+
+.claude/settings.local.json

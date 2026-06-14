@@ -10,7 +10,7 @@ import streamlit as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 JERSEYS_DIR = PROJECT_ROOT / "assets" / "jerseys"
-JERSEY_HEADERS_DIR = JERSEYS_DIR / "headers"
+JERSEY_HEADERS_DIR = JERSEYS_DIR / "headers_norm"
 
 
 def jersey_slug(team_name: str | None) -> str:
@@ -19,12 +19,31 @@ def jersey_slug(team_name: str | None) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
-def jersey_path(team_name: str | None) -> Path | None:
+# Asset files use the raw FIFA team names, but several teams are shown under a
+# different display name (e.g. "Congo DR" -> "DR Congo"). Map those display
+# slugs back to the on-disk slug so the jersey still resolves either way.
+SLUG_ALIASES = {
+    "dr-congo": "congo-dr",
+    "ivory-coast": "cote-d-ivoire",
+    "iran": "ir-iran",
+    "turkey": "turkiye",
+}
+
+
+def _candidate_slugs(team_name: str | None) -> list[str]:
     slug = jersey_slug(team_name)
     if not slug:
-        return None
-    path = JERSEYS_DIR / f"{slug}.webp"
-    return path if path.exists() else None
+        return []
+    aliased = SLUG_ALIASES.get(slug)
+    return [slug, aliased] if aliased else [slug]
+
+
+def jersey_path(team_name: str | None) -> Path | None:
+    for slug in _candidate_slugs(team_name):
+        path = JERSEYS_DIR / f"{slug}.webp"
+        if path.exists():
+            return path
+    return None
 
 
 def team_jersey_data_uri(team_name: str | None) -> str:
@@ -36,11 +55,11 @@ def team_jersey_data_uri(team_name: str | None) -> str:
 
 
 def jersey_header_path(team_name: str | None) -> Path | None:
-    slug = jersey_slug(team_name)
-    if not slug:
-        return None
-    path = JERSEY_HEADERS_DIR / f"{slug}.webp"
-    return path if path.exists() else None
+    for slug in _candidate_slugs(team_name):
+        path = JERSEY_HEADERS_DIR / f"{slug}.webp"
+        if path.exists():
+            return path
+    return None
 
 
 def team_jersey_header_data_uri(team_name: str | None) -> str:
