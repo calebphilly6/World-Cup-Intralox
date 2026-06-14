@@ -11,6 +11,7 @@ from src.city_backgrounds import city_background_card_data_uri, city_background_
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches, daily_fixture_refresh_key
+from src.match_details_service import get_match_details
 from src.match_odds_service import refresh_match_odds_if_available
 from src.navigation import remember_detail_origin, return_to_detail_origin
 from src.odds_service import american_odds_text, latest_fixture_odds
@@ -316,7 +317,285 @@ def _render_fixture_focus(row) -> None:
         '</section>'
     )
     st.markdown(markup, unsafe_allow_html=True)
-    _render_betting_odds(row)
+    if _is_finished(row):
+        _render_match_details(row)
+    else:
+        _render_betting_odds(row)
+
+
+def _is_finished(row) -> bool:
+    status = str(row.get("status") or "").upper()
+    if any(token in status for token in ("FINISH", "FULL_TIME", "AET", "PEN", "AWARDED")):
+        return True
+    if any(token in status for token in ("IN_PLAY", "PAUSED", "LIVE", "HALFTIME", "IN_PROGRESS")):
+        return False
+    # Some entry points (e.g. the home dashboard) carry no status. Treat a scored
+    # match that kicked off comfortably in the past as finished.
+    if _has_score(row):
+        kickoff = pd.to_datetime(row.get("utc_date") or row.get("kickoff_utc"), utc=True, errors="coerce")
+        if not pd.isna(kickoff):
+            return (pd.Timestamp.now(tz="UTC") - kickoff) > pd.Timedelta(hours=2.5)
+    return False
+
+
+def _render_match_details(row) -> None:
+    details = get_match_details(
+        _match_number_value(row),
+        str(row.get("home_team") or ""),
+        str(row.get("away_team") or ""),
+        str(row.get("utc_date") or row.get("kickoff_utc") or ""),
+    )
+    if not details["found"]:
+        st.info("Scorers and lineups for this match aren't available yet.")
+        return
+    if details["goals"]:
+        st.markdown(_goals_panel_html(details["goals"]), unsafe_allow_html=True)
+    if details["lineups"]:
+        st.markdown(
+            _lineups_panel_html(details["lineups"], details.get("substitutions", [])),
+            unsafe_allow_html=True,
+        )
+    st.caption("Match data via ESPN")
+
+
+def _goals_panel_html(goals: list[dict]) -> str:
+    rows = []
+    for goal in goals:
+        tags = []
+        if goal["is_penalty"]:
+            tags.append("PEN")
+        if goal["is_own_goal"]:
+            tags.append("OG")
+        tag_html = f'<span class="goal-tag">{html.escape(" ".join(tags))}</span>' if tags else ""
+        rows.append(
+            '<div class="goal-row">'
+            f'<span class="goal-min">{html.escape(goal["minute"])}</span>'
+            f'<span class="goal-name">{html.escape(goal["scorer"])} {tag_html}</span>'
+            f'<span class="goal-team">{html.escape(goal["team"])}</span>'
+            '</div>'
+        )
+    return (
+        '<div class="match-details-panel"><div class="match-details-title">Goals</div>'
+        + "".join(rows)
+        + '</div>'
+    )
+
+
+def _lineups_panel_html(lineups: list[dict], substitutions: list[dict] | None = None) -> str:
+    substitutions = substitutions or []
+    ordered = sorted(lineups, key=lambda team: 0 if team.get("home_away") == "home" else 1)
+    columns = []
+    for team in ordered:
+        starters = [player for player in team["players"] if player["is_starter"]]
+        used_subs = [player for player in team["players"] if not player["is_starter"] and player["subbed_in"]]
+        on_map = {
+            sub["player_on"]: sub
+            for sub in substitutions
+            if sub.get("team") == team["team"]
+        }
+        formation = (
+            f'<span class="lineup-formation">{html.escape(team["formation"])}</span>'
+            if team["formation"]
+            else ""
+        )
+        used_subs.sort(key=lambda player: _minute_value(on_map.get(player["name"])))
+        pitch_html = _pitch_svg(starters, team["formation"]) if starters else _fallback_list(starters)
+        subs_html = ""
+        if used_subs:
+            subs_html = (
+                '<div class="lineup-subhead">Subs used</div><div class="sub-list">'
+                + "".join(_sub_row_html(player, on_map.get(player["name"])) for player in used_subs)
+                + '</div>'
+            )
+        columns.append(
+            '<div class="lineup-col">'
+            f'<div class="lineup-team">{html.escape(team["team"])} {formation}</div>'
+            f'{pitch_html}'
+            f'{subs_html}'
+            '</div>'
+        )
+    return (
+        '<div class="match-details-panel"><div class="match-details-title">Lineups</div>'
+        '<div class="lineup-grid">'
+        + "".join(columns)
+        + '</div></div>'
+    )
+
+
+def _fallback_list(players: list[dict]) -> str:
+    return '<div class="lineup-list">' + "".join(_lineup_player_html(p) for p in players) + '</div>'
+
+
+# --- Formation pitch rendering -------------------------------------------------
+
+_POSITION_BAND = {
+    "G": 0,
+    "CB": 1, "CD": 1, "LB": 1, "RB": 1, "LWB": 1, "RWB": 1, "WB": 1, "D": 1, "SW": 1,
+    "DM": 2,
+    "CM": 3, "M": 3, "LM": 3, "RM": 3, "MF": 3,
+    "AM": 4,
+    "F": 5, "CF": 5, "ST": 5, "LW": 5, "RW": 5, "SS": 5, "FW": 5, "W": 5,
+}
+
+
+def _pos_code(player: dict) -> str:
+    return str(player.get("position") or "").upper()
+
+
+def _band(player: dict) -> int:
+    head = _pos_code(player).split("-")[0]
+    return _POSITION_BAND.get(head, 3)
+
+
+def _hscore(player: dict) -> float:
+    code = _pos_code(player)
+    head = code.split("-")[0]
+    score = 0.0
+    if head in ("LB", "LWB", "LM", "LW"):
+        score -= 1.0
+    elif head in ("RB", "RWB", "RM", "RW"):
+        score += 1.0
+    if code.endswith("-L"):
+        score -= 0.5
+    elif code.endswith("-R"):
+        score += 0.5
+    return score
+
+
+def _surname(name: str) -> str:
+    parts = str(name or "").split()
+    return parts[-1] if parts else ""
+
+
+def _formation_lines(formation: str, n_outfield: int) -> list[int] | None:
+    parts = [int(tok) for tok in str(formation or "").replace(" ", "").split("-") if tok.isdigit() and int(tok) > 0]
+    if parts and sum(parts) == n_outfield:
+        return parts
+    return None
+
+
+def _assign_rows(starters: list[dict], formation: str) -> tuple[list[dict], list[list[dict]]]:
+    keepers = [p for p in starters if _band(p) == 0]
+    outfield = [p for p in starters if _band(p) != 0]
+    outfield.sort(key=lambda p: (_band(p), _hscore(p)))
+
+    rows: list[list[dict]] = []
+    lines = _formation_lines(formation, len(outfield))
+    if lines:
+        index = 0
+        for count in lines:
+            row = sorted(outfield[index:index + count], key=_hscore)
+            rows.append(row)
+            index += count
+    else:
+        current_band = None
+        for player in outfield:
+            if _band(player) != current_band:
+                rows.append([])
+                current_band = _band(player)
+            rows[-1].append(player)
+        rows = [sorted(row, key=_hscore) for row in rows]
+    return keepers, rows
+
+
+def _pitch_svg(starters: list[dict], formation: str) -> str:
+    keepers, rows = _assign_rows(starters, formation)
+    if not rows and not keepers:
+        return _fallback_list(starters)
+
+    width, height = 320, 400
+    margin_x, top_margin, bottom_margin = 30, 46, 44
+    slots = len(rows) + 1  # +1 for the goalkeeper row
+    usable_h = height - top_margin - bottom_margin
+    gap = usable_h / max(1, slots - 1)
+
+    nodes = []
+
+    def place(player: dict, x: float, y: float) -> None:
+        number = html.escape(str(player.get("number") or ""))
+        name = html.escape(_surname(player.get("name", "")))
+        marker = ""
+        if player.get("subbed_out"):
+            bx, by = x + 11, y - 11
+            marker = (
+                f'<g class="pitch-suboff">'
+                f'<circle cx="{bx:.0f}" cy="{by:.0f}" r="6.5" />'
+                f'<path d="M{bx - 3:.0f} {by - 2:.0f} L{bx + 3:.0f} {by - 2:.0f} '
+                f'L{bx:.0f} {by + 3:.0f} Z" class="pitch-suboff-arrow" />'
+                f'</g>'
+            )
+        nodes.append(
+            f'<g class="pitch-node">'
+            f'<circle cx="{x:.0f}" cy="{y:.0f}" r="13" />'
+            f'<text class="pitch-num" x="{x:.0f}" y="{y + 4:.0f}">{number}</text>'
+            f'{marker}'
+            f'<text class="pitch-name" x="{x:.0f}" y="{y + 27:.0f}">{name}</text>'
+            f'</g>'
+        )
+
+    # Goalkeeper sits at slot 0 (bottom, own goal); attack rises toward the top.
+    if keepers:
+        place(keepers[0], width / 2, height - bottom_margin)
+
+    for row_index, row in enumerate(rows):
+        y = height - bottom_margin - (row_index + 1) * gap
+        n = len(row)
+        for i, player in enumerate(row):
+            x = margin_x + (width - 2 * margin_x) * (i + 1) / (n + 1)
+            place(player, x, y)
+
+    pitch = (
+        '<rect x="2" y="2" width="316" height="396" rx="10" class="pitch-field" />'
+        '<line x1="2" y1="200" x2="318" y2="200" class="pitch-line" />'
+        '<circle cx="160" cy="200" r="34" class="pitch-line" fill="none" />'
+        '<rect x="100" y="2" width="120" height="58" class="pitch-line" fill="none" />'
+        '<rect x="100" y="340" width="120" height="58" class="pitch-line" fill="none" />'
+    )
+    return (
+        f'<svg class="pitch-svg" viewBox="0 0 {width} {height}" '
+        f'xmlns="http://www.w3.org/2000/svg" role="img">'
+        f'{pitch}{"".join(nodes)}</svg>'
+    )
+
+
+def _lineup_player_html(player: dict) -> str:
+    number = html.escape(str(player["number"] or ""))
+    position = html.escape(str(player["position"] or ""))
+    name = html.escape(player["name"])
+    marker = ""
+    if player.get("subbed_out"):
+        marker = '<span class="sub-out" title="Substituted off">&#9660;</span>'
+    elif player.get("subbed_in"):
+        marker = '<span class="sub-in" title="Substituted on">&#9650;</span>'
+    return (
+        '<div class="lineup-player">'
+        f'<span class="pl-num">{number}</span>'
+        f'<span class="pl-name">{name} {marker}</span>'
+        f'<span class="pl-pos">{position}</span>'
+        '</div>'
+    )
+
+
+def _minute_value(sub: dict | None) -> int:
+    if not sub:
+        return 999
+    digits = "".join(ch for ch in str(sub.get("minute") or "") if ch.isdigit())
+    return int(digits) if digits else 999
+
+
+def _sub_row_html(player: dict, sub: dict | None) -> str:
+    minute = html.escape(str(sub["minute"])) if sub and sub.get("minute") else ""
+    minute_html = f'<span class="sub-min">{minute}</span>' if minute else '<span class="sub-min"></span>'
+    on_name = html.escape(player["name"])
+    if sub and sub.get("player_off"):
+        detail = (
+            f'<span class="sub-in-name"><span class="sub-in">&#9650;</span> {on_name}</span>'
+            f'<span class="sub-for"> for </span>'
+            f'<span class="sub-out-name">{html.escape(sub["player_off"])}</span>'
+        )
+    else:
+        detail = f'<span class="sub-in-name"><span class="sub-in">&#9650;</span> {on_name}</span>'
+    return f'<div class="sub-row">{minute_html}<span class="sub-detail">{detail}</span></div>'
 
 
 def _render_betting_odds(row) -> None:
@@ -682,6 +961,142 @@ def _styles() -> None:
             background: rgba(5,5,5,.34);
             padding: .9rem 1rem;
             margin-bottom: .6rem;
+        }
+        .match-details-panel {
+            border: 1px solid rgba(214,168,58,.28);
+            border-radius: 8px;
+            background: rgba(5,5,5,.34);
+            padding: 1rem 1.1rem;
+            margin-bottom: .8rem;
+        }
+        .match-details-title {
+            color: #D6A83A;
+            font-weight: 950;
+            text-transform: uppercase;
+            font-size: .82rem;
+            letter-spacing: .04em;
+            margin-bottom: .7rem;
+        }
+        .goal-row {
+            display: grid;
+            grid-template-columns: 2.4rem 1fr auto;
+            align-items: baseline;
+            gap: .6rem;
+            padding: .32rem 0;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+        .goal-row:first-of-type { border-top: 0; }
+        .goal-min { color: #D6A83A; font-weight: 900; }
+        .goal-name { color: #FFFFFF; font-weight: 750; }
+        .goal-name small { color: #9CA3AF; font-weight: 600; }
+        .goal-tag {
+            color: #0B1020;
+            background: #D6A83A;
+            border-radius: 4px;
+            font-size: .62rem;
+            font-weight: 950;
+            padding: .05rem .3rem;
+            vertical-align: middle;
+        }
+        .goal-team {
+            color: #D6A83A;
+            font-weight: 850;
+            font-size: .82rem;
+            text-align: right;
+        }
+        .lineup-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.2rem;
+        }
+        .lineup-team {
+            color: #FFFFFF;
+            font-weight: 950;
+            margin-bottom: .5rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+        .lineup-formation {
+            color: #D6A83A;
+            font-weight: 850;
+            font-size: .78rem;
+        }
+        .lineup-subhead {
+            color: #D6A83A;
+            font-weight: 850;
+            text-transform: uppercase;
+            font-size: .7rem;
+            margin: .7rem 0 .35rem;
+        }
+        .lineup-player {
+            display: grid;
+            grid-template-columns: 1.6rem 1fr auto;
+            align-items: baseline;
+            gap: .5rem;
+            padding: .18rem 0;
+        }
+        .pl-num { color: #D6A83A; font-weight: 850; font-size: .82rem; text-align: right; }
+        .pl-name { color: #F8FAFC; font-weight: 650; }
+        .pl-pos { color: #9CA3AF; font-weight: 700; font-size: .72rem; }
+        .sub-out { color: #F87171; font-size: .68rem; }
+        .sub-in { color: #34D399; font-size: .68rem; }
+        .sub-row {
+            display: grid;
+            grid-template-columns: 2.4rem 1fr;
+            align-items: baseline;
+            gap: .5rem;
+            padding: .2rem 0;
+        }
+        .sub-min { color: #D6A83A; font-weight: 850; font-size: .82rem; }
+        .sub-in-name { color: #F8FAFC; font-weight: 700; }
+        .sub-for { color: #9CA3AF; font-size: .82rem; }
+        .sub-out-name { color: #F87171; font-weight: 650; }
+        .pitch-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-top: .2rem;
+        }
+        .pitch-field {
+            fill: rgba(18,46,28,.55);
+            stroke: rgba(214,168,58,.22);
+            stroke-width: 1;
+        }
+        .pitch-line {
+            stroke: rgba(255,255,255,.16);
+            stroke-width: 1.4;
+        }
+        .pitch-node circle {
+            fill: #D6A83A;
+            stroke: rgba(5,5,5,.55);
+            stroke-width: 1.2;
+        }
+        .pitch-num {
+            fill: #0B1020;
+            font-size: 12px;
+            font-weight: 900;
+            text-anchor: middle;
+        }
+        .pitch-name {
+            fill: #F8FAFC;
+            font-size: 9.5px;
+            font-weight: 700;
+            text-anchor: middle;
+            paint-order: stroke;
+            stroke: rgba(5,5,5,.85);
+            stroke-width: 2.4px;
+        }
+        .pitch-suboff circle {
+            fill: #EF4444;
+            stroke: rgba(5,5,5,.55);
+            stroke-width: 1;
+        }
+        .pitch-suboff-arrow {
+            fill: #FFFFFF;
+        }
+        @media (max-width: 640px) {
+            .lineup-grid { grid-template-columns: 1fr; }
         }
         .fixture-stat span {
             color: #FFFFFF;

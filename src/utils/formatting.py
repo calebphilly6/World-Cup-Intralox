@@ -22,7 +22,18 @@ def format_local_time(value: str | None, tz_name: str = "America/Chicago") -> st
     parsed = pd.to_datetime(value, utc=True, errors="coerce")
     if pd.isna(parsed):
         return str(value)
-    return parsed.to_pydatetime().astimezone(ZoneInfo(tz_name)).strftime("%b %d, %Y %I:%M %p")
+    local_dt = parsed.to_pydatetime().astimezone(ZoneInfo(tz_name))
+    return f"{local_dt.strftime('%b %d, %Y')} {local_dt.strftime('%I:%M %p').lstrip('0')}"
+
+
+def format_local_time_only(value: str | None, tz_name: str = "America/Chicago") -> str:
+    if not value:
+        return ""
+    parsed = pd.to_datetime(value, utc=True, errors="coerce")
+    if pd.isna(parsed):
+        return str(value)
+    local_dt = parsed.to_pydatetime().astimezone(ZoneInfo(tz_name))
+    return local_dt.strftime("%I:%M %p").lstrip("0")
 
 
 def countdown_parts(now: datetime | None = None) -> tuple[int, int, int]:

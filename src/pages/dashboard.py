@@ -16,7 +16,7 @@ from src.navigation import remember_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.pages.rankings import FLAG_CODES
 from src.storage.storage import load_favorite_teams
-from src.utils.formatting import format_local_time
+from src.utils.formatting import format_local_time, format_local_time_only
 from src.utils.team_names import display_team_name, team_lookup_keys
 from src.world_cup_scoring import daily_score_refresh_key
 from src.pages.work_competition import _daily_competition_state, _ensure_results_for_world_cup_teams
@@ -432,7 +432,9 @@ def _dashboard_matches() -> tuple[pd.DataFrame, str]:
         gameday = future_dates[0]
 
     gameday_matches = matches[matches["_local_date"] == gameday].copy()
-    return _display_matches(gameday_matches), "Today's Games" if gameday == today else f"Next Gameday: {gameday.strftime('%B')} {gameday.day}"
+    date_label = f"{gameday.strftime('%B')} {gameday.day}"
+    header = f"Today's Games: {date_label}" if gameday == today else f"Next Gameday: {date_label}"
+    return _display_matches(gameday_matches), header
 
 
 def _previous_dashboard_matches() -> tuple[pd.DataFrame, str]:
@@ -462,7 +464,7 @@ def _all_dashboard_fixtures() -> pd.DataFrame:
 
 def _display_matches(matches: pd.DataFrame) -> pd.DataFrame:
     display = matches.copy()
-    display["Kickoff"] = display["kickoff_utc"].apply(format_local_time)
+    display["Kickoff"] = display["kickoff_utc"].apply(format_local_time_only)
     display["Score"] = display.apply(_score_text, axis=1)
     stage_source = display["stage"] if "stage" in display else display["Stage"]
     display["Round"] = stage_source.map(_round_stage_label)

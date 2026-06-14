@@ -350,4 +350,53 @@ CREATE TABLE IF NOT EXISTS app_metadata (
     value TEXT,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS match_detail_fetch (
+    match_number INTEGER PRIMARY KEY,
+    espn_event_id TEXT,
+    found INTEGER DEFAULT 0,
+    source TEXT DEFAULT 'espn',
+    fetched_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS match_goals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    match_number INTEGER NOT NULL,
+    sort_order INTEGER NOT NULL,
+    minute TEXT,
+    team_name TEXT,
+    scorer TEXT,
+    assist TEXT,
+    detail TEXT,
+    is_penalty INTEGER DEFAULT 0,
+    is_own_goal INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS match_substitutions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    match_number INTEGER NOT NULL,
+    sort_order INTEGER NOT NULL,
+    team_name TEXT,
+    minute TEXT,
+    player_on TEXT,
+    player_off TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS match_lineups (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    match_number INTEGER NOT NULL,
+    team_name TEXT,
+    home_away TEXT,
+    formation TEXT,
+    sort_order INTEGER NOT NULL,
+    player_name TEXT,
+    shirt_number TEXT,
+    position TEXT,
+    is_starter INTEGER DEFAULT 0,
+    subbed_in INTEGER DEFAULT 0,
+    subbed_out INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
 """
