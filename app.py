@@ -585,7 +585,13 @@ def _render_score_refresh_control() -> None:
         st.sidebar.caption("Shared mode: manual refresh is disabled.")
         return
     if st.sidebar.button("Refresh scores now", use_container_width=True):
+        # Clear the football-data fetch caches AND every page-level cache that
+        # derives standings/scoreboards from them. Clearing only the fetch caches
+        # leaves the derived caches serving stale tables (they never re-call the
+        # API), so the page would not visibly update. The Odds API is unaffected:
+        # its refresh is gated in the database, not by st.cache_data.
         clear_football_data_cache()
+        st.cache_data.clear()
         st.sidebar.success("Pulling fresh scores from football-data.org…")
 
 
