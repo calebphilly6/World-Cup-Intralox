@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import base64
 import hmac
+from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import streamlit as st
 import streamlit.components.v1 as components
@@ -556,6 +558,26 @@ def _render_browser_preference_controls() -> None:
             st.rerun()
 
 
+CENTRAL_TZ = ZoneInfo("America/Chicago")
+
+
+def _format_central(updated: str) -> str:
+    """Render a stored UTC timestamp (SQLite CURRENT_TIMESTAMP) in Central time."""
+    text = str(updated).strip()
+    if not text:
+        return ""
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return text
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    local = parsed.astimezone(CENTRAL_TZ)
+    hour12 = local.strftime("%I").lstrip("0") or "12"
+    tzname = local.strftime("%Z") or "CT"
+    return f"{local.strftime('%b')} {local.day}, {local.year} {hour12}:{local.strftime('%M')} {local.strftime('%p')} {tzname}"
+
+
 def _api_usage_box(label: str, provider: str) -> str:
     usage = fetch_df(
         """
@@ -573,7 +595,7 @@ def _api_usage_box(label: str, provider: str) -> str:
     else:
         row = usage.iloc[0]
         remaining = row["requests_remaining"] or "unavailable"
-        updated = row["updated_at"] or ""
+        updated = _format_central(row["updated_at"] or "")
     updated_markup = f"<small>Updated {updated}</small>" if updated else ""
     return (
         '<div class="wc-api-credits">'
