@@ -27,17 +27,95 @@ def render() -> None:
         st.info("Import groups to see group cards and table shells.")
         return
 
+    groups_tab, third_place_tab = st.tabs(["Groups", "3rd-Place Race"])
+    with groups_tab:
+        for group_name in sorted(groups["group_name"].dropna().unique()):
+            subset = _sort_group_subset(groups[groups["group_name"] == group_name].copy())
+            clicked_team_id = clickable_cards(
+                _group_cards(subset),
+                variant="groups",
+                key=f"group_cards_{group_name}",
+                title=str(group_name),
+                detail_html=_group_details_markup(group_name, subset),
+            )
+            if clicked_team_id:
+                _open_team(int(clicked_team_id))
+    with third_place_tab:
+        _render_third_place_race(groups)
+
+
+def _render_third_place_race(groups: pd.DataFrame) -> None:
+    table = _third_place_table(groups)
+    if table.empty:
+        st.info("Third-place standings will appear once the groups are set.")
+        return
+    st.caption(
+        "The eight best third-placed teams advance to the Round of 32. "
+        "Ranked by points, then goal difference, then goals scored."
+    )
+    rows_html = "".join(
+        _third_place_row(position, row)
+        for position, (_, row) in enumerate(table.iterrows(), start=1)
+    )
+    st.markdown(
+        '<div class="third-place-shell">'
+        '<table class="group-table third-place-table"><thead><tr>'
+        "<th>#</th><th>Team</th><th>Grp</th><th>Pld</th><th>W</th><th>D</th><th>L</th>"
+        "<th>GF</th><th>GA</th><th>GD</th><th>Pts</th>"
+        "</tr></thead>"
+        f"<tbody>{rows_html}</tbody></table>"
+        '<div class="third-legend"><span class="adv">Top 8 advance</span>'
+        '<span class="out">Eliminated</span></div>'
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+
+def _third_place_table(groups: pd.DataFrame) -> pd.DataFrame:
+    """The third-placed team from each group, ranked across all groups."""
+    thirds = []
     for group_name in sorted(groups["group_name"].dropna().unique()):
         subset = _sort_group_subset(groups[groups["group_name"] == group_name].copy())
-        clicked_team_id = clickable_cards(
-            _group_cards(subset),
-            variant="groups",
-            key=f"group_cards_{group_name}",
-            title=str(group_name),
-            detail_html=_group_details_markup(group_name, subset),
-        )
-        if clicked_team_id:
-            _open_team(int(clicked_team_id))
+        if len(subset) < 3:
+            continue
+        thirds.append(subset.iloc[2])
+    if not thirds:
+        return pd.DataFrame()
+    table = pd.DataFrame(thirds).copy()
+    table["_pts"] = table["standing_points"].fillna(0)
+    table["_gf"] = table["goals_for"].fillna(0)
+    table["_gd"] = table["_gf"] - table["goals_against"].fillna(0)
+    table["_rank"] = table["fifa_rank"].fillna(999)
+    # Points, then goal difference, then goals scored; FIFA rank and name break
+    # any remaining tie so the order stays deterministic before games are played.
+    table = table.sort_values(
+        ["_pts", "_gd", "_gf", "_rank", "team"],
+        ascending=[False, False, False, True, True],
+    ).reset_index(drop=True)
+    return table.drop(columns=["_pts", "_gf", "_gd", "_rank"])
+
+
+def _third_place_row(position: int, row) -> str:
+    classes = ["third-advance" if position <= 8 else "third-out"]
+    if position == 8:
+        classes.append("third-cut")
+    team = html.escape(display_team_name(row["team"]))
+    group = html.escape(str(row["group_name"]))
+    played = _standing_int(row, "played")
+    wins = _standing_int(row, "wins")
+    draws = _standing_int(row, "draws")
+    losses = _standing_int(row, "losses")
+    goals_for = _standing_int(row, "goals_for")
+    goals_against = _standing_int(row, "goals_against")
+    goal_difference = goals_for - goals_against
+    points = _standing_int(row, "standing_points")
+    return (
+        f'<tr class="{" ".join(classes)}"><td>{position}</td>'
+        f'<td><span class="table-team"><img src="{_flag_url(row)}" alt="">{team}</span></td>'
+        f"<td>{group}</td><td>{played}</td><td>{wins}</td><td>{draws}</td><td>{losses}</td>"
+        f"<td>{goals_for}</td><td>{goals_against}</td><td>{goal_difference}</td>"
+        f"<td><strong>{points}</strong></td></tr>"
+    )
 
 
 def _fmt_number(value) -> str:
@@ -424,6 +502,55 @@ def _styles() -> None:
             align-items: center;
             gap: .5rem;
             font-weight: 900;
+        }
+        .third-place-shell {
+            border: 1px solid rgba(214,168,58,.24);
+            border-radius: 8px;
+            background: rgba(5,5,5,.38);
+            padding: 1rem;
+            margin: .75rem 0 1.25rem;
+        }
+        .third-place-table td:nth-child(2) {
+            text-align: left;
+        }
+        .third-place-table tr.third-advance td {
+            background: rgba(36,140,72,.18);
+        }
+        .third-place-table tr.third-out td {
+            background: rgba(255,255,255,.03);
+            color: #cbd5e1;
+        }
+        .third-place-table tr.third-cut td {
+            border-bottom: 3px solid #D6A83A;
+        }
+        .third-legend {
+            display: flex;
+            gap: 1.25rem;
+            margin-top: .75rem;
+            font-size: .8rem;
+            font-weight: 800;
+        }
+        .third-legend .adv::before,
+        .third-legend .out::before {
+            content: "";
+            display: inline-block;
+            width: .72rem;
+            height: .72rem;
+            border-radius: 3px;
+            margin-right: .4rem;
+            vertical-align: -1px;
+        }
+        .third-legend .adv {
+            color: #7CE6A6;
+        }
+        .third-legend .adv::before {
+            background: rgba(36,140,72,.6);
+        }
+        .third-legend .out {
+            color: #94a3b8;
+        }
+        .third-legend .out::before {
+            background: rgba(255,255,255,.14);
         }
         @media (max-width: 860px) {
             .group-banner {

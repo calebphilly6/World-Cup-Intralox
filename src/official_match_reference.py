@@ -124,6 +124,7 @@ def normalize_team_key(value) -> str:
         "c?te divoire": "cote divoire",
         "cte divoire": "cote divoire",
         "cape verde": "cabo verde",
+        "cape verde islands": "cabo verde",
         "cabo verde islands": "cabo verde",
         "iran": "ir iran",
         "dr congo": "congo dr",
