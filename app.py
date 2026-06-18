@@ -11,6 +11,7 @@ import streamlit.components.v1 as components
 
 from src.config import ensure_app_directories, get_app_config, get_secret, is_shared_core_read_only_mode
 from src.database import fetch_df, initialize_database
+from src.football_data_service import clear_football_data_cache
 from src.pages import bracket, dashboard, fixtures, groups, history, rankings, teams, wcq, work_competition
 from src.pages import odds
 from src.reference_data import seed_world_cup_2026_reference_data
@@ -578,6 +579,16 @@ def _format_central(updated: str) -> str:
     return f"{local.strftime('%b')} {local.day}, {local.year} {hour12}:{local.strftime('%M')} {local.strftime('%p')} {tzname}"
 
 
+def _render_score_refresh_control() -> None:
+    """Sidebar button to force a fresh football-data.org pull on the next render."""
+    if is_shared_core_read_only_mode():
+        st.sidebar.caption("Shared mode: manual refresh is disabled.")
+        return
+    if st.sidebar.button("Refresh scores now", use_container_width=True):
+        clear_football_data_cache()
+        st.sidebar.success("Pulling fresh scores from football-data.org…")
+
+
 def _api_usage_box(label: str, provider: str) -> str:
     usage = fetch_df(
         """
@@ -649,6 +660,7 @@ st.session_state["_previous_page_name"] = page_name
 st.sidebar.divider()
 st.sidebar.markdown(_api_usage_box("football-data.org credits", "football_data_org"), unsafe_allow_html=True)
 st.sidebar.markdown(_api_usage_box("Odds API credits", "the_odds_api"), unsafe_allow_html=True)
+_render_score_refresh_control()
 
 PAGES[page_name]()
 
