@@ -7,7 +7,7 @@ import streamlit as st
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
-from src.football_data_service import daily_fixture_refresh_key
+from src.football_data_service import hourly_fixture_refresh_key
 from src.jersey_assets import team_jersey_data_uri, team_jersey_header_data_uri
 from src.navigation import remember_detail_origin, return_to_detail_origin
 from src.official_match_reference import normalize_team_key
@@ -455,7 +455,7 @@ def _fixtures_for_team(team) -> pd.DataFrame:
 
 def _provider_fixtures_for_team(team) -> pd.DataFrame:
     try:
-        fixtures, _warning = _fixture_data(daily_fixture_refresh_key())
+        fixtures, _warning = _fixture_data(hourly_fixture_refresh_key())
     except Exception:
         return pd.DataFrame()
     if fixtures is None or fixtures.empty:

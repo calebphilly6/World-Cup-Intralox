@@ -10,7 +10,7 @@ import streamlit as st
 
 from src.config import is_shared_core_read_only_mode
 from src.database import fetch_df, get_connection
-from src.football_data_service import daily_fixture_refresh_key
+from src.football_data_service import hourly_fixture_refresh_key
 from src.intralox_results import derive_intralox_results
 from src.odds_service import latest_tournament_winner_odds_lookup, odds_source_text
 from src.official_match_reference import normalize_team_key
@@ -37,8 +37,8 @@ def render() -> None:
         _ensure_results_for_world_cup_teams()
 
     assignments = _assignment_rows()
-    _todays_games_line(assignments, daily_fixture_refresh_key())
-    scores, leaderboard = _daily_competition_state(daily_score_refresh_key(), daily_fixture_refresh_key())
+    _todays_games_line(assignments, hourly_fixture_refresh_key())
+    scores, leaderboard = _daily_competition_state(daily_score_refresh_key(), hourly_fixture_refresh_key())
 
     validation_errors = validate_assignments(assignments.to_dict("records")) if not assignments.empty else ["Exactly 12 competitors are required."]
     if validation_errors:

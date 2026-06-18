@@ -10,7 +10,7 @@ from data_sources.football_data_client import FootballDataError
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
-from src.football_data_service import cached_matches, daily_fixture_refresh_key
+from src.football_data_service import cached_matches, hourly_fixture_refresh_key
 from src.match_details_service import get_match_details
 from src.match_odds_service import refresh_match_odds_if_available
 from src.navigation import remember_detail_origin, return_to_detail_origin
@@ -62,7 +62,7 @@ def render() -> None:
         return
 
     with st.spinner("Loading all fixtures..."):
-        fixtures, warning = _fixture_data(daily_fixture_refresh_key())
+        fixtures, warning = _fixture_data(hourly_fixture_refresh_key())
     if warning:
         st.warning(warning)
 

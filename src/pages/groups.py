@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime, time, timedelta
 import html
-from zoneinfo import ZoneInfo
 
 import pandas as pd
 import streamlit as st
 
 from src.components.clickable_cards import clickable_cards
 from src.database import fetch_df
-from src.football_data_service import cached_matches
+from src.football_data_service import cached_matches, hourly_fixture_refresh_key
 from src.navigation import remember_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.utils.team_names import display_team_name, team_lookup_keys
@@ -18,8 +16,6 @@ FALLBACK_FLAGS = {
     "England": "gb-eng",
     "Scotland": "gb-sct",
 }
-GROUP_REFRESH_TIME = time(4, 0)
-APP_TIMEZONE = ZoneInfo("America/Chicago")
 
 
 def render() -> None:
@@ -76,7 +72,7 @@ def _groups_with_standings() -> pd.DataFrame:
     groups = _groups_base()
     if groups.empty:
         return groups
-    live = _fixture_group_standings(_daily_group_refresh_key())
+    live = _fixture_group_standings(hourly_fixture_refresh_key())
     if live.empty:
         return groups
     merged = groups.drop(
@@ -161,14 +157,6 @@ def _apply_group_result(team_row: dict, goals_for: int, goals_against: int) -> N
         team_row["standing_points"] += 1
     else:
         team_row["losses"] += 1
-
-
-def _daily_group_refresh_key(now: datetime | None = None) -> str:
-    local_now = now.astimezone(APP_TIMEZONE) if now else datetime.now(APP_TIMEZONE)
-    refresh_day = local_now.date()
-    if local_now.time() < GROUP_REFRESH_TIME:
-        refresh_day -= timedelta(days=1)
-    return refresh_day.isoformat()
 
 
 def _group_details_markup(group_name: str, subset: pd.DataFrame) -> str:
