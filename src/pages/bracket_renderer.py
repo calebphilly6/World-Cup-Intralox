@@ -155,12 +155,22 @@ def _build_match_models(fixtures: pd.DataFrame, flag_lookup: dict[str, str]) -> 
             "round": match["round"],
             "date": _display_date(match["date"]),
             "time": _kickoff_time(row),
-            "venue": match["venue"],
+            "venue": _clean_venue(match["venue"]),
             "participants": participants,
             "scores": scores,
             "winner_index": winner_index,
         }
     return models
+
+
+def _clean_venue(venue: str) -> str:
+    """Drop generic venue words so cards show the city (e.g. "Atlanta Stadium" ->
+    "Atlanta", "BC Place Vancouver" -> "Vancouver", "Estadio Monterrey" ->
+    "Monterrey")."""
+    text = str(venue or "")
+    for token in ("BC Place", "Estadio", "Stadium"):
+        text = re.sub(rf"\b{re.escape(token)}\b", "", text, flags=re.IGNORECASE)
+    return " ".join(text.split())
 
 
 def _kickoff_time(row: pd.Series | None) -> str:
