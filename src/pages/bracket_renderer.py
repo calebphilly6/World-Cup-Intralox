@@ -18,6 +18,7 @@ from src.pages.bracket_data import (
     SF_RIGHT,
     SLOT_NOTES,
 )
+from src.fixture_display import flag_code_for_team
 from src.pages.rankings import FLAG_CODES
 
 
@@ -183,7 +184,10 @@ def _is_real_team(value) -> bool:
 
 
 def _flag_code(team: str, flag_lookup: dict[str, str]) -> str:
-    return str(flag_lookup.get(team) or FLAG_CODES.get(team) or "").strip().lower()
+    # Alias-aware lookup first (handles feed spellings like "United States"),
+    # then the static FLAG_CODES table as a final fallback.
+    code = flag_code_for_team(team, flag_lookup)
+    return (code or str(FLAG_CODES.get(team) or "")).strip().lower()
 
 
 def _score_pair(row: pd.Series | None) -> tuple[int | None, int | None]:

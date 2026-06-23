@@ -8,6 +8,7 @@ import streamlit as st
 
 from data_sources.football_data_client import FootballDataError
 from src.database import fetch_df
+from src.fixture_display import flag_lookup_with_aliases
 from src.football_data_service import cached_matches
 from src.official_match_reference import apply_official_match_reference
 from src.pages.bracket_renderer import render_live_bracket_html
@@ -68,15 +69,9 @@ def _local_fixture_fallback() -> pd.DataFrame:
 
 @st.cache_data(show_spinner=False)
 def _flag_lookup() -> dict[str, str]:
-    rows = fetch_df("SELECT name, country_code FROM teams")
-    flags: dict[str, str] = {}
-    for _, row in rows.iterrows():
-        code = "" if pd.isna(row.get("country_code")) else str(row.get("country_code")).strip().lower()
-        if code:
-            flags[str(row["name"])] = code
-    flags["England"] = "gb-eng"
-    flags["Scotland"] = "gb-sct"
-    return flags
+    # Alias-aware so feed names that differ from the teams table (e.g. the feed's
+    # "United States" vs. our "USA") still resolve to a flag.
+    return flag_lookup_with_aliases(fetch_df("SELECT name, country_code FROM teams"))
 
 
 @st.cache_data(show_spinner=False)
