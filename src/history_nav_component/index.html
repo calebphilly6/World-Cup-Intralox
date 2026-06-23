@@ -15,12 +15,6 @@
       // single iframe per component instance and only posts new RENDER messages
       // on rerun, so this state persists across Streamlit reruns.
       let committedToken = null;
-      // URL of the view we last committed. Streamlit creates its own history
-      // entry whenever the query string changes (e.g. switching top-level pages),
-      // so we only push our own entry when the URL did NOT change (detail views
-      // that live at the same URL). Otherwise we would double-stack entries and
-      // Back would need two presses.
-      let committedUrl = null;
       // A token we arrived at via the browser Back/Forward button. The next
       // RENDER carrying it must NOT push a new history entry (the browser
       // already moved us there) and should restore that view's scroll position.
@@ -124,21 +118,30 @@
         tick();
       }
 
-      // Merge our marker into history.state without clobbering anything Streamlit
-      // stores there.
-      function tagState(token) {
+      // Write our marker into history.state (merging so nothing else is lost). If
+      // a url is given, update the address bar too — but only via the History API,
+      // never st.query_params, so Streamlit never pushes a competing entry.
+      function tagState(token, url) {
         try {
           const state = { ...(parentWindow.history.state || {}), wcToken: token };
-          parentWindow.history.replaceState(state, "");
+          if (url) {
+            parentWindow.history.replaceState(state, "", url);
+          } else {
+            parentWindow.history.replaceState(state, "");
+          }
         } catch (error) {
           /* ignore */
         }
       }
 
-      function pushState(token) {
+      function pushState(token, url) {
         try {
           const state = { ...(parentWindow.history.state || {}), wcToken: token };
-          parentWindow.history.pushState(state, "");
+          if (url) {
+            parentWindow.history.pushState(state, "", url);
+          } else {
+            parentWindow.history.pushState(state, "");
+          }
         } catch (error) {
           /* ignore */
         }
@@ -150,52 +153,39 @@
         }
         const args = event.data.args || {};
         const token = String(args.token == null ? "" : args.token);
-
-        const currentUrl = parentWindow.location.href;
+        const url = args.url ? String(args.url) : "";
 
         if (committedToken === null) {
-          // First render of the session: tag the current entry, do nothing else.
+          // First render of the session: tag the current entry and sync the URL.
           committedToken = token;
-          committedUrl = currentUrl;
-          tagState(token);
+          tagState(token, url);
           return;
         }
 
         if (token === committedToken) {
-          // A plain rerun that did not change the view. Re-assert our tag in case
-          // Streamlit's own replaceState wiped it, then leave scroll alone.
-          committedUrl = currentUrl;
-          tagState(token);
+          // A plain rerun that did not change the view. Keep the URL/marker synced.
+          tagState(token, url);
           return;
         }
 
         if (token === popTargetToken) {
-          // We got here because the user pressed Back/Forward. The browser already
-          // moved history; just sync and restore the saved scroll position.
+          // The user pressed Back/Forward; the browser already restored this entry
+          // (and its URL). Re-assert the marker and restore the saved scroll.
           committedToken = token;
-          committedUrl = currentUrl;
           popTargetToken = null;
-          tagState(token);
+          tagState(token, url);
           restoreScrollSoon(token);
           return;
         }
 
-        // A normal in-app navigation. The scroll position for the view we are
-        // leaving was already captured at pointerdown (before Streamlit swapped
-        // the page), so do not read it now — the page has already changed.
-        if (currentUrl !== committedUrl) {
-          // Streamlit already created a history entry for this navigation (the
-          // query string changed, e.g. a top-level page switch). Adopt that entry
-          // instead of pushing a duplicate.
-          tagState(token);
-        } else {
-          // Same URL: a detail view (open team / fixture / match, or close) that
-          // Streamlit did not record. Create our own entry so Back returns here.
-          tagState(committedToken);
-          pushState(token);
-        }
+        // A normal in-app navigation. Streamlit no longer touches the URL or
+        // history (navigation writes session state only), so we are the sole
+        // owner: re-assert the marker on the entry we are leaving (keeping its own
+        // URL), then push a new entry with the new view's URL. The leaving view's
+        // scroll was captured at pointerdown, before the page swapped.
+        tagState(committedToken);
+        pushState(token, url);
         committedToken = token;
-        committedUrl = currentUrl;
         scrollToTopSoon();
       }
 

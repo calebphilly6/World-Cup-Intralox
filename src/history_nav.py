@@ -11,6 +11,7 @@ scroll position.
 from __future__ import annotations
 
 from pathlib import Path
+from urllib.parse import urlencode
 
 import streamlit as st
 import streamlit.components.v1 as components
@@ -51,6 +52,31 @@ def current_nav_token() -> str:
             parts.append(f"fixture={fixture_id}")
 
     return "|".join(parts)
+
+
+def current_nav_url() -> str:
+    """Query string the bridge writes to the address bar for the current view.
+
+    Set via the History API by the component (never ``st.query_params``), so the
+    URL reflects the view and survives a refresh while Streamlit stays out of
+    history management. Mirrors the deep-link params app.py reads on first load
+    (page / team_id / fixture); a match focus within a team falls back to the
+    team page on refresh.
+    """
+    page_name = st.session_state.get("page_name") or "Home"
+    slug = PAGE_SLUGS.get(page_name, PAGE_SLUGS["Home"])
+    params: list[tuple[str, str]] = [("page", slug)]
+
+    if page_name == "Teams":
+        team_id = st.session_state.get("selected_team_id")
+        if team_id:
+            params.append(("team_id", str(int(team_id))))
+    elif page_name == "Fixtures":
+        fixture_id = st.session_state.get("selected_fixture_id")
+        if fixture_id:
+            params.append(("fixture", str(fixture_id)))
+
+    return "?" + urlencode(params)
 
 
 def apply_nav_token(token: str) -> None:
@@ -123,7 +149,7 @@ def render_history_bridge() -> None:
     body renders, so a Back press reruns with the right view from the start.
     """
     token = current_nav_token()
-    result = HISTORY_NAV_COMPONENT(token=token, key="history_nav", default=None)
+    result = HISTORY_NAV_COMPONENT(token=token, url=current_nav_url(), key="history_nav", default=None)
     if not isinstance(result, dict):
         return
 
