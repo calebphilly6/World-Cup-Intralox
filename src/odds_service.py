@@ -46,6 +46,12 @@ def latest_tournament_winner_odds() -> pd.DataFrame:
         SELECT Team, country_code, american_odds, implied_probability, source, snapshot_ts
         FROM preferred_odds
         WHERE preferred_row = 1
+          -- Only teams present in the most recent odds pull. Eliminated teams drop
+          -- out of the feed, so their newest snapshot is from an older pull; this
+          -- hides them instead of showing stale "chance to win" odds.
+          AND datetime(snapshot_ts) >= datetime((
+              SELECT MAX(snapshot_ts) FROM preferred_odds WHERE preferred_row = 1
+          ))
         ORDER BY implied_probability DESC
         """
     )

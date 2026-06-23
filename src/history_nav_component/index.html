@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>History navigation</title>
+  </head>
+  <body>
+    <script>
+      const READY = "streamlit:componentReady";
+      const RENDER = "streamlit:render";
+      const SET_VALUE = "streamlit:setComponentValue";
+      const SET_HEIGHT = "streamlit:setFrameHeight";
+
+      // These variables live for the lifetime of the iframe. Streamlit keeps a
+      // single iframe per component instance and only posts new RENDER messages
+      // on rerun, so this state persists across Streamlit reruns.
+      let committedToken = null;
+      // URL of the view we last committed. Streamlit creates its own history
+      // entry whenever the query string changes (e.g. switching top-level pages),
+      // so we only push our own entry when the URL did NOT change (detail views
+      // that live at the same URL). Otherwise we would double-stack entries and
+      // Back would need two presses.
+      let committedUrl = null;
+      // A token we arrived at via the browser Back/Forward button. The next
+      // RENDER carrying it must NOT push a new history entry (the browser
+      // already moved us there) and should restore that view's scroll position.
+      let popTargetToken = null;
+      let nonce = 0;
+      const scrollPositions = {};
+      // After a click that triggers a rerun, Streamlit swaps the page and the
+      // browser fires a "clamp" scroll event for the new (often shorter) page.
+      // Ignore scroll events briefly after a click so they don't overwrite the
+      // position we captured for the view we are leaving.
+      let ignoreScrollUntil = 0;
+
+      const parentWindow = window.parent;
+      const parentDoc = parentWindow.document;
+
+      function send(type, data) {
+        parentWindow.postMessage({ isStreamlitMessage: true, type, ...data }, "*");
+      }
+
+      function sendValue(value) {
+        send(SET_VALUE, { value, dataType: "json" });
+      }
+
+      // Streamlit's main content lives in a scrollable container; fall back to
+      // the window if the expected container can't be found.
+      function scrollTargets() {
+        const targets = [];
+        const selectors = [
+          '[data-testid="stMain"]',
+          '[data-testid="stAppViewContainer"]',
+          'section.main',
+          '.main',
+        ];
+        for (const selector of selectors) {
+          const element = parentDoc.querySelector(selector);
+          if (element) {
+            targets.push(element);
+          }
+        }
+        return targets;
+      }
+
+      function currentScroll() {
+        for (const element of scrollTargets()) {
+          if (element.scrollTop > 0) {
+            return element.scrollTop;
+          }
+        }
+        return parentWindow.scrollY || parentDoc.documentElement.scrollTop || 0;
+      }
+
+      function applyScroll(value) {
+        for (const element of scrollTargets()) {
+          element.scrollTop = value;
+        }
+        try {
+          parentWindow.scrollTo(0, value);
+        } catch (error) {
+          /* ignore */
+        }
+      }
+
+      // Streamlit streams content in after the RENDER message, so the target
+      // height may not exist yet. Re-apply the scroll a few times to win the race.
+      function scrollToTopSoon() {
+        applyScroll(0);
+        [30, 90, 180, 320].forEach((delay) => parentWindow.setTimeout(() => applyScroll(0), delay));
+      }
+
+      // Restoring scroll fights Streamlit streaming content in: until the page
+      // grows back to its previous height the browser clamps scrollTop to a
+      // smaller value. Keep re-applying until it sticks (or we time out).
+      function restoreScrollSoon(token) {
+        const target = scrollPositions[token] || 0;
+        if (!target) {
+          applyScroll(0);
+          return;
+        }
+        // Long pages (e.g. the full fixtures list, ~35k px) rebuild gradually on a
+        // rerun, so a fixed timeout isn't enough. Keep re-applying while the page
+        // is still growing; stop once we've reached the target, the page has
+        // finished growing (target unreachable), or we hit a hard cap.
+        const hardCap = Date.now() + 10000;
+        let lastHeight = -1;
+        let stableSince = Date.now();
+        const tick = () => {
+          applyScroll(target);
+          if (currentScroll() >= target - 2 || Date.now() > hardCap) {
+            return;
+          }
+          const container = parentDoc.querySelector('[data-testid="stMain"]');
+          const height = container ? container.scrollHeight : 0;
+          if (height !== lastHeight) {
+            lastHeight = height;
+            stableSince = Date.now();
+          } else if (Date.now() - stableSince > 800) {
+            return;
+          }
+          parentWindow.requestAnimationFrame(tick);
+        };
+        tick();
+      }
+
+      // Merge our marker into history.state without clobbering anything Streamlit
+      // stores there.
+      function tagState(token) {
+        try {
+          const state = { ...(parentWindow.history.state || {}), wcToken: token };
+          parentWindow.history.replaceState(state, "");
+        } catch (error) {
+          /* ignore */
+        }
+      }
+
+      function pushState(token) {
+        try {
+          const state = { ...(parentWindow.history.state || {}), wcToken: token };
+          parentWindow.history.pushState(state, "");
+        } catch (error) {
+          /* ignore */
+        }
+      }
+
+      function handleRender(event) {
+        if (!event.data || event.data.type !== RENDER) {
+          return;
+        }
+        const args = event.data.args || {};
+        const token = String(args.token == null ? "" : args.token);
+
+        const currentUrl = parentWindow.location.href;
+
+        if (committedToken === null) {
+          // First render of the session: tag the current entry, do nothing else.
+          committedToken = token;
+          committedUrl = currentUrl;
+          tagState(token);
+          return;
+        }
+
+        if (token === committedToken) {
+          // A plain rerun that did not change the view. Re-assert our tag in case
+          // Streamlit's own replaceState wiped it, then leave scroll alone.
+          committedUrl = currentUrl;
+          tagState(token);
+          return;
+        }
+
+        if (token === popTargetToken) {
+          // We got here because the user pressed Back/Forward. The browser already
+          // moved history; just sync and restore the saved scroll position.
+          committedToken = token;
+          committedUrl = currentUrl;
+          popTargetToken = null;
+          tagState(token);
+          restoreScrollSoon(token);
+          return;
+        }
+
+        // A normal in-app navigation. The scroll position for the view we are
+        // leaving was already captured at pointerdown (before Streamlit swapped
+        // the page), so do not read it now — the page has already changed.
+        if (currentUrl !== committedUrl) {
+          // Streamlit already created a history entry for this navigation (the
+          // query string changed, e.g. a top-level page switch). Adopt that entry
+          // instead of pushing a duplicate.
+          tagState(token);
+        } else {
+          // Same URL: a detail view (open team / fixture / match, or close) that
+          // Streamlit did not record. Create our own entry so Back returns here.
+          tagState(committedToken);
+          pushState(token);
+        }
+        committedToken = token;
+        committedUrl = currentUrl;
+        scrollToTopSoon();
+      }
+
+      parentWindow.addEventListener("popstate", (event) => {
+        const target = event.state && event.state.wcToken;
+        if (!target || target === committedToken) {
+          return;
+        }
+        // The page has not swapped yet, so this reads the correct position for
+        // the view we are leaving. Ignore the clamp scroll event that follows.
+        scrollPositions[committedToken] = currentScroll();
+        ignoreScrollUntil = Date.now() + 700;
+        popTargetToken = target;
+        nonce += 1;
+        sendValue({ kind: "pop", token: target, nonce });
+      });
+
+      // Capture the scroll position of the current view at the instant of a
+      // click, before it can trigger a rerun that swaps the page.
+      parentDoc.addEventListener(
+        "pointerdown",
+        () => {
+          scrollPositions[committedToken] = currentScroll();
+          ignoreScrollUntil = Date.now() + 700;
+        },
+        true
+      );
+
+      // Delegate clicks on any element marked data-wc-team (team names/flags in
+      // fixtures, odds, Intralox, etc.) to open that team's profile. This adds no
+      // visible markup of its own — pages just tag the existing elements.
+      parentDoc.addEventListener(
+        "click",
+        (event) => {
+          const target = event.target;
+          if (!target || typeof target.closest !== "function") {
+            return;
+          }
+          const link = target.closest("[data-wc-team]");
+          if (!link) {
+            return;
+          }
+          const team = link.getAttribute("data-wc-team");
+          if (!team) {
+            return;
+          }
+          nonce += 1;
+          sendValue({ kind: "team", team, nonce });
+        },
+        true
+      );
+
+      // Keep the current view's saved scroll fresh as the user scrolls (so a
+      // later Back can restore it), skipping the post-click clamp events.
+      let scrollFrame = 0;
+      parentWindow.addEventListener(
+        "scroll",
+        () => {
+          if (Date.now() < ignoreScrollUntil || scrollFrame) {
+            return;
+          }
+          scrollFrame = parentWindow.requestAnimationFrame(() => {
+            scrollFrame = 0;
+            if (Date.now() < ignoreScrollUntil) {
+              return;
+            }
+            scrollPositions[committedToken] = currentScroll();
+          });
+        },
+        true
+      );
+
+      window.addEventListener("message", handleRender);
+      send(READY, { apiVersion: 1 });
+      send(SET_HEIGHT, { height: 0 });
+    </script>
+  </body>
+</html>

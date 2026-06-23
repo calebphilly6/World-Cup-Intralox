@@ -14,7 +14,7 @@ from src.odds_service import latest_tournament_winner_odds, odds_source_text
 from src.odds_refresh import APP_TIMEZONE, daily_odds_refresh_key
 from src.pages.rankings import FLAG_CODES
 from src.tournament_odds_service import refresh_tournament_odds_if_available
-from src.utils.team_names import display_team_name
+from src.utils.team_names import display_team_name, team_link_attr
 
 
 def render() -> None:
@@ -104,7 +104,7 @@ def _odds_card(row, featured: bool = False) -> str:
     code = _flag_code(team, row.get("country_code"))
     class_name = "odds-card featured" if featured else "odds-card"
     return (
-        f'<article class="{class_name}">'
+        f'<article class="{class_name}"{team_link_attr(team)}>'
         f'<div class="odds-flag">{_flag_img(code, display_name)}</div>'
         '<div class="odds-card-main">'
         f'<div class="odds-team">{html.escape(display_name)}</div>'

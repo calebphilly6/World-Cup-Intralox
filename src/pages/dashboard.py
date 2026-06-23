@@ -266,11 +266,6 @@ def _open_fixture_from_home(row) -> None:
     st.session_state["selected_fixture_row"] = _fixture_focus_row(row)
     st.session_state.pop("selected_team_id", None)
     st.session_state.pop("selected_match_id", None)
-    st.query_params["page"] = "fixtures"
-    if "team_id" in st.query_params:
-        del st.query_params["team_id"]
-    if "fixture" in st.query_params:
-        del st.query_params["fixture"]
     st.rerun()
 
 
@@ -407,10 +402,6 @@ def _open_team_from_home(team_id: int) -> None:
     st.session_state.pop("selected_match_id", None)
     st.session_state.pop("selected_fixture_id", None)
     st.session_state.pop("selected_fixture_row", None)
-    st.query_params["page"] = "teams"
-    st.query_params["team_id"] = str(team_id)
-    if "fixture" in st.query_params:
-        del st.query_params["fixture"]
     st.rerun()
 
 

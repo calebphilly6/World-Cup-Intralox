@@ -138,8 +138,6 @@ def _team_focus(team) -> None:
         st.session_state.pop("selected_team_id", None)
         st.session_state.pop("selected_match_id", None)
         return_to_detail_origin("team_return_origin", "Teams")
-        if "team_id" in st.query_params:
-            del st.query_params["team_id"]
         st.rerun()
 
     _ranking_context(team["team"])
@@ -645,11 +643,6 @@ def _open_fixture_in_fixtures_tab(fixture) -> None:
     st.session_state["selected_fixture_row"] = _fixture_focus_row(fixture, match_id)
     st.session_state.pop("selected_team_id", None)
     st.session_state.pop("selected_match_id", None)
-    st.query_params["page"] = "fixtures"
-    if "team_id" in st.query_params:
-        del st.query_params["team_id"]
-    if "fixture" in st.query_params:
-        del st.query_params["fixture"]
     st.rerun()
 
 

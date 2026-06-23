@@ -17,7 +17,7 @@ from src.navigation import remember_detail_origin, return_to_detail_origin
 from src.odds_service import american_odds_text, latest_fixture_odds
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
 from src.utils.formatting import format_local_time
-from src.utils.team_names import team_lookup_keys
+from src.utils.team_names import team_link_attr as _team_link_attr, team_lookup_keys
 
 
 STAGE_ORDER = {
@@ -55,7 +55,6 @@ STAGE_LABELS = {
 def render() -> None:
     st.title("Fixtures")
     _styles()
-
     selected_fixture_row = st.session_state.get("selected_fixture_row")
     if selected_fixture_row:
         _render_fixture_focus(pd.Series(selected_fixture_row))
@@ -242,9 +241,6 @@ def _open_fixture_from_row(row) -> None:
     remember_detail_origin("fixture_return_origin")
     st.session_state["selected_fixture_id"] = _match_number(row)
     st.session_state["selected_fixture_row"] = row.to_dict()
-    st.query_params["page"] = "fixtures"
-    if "fixture" in st.query_params:
-        del st.query_params["fixture"]
     st.rerun()
 
 
@@ -283,8 +279,6 @@ def _render_fixture_focus(row) -> None:
         st.session_state.pop("selected_fixture_id", None)
         st.session_state.pop("selected_fixture_row", None)
         return_to_detail_origin("fixture_return_origin", "Fixtures")
-        if "fixture" in st.query_params:
-            del st.query_params["fixture"]
         st.rerun()
 
     city = str(row.get("city") or row.get("venue") or "Host City TBD")
@@ -297,6 +291,8 @@ def _render_fixture_focus(row) -> None:
     background_style = html.escape(background_style, quote=True)
     home = html.escape(str(row.get("home_team") or "TBD"))
     away = html.escape(str(row.get("away_team") or "TBD"))
+    home_link = _team_link_attr(row.get("home_team"))
+    away_link = _team_link_attr(row.get("away_team"))
     home_flag = _flag_img(row.get("home_team"))
     away_flag = _flag_img(row.get("away_team"))
     match_number = html.escape(_match_number(row))
@@ -310,8 +306,8 @@ def _render_fixture_focus(row) -> None:
         f'<section class="fixture-focus" style="background-image: {background_style};">'
         f'{top_markup}'
         '<div class="fixture-focus-body">'
-        f'<div class="fixture-focus-team">{home_flag}<div>{home}</div></div>'
-        f'<div class="fixture-focus-team right">{away_flag}<div>{away}</div></div>'
+        f'<div class="fixture-focus-team"{home_link}>{home_flag}<div>{home}</div></div>'
+        f'<div class="fixture-focus-team right"{away_link}>{away_flag}<div>{away}</div></div>'
         '</div>'
         f'{bottom_markup}'
         '</section>'

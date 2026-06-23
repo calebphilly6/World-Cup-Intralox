@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import html
+
 from src.official_match_reference import normalize_team_key
 
 
@@ -108,6 +110,15 @@ def team_lookup_keys(team_name: object) -> set[str]:
             keys.add(normalize_team_key(display_team_name(alias)))
             keys.add(normalize_team_key(display_team_name(official)))
     return {key for key in keys if key}
+
+
+def team_link_attr(team_name: object) -> str:
+    """Return a ``data-wc-team`` HTML attribute so the history bridge can open
+    this team's profile on click. Empty for blank/TBD placeholders."""
+    name = str(team_name or "").strip()
+    if not name or name.upper() == "TBD":
+        return ""
+    return f' data-wc-team="{html.escape(name, quote=True)}"'
 
 
 def flag_code_for_common_team(team_name: object) -> str:

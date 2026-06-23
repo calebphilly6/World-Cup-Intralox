@@ -20,6 +20,7 @@ from src.storage.browser_preferences import clear_browser_preferences, render_br
 from src.storage.storage import preferences_are_session_only
 from src.match_odds_service import refresh_match_odds_if_available
 from src.navigation import clear_detail_origins
+from src.history_nav import render_history_bridge
 from src.odds_refresh import daily_odds_refresh_key
 from src.odds_service import latest_tournament_winner_odds
 from src.tournament_odds_service import refresh_tournament_odds_if_available
@@ -115,6 +116,20 @@ def _apply_theme() -> None:
 
         [data-testid="stHeader"] {
             background: transparent;
+        }
+
+        /* Keep scroll restoration on Back precise: the browser's scroll anchoring
+           otherwise nudges scrollTop as the page rebuilds after a rerun. */
+        [data-testid="stMain"] {
+            overflow-anchor: none;
+        }
+
+        /* Elements tagged data-wc-team open that team's profile on click. */
+        [data-wc-team] {
+            cursor: pointer;
+        }
+        [data-wc-team]:hover {
+            opacity: .85;
         }
 
         [data-testid="stSidebar"] {
@@ -445,11 +460,6 @@ def _render_header_nav() -> None:
                     st.session_state.pop("selected_match_id", None)
                     st.session_state.pop("selected_fixture_id", None)
                     st.session_state.pop("selected_fixture_row", None)
-                    if "team_id" in st.query_params:
-                        del st.query_params["team_id"]
-                    if "fixture" in st.query_params:
-                        del st.query_params["fixture"]
-                    st.query_params["page"] = PAGE_SLUGS[page_name]
                     st.rerun()
 
 
@@ -580,16 +590,19 @@ def _format_central(updated: str) -> str:
 
 
 def _render_score_refresh_control() -> None:
-    """Sidebar button to force a fresh football-data.org pull on the next render."""
-    if is_shared_core_read_only_mode():
-        st.sidebar.caption("Shared mode: manual refresh is disabled.")
-        return
-    if st.sidebar.button("Refresh scores now", use_container_width=True):
+    """Sidebar button anyone can use to pull fresh live scores from
+    football-data.org on the next render.
+
+    Available in shared mode too: pulling scores only refreshes in-memory caches
+    and never writes the shared database. The Odds API is NOT touched — its
+    refresh is gated in the database (a daily key), not by st.cache_data, so
+    clearing caches here cannot trigger an Odds API call.
+    """
+    if st.sidebar.button("Update Live Scores", use_container_width=True):
         # Clear the football-data fetch caches AND every page-level cache that
         # derives standings/scoreboards from them. Clearing only the fetch caches
         # leaves the derived caches serving stale tables (they never re-call the
-        # API), so the page would not visibly update. The Odds API is unaffected:
-        # its refresh is gated in the database, not by st.cache_data.
+        # API), so the page would not visibly update.
         clear_football_data_cache()
         st.cache_data.clear()
         st.sidebar.success("Pulling fresh scores from football-data.org…")
@@ -632,14 +645,38 @@ logo_uri = _logo_data_uri()
 if logo_uri is None:
     st.warning("Logo file not found. Add it to assets/world_cup_2026_logo.png")
 
+# In-session navigation requests (page modules set this, then rerun).
 requested_page = st.session_state.pop("requested_page", None)
 requested_page = PAGE_ALIASES.get(requested_page, requested_page)
-query_page = SLUG_TO_PAGE.get(str(st.query_params.get("page", "")).strip())
 if requested_page in PAGES:
     st.session_state["page_name"] = requested_page
-    st.query_params["page"] = PAGE_SLUGS.get(requested_page, PAGE_SLUGS["Home"])
-elif query_page in PAGES:
-    st.session_state["page_name"] = query_page
+
+# Honor deep-link query params (page / team_id / fixture) only on the first run.
+# After that, in-app navigation drives session state and the browser history
+# bridge owns the URL/history, so re-reading query params here would fight Back
+# and Forward.
+if not st.session_state.get("_nav_initialized"):
+    st.session_state["_nav_initialized"] = True
+    if "page_name" not in st.session_state:
+        query_page = SLUG_TO_PAGE.get(str(st.query_params.get("page", "")).strip())
+        if query_page in PAGES:
+            st.session_state["page_name"] = query_page
+    if st.session_state.get("page_name") == "Teams":
+        team_id_param = st.query_params.get("team_id")
+        if team_id_param:
+            try:
+                st.session_state["selected_team_id"] = int(
+                    team_id_param[0] if isinstance(team_id_param, list) else team_id_param
+                )
+            except (TypeError, ValueError):
+                pass
+    if st.session_state.get("page_name") == "Fixtures":
+        fixture_param = st.query_params.get("fixture")
+        if fixture_param:
+            st.session_state["selected_fixture_id"] = (
+                fixture_param[0] if isinstance(fixture_param, list) else fixture_param
+            )
+
 if "page_name" not in st.session_state or st.session_state["page_name"] not in PAGES:
     st.session_state["page_name"] = list(PAGES.keys())[0]
 page_name = st.session_state["page_name"]
@@ -651,22 +688,15 @@ page_name = st.session_state["page_name"]
 _render_sidebar_brand(logo_uri)
 _render_logout_control()
 _render_browser_preference_controls()
-previous_page_name = st.session_state.get("_previous_page_name")
-if page_name == "Teams" and previous_page_name not in (None, "Teams"):
-    st.session_state.pop("selected_team_id", None)
-    st.session_state.pop("selected_match_id", None)
-team_id_param = st.query_params.get("team_id")
-if page_name == "Teams" and team_id_param:
-    try:
-        st.session_state["selected_team_id"] = int(team_id_param[0] if isinstance(team_id_param, list) else team_id_param)
-        st.session_state.pop("selected_match_id", None)
-    except (TypeError, ValueError):
-        pass
 st.session_state["_previous_page_name"] = page_name
 st.sidebar.divider()
 st.sidebar.markdown(_api_usage_box("football-data.org credits", "football_data_org"), unsafe_allow_html=True)
 st.sidebar.markdown(_api_usage_box("Odds API credits", "the_odds_api"), unsafe_allow_html=True)
 _render_score_refresh_control()
+
+# Bridge browser Back/Forward to in-app navigation. Rendered before the page body
+# so a Back press reruns with the correct view (and scroll position) immediately.
+render_history_bridge()
 
 PAGES[page_name]()
 
