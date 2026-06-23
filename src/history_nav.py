@@ -142,6 +142,24 @@ def open_team_by_name(name: str) -> bool:
     return True
 
 
+def open_fixture_by_match(match: str) -> bool:
+    """Open the Fixtures focus card for an official match number (e.g. from the
+    bracket). Works even when the knockout teams aren't filled in yet — the
+    Fixtures page resolves the row from the feed by match number."""
+    text = str(match or "").strip()
+    if not text:
+        return False
+    match_id = text if text.upper().startswith("M") else f"M{text}"
+
+    remember_detail_origin("fixture_return_origin")
+    st.session_state["page_name"] = "Fixtures"
+    st.session_state["selected_fixture_id"] = match_id
+    st.session_state.pop("selected_fixture_row", None)
+    st.session_state.pop("selected_team_id", None)
+    st.session_state.pop("selected_match_id", None)
+    return True
+
+
 def render_history_bridge() -> None:
     """Render the bridge and, if Back/Forward was pressed, restore that view.
 
@@ -161,6 +179,10 @@ def render_history_bridge() -> None:
     kind = result.get("kind")
     if kind == "team":
         if open_team_by_name(str(result.get("team") or "")):
+            st.rerun()
+        return
+    if kind == "fixture":
+        if open_fixture_by_match(str(result.get("match") or "")):
             st.rerun()
         return
 

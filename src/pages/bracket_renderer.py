@@ -88,8 +88,41 @@ def render_live_bracket_html(fixtures: pd.DataFrame, flag_lookup: dict[str, str]
             </div>
           </section>
         </main>
+        <script>{_click_script()}</script>
       </body>
     </html>
+    """
+
+
+def _click_script() -> str:
+    # Clicking a card opens that fixture's card on the Fixtures tab (even before
+    # the teams are filled in). The bracket renders in its own iframe, so we tag a
+    # hidden trigger in the parent document and click it; the history bridge's
+    # delegated click handler relays the match number to Python.
+    return """
+    (function () {
+      try {
+        var doc = window.parent.document;
+        document.querySelectorAll('.bracket-card').forEach(function (card) {
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', function () {
+            var match = card.getAttribute('data-match');
+            if (!match) { return; }
+            var trigger = doc.getElementById('wc2026-fixture-trigger');
+            if (!trigger) {
+              trigger = doc.createElement('button');
+              trigger.id = 'wc2026-fixture-trigger';
+              trigger.style.display = 'none';
+              doc.body.appendChild(trigger);
+            }
+            trigger.setAttribute('data-wc-fixture', match);
+            trigger.click();
+          });
+        });
+      } catch (error) {
+        /* parent not reachable; leave the bracket non-clickable */
+      }
+    })();
     """
 
 
@@ -121,12 +154,22 @@ def _build_match_models(fixtures: pd.DataFrame, flag_lookup: dict[str, str]) -> 
             "number": match_number,
             "round": match["round"],
             "date": _display_date(match["date"]),
+            "time": _kickoff_time(row),
             "venue": match["venue"],
             "participants": participants,
             "scores": scores,
             "winner_index": winner_index,
         }
     return models
+
+
+def _kickoff_time(row: pd.Series | None) -> str:
+    if row is None:
+        return ""
+    parsed = pd.to_datetime(row.get("utc_date"), utc=True, errors="coerce")
+    if pd.isna(parsed):
+        return ""
+    return parsed.tz_convert("America/Chicago").strftime("%I:%M %p").lstrip("0")
 
 
 def _fixture_map(fixtures: pd.DataFrame) -> dict[int, pd.Series]:
@@ -231,13 +274,16 @@ def _card_html(match_number: int, x: int, y: int, model: dict, final: bool = Fal
         _team_row(participant, model["scores"][idx], model["winner_index"] == idx, model["winner_index"] is not None)
         for idx, participant in enumerate(model["participants"])
     )
+    meta_left = model["date"]
+    if model.get("time"):
+        meta_left += f' · {model["time"]}'
     return (
-        f'<article class="bracket-card{size_class}" style="{style}">'
+        f'<article class="bracket-card{size_class}" data-match="{match_number}" style="{style}">'
         '<div class="match-head">'
         f'<span>M{match_number}</span>'
         f'<strong>{html.escape(badge)}</strong>'
         '</div>'
-        f'<div class="match-meta">{html.escape(model["date"])} | {html.escape(model["venue"])}</div>'
+        f'<div class="match-meta">{html.escape(meta_left)} | {html.escape(model["venue"])}</div>'
         f'<div class="team-stack">{rows}</div>'
         '</article>'
     )

@@ -225,15 +225,25 @@
             return;
           }
           const link = target.closest("[data-wc-team]");
-          if (!link) {
+          if (link) {
+            const team = link.getAttribute("data-wc-team");
+            if (team) {
+              nonce += 1;
+              sendValue({ kind: "team", team, nonce });
+            }
             return;
           }
-          const team = link.getAttribute("data-wc-team");
-          if (!team) {
-            return;
+          // The bracket lives in its own iframe, so on a card click it tags a
+          // hidden trigger in this document with the match number and clicks it;
+          // we relay that to Python to open the fixture card.
+          const fixtureEl = target.closest("[data-wc-fixture]");
+          if (fixtureEl) {
+            const match = fixtureEl.getAttribute("data-wc-fixture");
+            if (match) {
+              nonce += 1;
+              sendValue({ kind: "fixture", match, nonce });
+            }
           }
-          nonce += 1;
-          sendValue({ kind: "team", team, nonce });
         },
         true
       );
