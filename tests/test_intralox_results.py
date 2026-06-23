@@ -128,6 +128,74 @@ def test_completed_group_assigns_finish_and_eliminates_bottom_team():
     assert derived[_key("Qatar")]["eliminated"] is True
 
 
+def _home_win_or_loss(home, away, hs, as_):
+    return {
+        "stage": "GROUP_STAGE",
+        "group": "GROUP_HH",
+        "home_team": home,
+        "away_team": away,
+        "home_score": hs,
+        "away_score": as_,
+        "winner": "HOME_TEAM" if hs > as_ else "AWAY_TEAM",
+    }
+
+
+def test_head_to_head_breaks_a_group_tie():
+    # P and Q tie on points/GD/GF, but P beat Q; R and S tie, but S beat R.
+    games = [
+        ("P", "Q", 1, 0),
+        ("P", "R", 0, 1),
+        ("P", "S", 1, 0),
+        ("Q", "R", 1, 0),
+        ("Q", "S", 1, 0),
+        ("R", "S", 0, 1),
+    ]
+    derived = derive_intralox_results(
+        pd.DataFrame([_home_win_or_loss(h, a, hs, as_) for h, a, hs, as_ in games])
+    )
+    assert derived[_key("P")]["group_finish"] == 1
+    assert derived[_key("Q")]["group_finish"] == 2
+    # S won the head-to-head with R, so it finishes ahead despite the equal table.
+    assert derived[_key("S")]["group_finish"] == 3
+    assert derived[_key("R")]["group_finish"] == 4
+
+
+def test_only_eight_best_third_place_teams_advance():
+    rows = []
+    for i in range(1, 13):
+        a, b, c, d = f"A{i}", f"B{i}", f"C{i}", f"D{i}"
+        group = f"GROUP_{i}"
+        # A 1st, B 2nd, C 3rd, D last. C's goal difference grows with i, so the
+        # higher-numbered groups own the better third-place teams.
+        scripted = [(a, b, 1, 0), (a, c, 1, 0), (a, d, 1, 0), (b, c, 1, 0), (b, d, 1, 0), (c, d, i, 0)]
+        for home, away, hs, as_ in scripted:
+            rows.append(
+                {
+                    "stage": "GROUP_STAGE",
+                    "group": group,
+                    "home_team": home,
+                    "away_team": away,
+                    "home_score": hs,
+                    "away_score": as_,
+                    "winner": "HOME_TEAM",
+                }
+            )
+    derived = derive_intralox_results(pd.DataFrame(rows))
+
+    advanced = sorted(i for i in range(1, 13) if derived[_key(f"C{i}")]["advanced"])
+    eliminated = sorted(i for i in range(1, 13) if derived[_key(f"C{i}")]["eliminated"])
+    assert advanced == [5, 6, 7, 8, 9, 10, 11, 12]
+    assert eliminated == [1, 2, 3, 4]
+
+    # An eliminated third keeps its earned points; elimination only stops it
+    # from earning more (still_alive turns False).
+    out = derived[_key("C1")]
+    assert out["group_wins"] == 1
+    assert out["group_finish"] == 3
+    assert out["advanced"] is False
+    assert out["eliminated"] is True
+
+
 def test_finish_not_assigned_until_group_is_complete():
     fixtures = pd.DataFrame(
         [

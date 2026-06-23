@@ -12,6 +12,11 @@ from collections import defaultdict
 import pandas as pd
 
 from src.official_match_reference import normalize_team_key
+from src.standings_order import rank_group
+
+
+# Number of best third-placed teams that advance to the Round of 32.
+THIRD_PLACE_QUALIFIERS = 8
 
 
 # Maps a fixture stage to the TeamScore flag set when a team WINS at that stage.
@@ -88,6 +93,8 @@ def derive_intralox_results(fixtures: pd.DataFrame) -> dict[str, dict]:
     group_stats: dict[str, dict[str, dict[str, int]]] = defaultdict(dict)
     group_total: dict[str, int] = defaultdict(int)
     group_completed: dict[str, int] = defaultdict(int)
+    # Completed group matches, kept for the head-to-head tiebreaker.
+    group_matches: dict[str, list[tuple[str, str, int, int]]] = defaultdict(list)
 
     if fixtures is None or getattr(fixtures, "empty", True):
         return results
@@ -118,6 +125,7 @@ def derive_intralox_results(fixtures: pd.DataFrame) -> dict[str, dict]:
                 away_result["group_draws"] += 1
             _accumulate_group_standing(group_stats[group], home, home_score, away_score)
             _accumulate_group_standing(group_stats[group], away, away_score, home_score)
+            group_matches[group].append((home, away, home_score, away_score))
         elif bucket in KNOCKOUT_WIN_FIELD:
             if not home or not away or home_score is None or away_score is None:
                 continue
@@ -135,7 +143,7 @@ def derive_intralox_results(fixtures: pd.DataFrame) -> dict[str, dict]:
             if away:
                 result_for(away)["advanced"] = True
 
-    _finalize_group_positions(results, group_stats, group_total, group_completed)
+    _finalize_group_positions(results, group_stats, group_total, group_completed, group_matches)
     return results
 
 
@@ -168,21 +176,56 @@ def _finalize_group_positions(
     group_stats: dict[str, dict[str, dict[str, int]]],
     group_total: dict[str, int],
     group_completed: dict[str, int],
+    group_matches: dict[str, list[tuple[str, str, int, int]]],
 ) -> None:
+    thirds: list[tuple[str, dict[str, int]]] = []
+    all_groups_done = bool(group_total) and all(
+        total > 0 and group_completed.get(group, 0) >= total
+        for group, total in group_total.items()
+    )
+
     for group, total in group_total.items():
         if total == 0 or group_completed.get(group, 0) < total:
             continue  # Group still in progress, so positions are not final yet.
-        ranked = sorted(
-            group_stats.get(group, {}).items(),
-            key=lambda item: (item[1]["points"], item[1]["goal_difference"], item[1]["goals_for"]),
-            reverse=True,
-        )
+        stats = group_stats.get(group, {})
+        # FIFA order: points, GD, GF, then head-to-head among any tied teams.
+        ranked = rank_group(sorted(stats.keys()), stats, group_matches.get(group, []))
         last_position = len(ranked)
-        for position, (team, _stat) in enumerate(ranked, start=1):
+        for position, team in enumerate(ranked, start=1):
             result = results.setdefault(team, _blank_result())
             result["group_finish"] = position
             if position <= 2:
                 result["advanced"] = True
+            if position == 3:
+                thirds.append((team, stats.get(team, {})))
             if position == last_position:
                 # Bottom of the group can never advance.
                 result["eliminated"] = True
+
+    if all_groups_done:
+        _finalize_third_place(results, thirds)
+
+
+def _finalize_third_place(results: dict[str, dict], thirds: list[tuple[str, dict[str, int]]]) -> None:
+    """Only the best ``THIRD_PLACE_QUALIFIERS`` third-placed teams advance; the
+    rest are eliminated (their group points stand — elimination only stops them
+    earning more). Teams the feed already shows in a knockout match are left
+    alone so a live result always wins over this estimate."""
+    ranked = sorted(thirds, key=lambda item: item[0])  # deterministic base order
+    ranked = sorted(
+        ranked,
+        key=lambda item: (
+            int(item[1].get("points", 0) or 0),
+            int(item[1].get("goal_difference", 0) or 0),
+            int(item[1].get("goals_for", 0) or 0),
+        ),
+        reverse=True,
+    )
+    for index, (team, _stat) in enumerate(ranked, start=1):
+        result = results.setdefault(team, _blank_result())
+        if result.get("advanced"):
+            continue  # A knockout match already confirmed this team advanced.
+        if index <= THIRD_PLACE_QUALIFIERS:
+            result["advanced"] = True
+        else:
+            result["eliminated"] = True

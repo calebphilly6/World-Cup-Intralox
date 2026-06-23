@@ -10,6 +10,7 @@ from src.database import fetch_df
 from src.football_data_service import cached_matches, hourly_fixture_refresh_key
 from src.navigation import remember_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
+from src.standings_order import rank_group
 from src.utils.team_names import display_team_name, team_lookup_keys
 
 FALLBACK_FLAGS = {
@@ -183,10 +184,16 @@ def _fixture_group_standings(refresh_key: str) -> pd.DataFrame:
         for _, row in groups.iterrows()
     }
     team_lookup = {}
+    base_order: dict[str, tuple[float, str]] = {}
     for _, row in groups.iterrows():
         ref = (int(row["team_id"]), str(row["group_name"]))
         for key in team_lookup_keys(row["team"]):
             team_lookup[key] = ref
+        rank = row.get("fifa_rank")
+        base_order[int(row["team_id"])] = (
+            999.0 if pd.isna(rank) else float(rank),
+            str(row["team"]),
+        )
 
     try:
         fixtures = apply_official_match_reference(cached_matches())
@@ -195,6 +202,8 @@ def _fixture_group_standings(refresh_key: str) -> pd.DataFrame:
     if fixtures.empty:
         return pd.DataFrame()
 
+    # Completed matches per group, kept for the head-to-head tiebreaker.
+    group_matches: dict[str, list[tuple[int, int, int, int]]] = {}
     completed = fixtures[fixtures.apply(_is_completed_group_match, axis=1)].copy()
     for _, match in completed.iterrows():
         home_key = normalize_team_key(str(match.get("home_team") or ""))
@@ -207,11 +216,42 @@ def _fixture_group_standings(refresh_key: str) -> pd.DataFrame:
         away_score = int(match["away_score"])
         _apply_group_result(standings[home_ref], home_score, away_score)
         _apply_group_result(standings[away_ref], away_score, home_score)
+        group_matches.setdefault(home_ref[1], []).append(
+            (home_ref[0], away_ref[0], home_score, away_score)
+        )
 
     rows = list(standings.values())
     if not any(row["played"] for row in rows):
         return pd.DataFrame()
+    _assign_group_positions(rows, group_matches, base_order)
     return pd.DataFrame(rows)
+
+
+def _assign_group_positions(
+    rows: list[dict],
+    group_matches: dict[str, list[tuple[int, int, int, int]]],
+    base_order: dict[int, tuple[float, str]],
+) -> None:
+    """Tag each standings row with its FIFA-ordered position within its group so
+    the table, the 1st/2nd/3rd cut, and the 3rd-Place Race all use head-to-head
+    the same way the Intralox scoreboard does."""
+    by_group: dict[str, list[dict]] = {}
+    for row in rows:
+        by_group.setdefault(row["group_name"], []).append(row)
+    for group_name, group_rows in by_group.items():
+        stats = {
+            row["team_id"]: {
+                "points": row["standing_points"],
+                "goal_difference": row["goals_for"] - row["goals_against"],
+                "goals_for": row["goals_for"],
+            }
+            for row in group_rows
+        }
+        ordered_ids = sorted(stats.keys(), key=lambda tid: base_order.get(tid, (999.0, "")))
+        ranking = rank_group(ordered_ids, stats, group_matches.get(group_name, []))
+        position = {team_id: index for index, team_id in enumerate(ranking, start=1)}
+        for row in group_rows:
+            row["group_position"] = position.get(row["team_id"])
 
 
 def _is_completed_group_match(row) -> bool:
@@ -305,6 +345,12 @@ def _table_row(row) -> str:
 
 def _sort_group_subset(subset: pd.DataFrame) -> pd.DataFrame:
     sorted_subset = subset.copy()
+    # Prefer the precomputed FIFA position (includes head-to-head) once any games
+    # have been played; fall back to a rank-based order before kickoff.
+    if "group_position" in sorted_subset.columns and sorted_subset["group_position"].notna().any():
+        sorted_subset["_pos_sort"] = sorted_subset["group_position"].fillna(999)
+        sorted_subset = sorted_subset.sort_values(["_pos_sort", "team"])
+        return sorted_subset.drop(columns=["_pos_sort"])
     sorted_subset["_points_sort"] = sorted_subset["standing_points"].fillna(0)
     sorted_subset["_gd_sort"] = sorted_subset["goals_for"].fillna(0) - sorted_subset["goals_against"].fillna(0)
     sorted_subset["_rank_sort"] = sorted_subset["fifa_rank"].fillna(999)
