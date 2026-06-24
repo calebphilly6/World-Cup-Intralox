@@ -152,6 +152,18 @@ CREATE TABLE IF NOT EXISTS match_city_reference (
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Sticky cache of knockout participants. The football-data.org feed populates
+-- bracket teams (e.g. "United States") intermittently and sometimes blanks them
+-- back out. We remember each real team the feed has shown for a knockout slot so
+-- the bracket keeps displaying it even when a later feed pull comes back empty.
+CREATE TABLE IF NOT EXISTS knockout_participants (
+    match_number INTEGER NOT NULL,
+    slot_index INTEGER NOT NULL CHECK(slot_index IN (0, 1)),
+    team_name TEXT NOT NULL,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (match_number, slot_index)
+);
+
 CREATE TABLE IF NOT EXISTS fifa_rankings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     team_id INTEGER NOT NULL,

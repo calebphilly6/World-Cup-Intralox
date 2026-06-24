@@ -10,6 +10,7 @@ from data_sources.football_data_client import FootballDataError
 from src.database import fetch_df
 from src.fixture_display import flag_lookup_with_aliases
 from src.football_data_service import cached_matches
+from src.knockout_participants import apply_sticky_knockout_participants
 from src.official_match_reference import apply_official_match_reference
 from src.pages.bracket_renderer import render_live_bracket_html
 
@@ -35,15 +36,16 @@ def _knockout_fixtures() -> tuple[pd.DataFrame, str]:
     try:
         fixtures = apply_official_match_reference(cached_matches())
     except FootballDataError as exc:
-        return _local_fixture_fallback(), f"{exc} Showing the official bracket slots until fixture data is available."
+        return apply_sticky_knockout_participants(_local_fixture_fallback()), f"{exc} Showing the official bracket slots until fixture data is available."
     except Exception as exc:
-        return _local_fixture_fallback(), f"Could not load football-data.org fixtures: {exc}. Showing the official bracket slots until fixture data is available."
+        return apply_sticky_knockout_participants(_local_fixture_fallback()), f"Could not load football-data.org fixtures: {exc}. Showing the official bracket slots until fixture data is available."
 
     if fixtures.empty:
-        return fixtures, ""
+        return apply_sticky_knockout_participants(_local_fixture_fallback()), ""
     fixtures = fixtures.copy()
     fixtures["official_match_number"] = pd.to_numeric(fixtures["official_match_number"], errors="coerce")
-    return fixtures[fixtures["official_match_number"].between(73, 104)].copy(), ""
+    fixtures = fixtures[fixtures["official_match_number"].between(73, 104)].copy()
+    return apply_sticky_knockout_participants(fixtures), ""
 
 
 def _local_fixture_fallback() -> pd.DataFrame:

@@ -138,7 +138,7 @@ def _build_match_models(fixtures: pd.DataFrame, flag_lookup: dict[str, str]) -> 
         participants = []
         for index, slot in enumerate(match["slots"]):
             raw_value = _participant_from_row(row, index)
-            if _is_real_team(raw_value):
+            if is_real_team(raw_value):
                 display = str(raw_value).strip()
             else:
                 display = _resolve_slot(slot, winners, losers)
@@ -210,7 +210,7 @@ def _resolve_slot(slot: str, winners: dict[int, dict], losers: dict[int, dict]) 
 
 def _participant_model(name: str, flag_lookup: dict[str, str]) -> dict:
     clean_name = str(name or "TBD").strip()
-    placeholder = not _is_real_team(clean_name)
+    placeholder = not is_real_team(clean_name)
     return {
         "name": clean_name,
         "placeholder": placeholder,
@@ -219,7 +219,7 @@ def _participant_model(name: str, flag_lookup: dict[str, str]) -> dict:
     }
 
 
-def _is_real_team(value) -> bool:
+def is_real_team(value) -> bool:
     if pd.isna(value):
         return False
     text = str(value).strip()
