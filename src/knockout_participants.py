@@ -18,7 +18,6 @@ import sqlite3
 
 import pandas as pd
 
-from src.config import is_shared_core_read_only_mode
 from src.database import fetch_df, get_connection
 from src.pages.bracket_renderer import is_real_team
 
@@ -85,7 +84,13 @@ def _stored_participants() -> dict[tuple[int, int], str]:
 
 
 def _persist(records: list[tuple[int, int, str]]) -> None:
-    if not records or is_shared_core_read_only_mode():
+    # Persist even in shared/read-only mode. These are feed-derived official
+    # participants, not user or competition data, so writing them does not break
+    # the shared-mode invariant -- and the write is what stops the bracket from
+    # flickering teams in and out across the hourly feed pulls within a warm
+    # deployed container. (The ephemeral DB still resets on cold restart; the
+    # table is intentionally not part of the committed core snapshot.)
+    if not records:
         return
     try:
         with get_connection() as conn:

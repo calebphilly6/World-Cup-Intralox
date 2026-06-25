@@ -11,6 +11,7 @@ from src.database import fetch_df
 from src.fixture_display import flag_lookup_with_aliases
 from src.football_data_service import cached_matches
 from src.knockout_participants import apply_sticky_knockout_participants
+from src.knockout_slots import all_slot_teams
 from src.official_match_reference import apply_official_match_reference
 from src.pages.bracket_renderer import render_live_bracket_html
 
@@ -27,7 +28,7 @@ def render() -> None:
         st.warning(warning)
 
     st.iframe(
-        render_live_bracket_html(fixtures, _flag_lookup(), _bracket_background_uri()),
+        render_live_bracket_html(fixtures, _flag_lookup(), _bracket_background_uri(), all_slot_teams()),
         height=1040,
     )
 

@@ -61,8 +61,13 @@ CANVAS_W = COL_X["final"] + FINAL_W + 40
 CANVAS_H = R32_Y[-1] + CARD_H + 40
 
 
-def render_live_bracket_html(fixtures: pd.DataFrame, flag_lookup: dict[str, str], background_uri: str | None = None) -> str:
-    match_models = _build_match_models(fixtures, flag_lookup)
+def render_live_bracket_html(
+    fixtures: pd.DataFrame,
+    flag_lookup: dict[str, str],
+    background_uri: str | None = None,
+    slot_teams: dict[str, str] | None = None,
+) -> str:
+    match_models = _build_match_models(fixtures, flag_lookup, slot_teams)
     cards = []
     cards.extend(_cards_for(R32_ORDER, COL_X["r32"], R32_Y, match_models))
     cards.extend(_cards_for(R16_ORDER, COL_X["r16"], R16_Y, match_models))
@@ -126,8 +131,13 @@ def _click_script() -> str:
     """
 
 
-def _build_match_models(fixtures: pd.DataFrame, flag_lookup: dict[str, str]) -> dict[int, dict]:
+def _build_match_models(
+    fixtures: pd.DataFrame,
+    flag_lookup: dict[str, str],
+    slot_teams: dict[str, str] | None = None,
+) -> dict[int, dict]:
     fixture_map = _fixture_map(fixtures)
+    slot_teams = slot_teams or {}
     winners: dict[int, dict] = {}
     losers: dict[int, dict] = {}
     models: dict[int, dict] = {}
@@ -139,9 +149,13 @@ def _build_match_models(fixtures: pd.DataFrame, flag_lookup: dict[str, str]) -> 
         for index, slot in enumerate(match["slots"]):
             raw_value = _participant_from_row(row, index)
             if is_real_team(raw_value):
+                # The feed (or sticky cache) already named this team -- it is the
+                # official assignment, so it wins over our computed standings.
                 display = str(raw_value).strip()
             else:
-                display = _resolve_slot(slot, winners, losers)
+                # Fill group-winner/runner-up slots from our own standings before
+                # falling back to winner-propagation or the bare placeholder.
+                display = slot_teams.get(slot) or _resolve_slot(slot, winners, losers)
             participants.append(_participant_model(display, flag_lookup))
 
         scores = _score_pair(row)
