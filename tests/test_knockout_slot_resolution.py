@@ -1,5 +1,6 @@
 import pandas as pd
 
+from src.knockout_slots import fill_knockout_participants
 from src.pages.bracket_renderer import _build_match_models
 
 
@@ -50,3 +51,34 @@ def test_standings_winner_propagates_to_next_round():
 
     assert models[73]["winner_index"] == 0
     assert _name(models, 90, 0) == "USA"  # W73 resolved to the standings winner
+
+
+def test_fill_knockout_participants_replaces_placeholder_labels(monkeypatch):
+    # The Fixtures page passes enriched rows whose teams are the official slot
+    # labels (e.g. "1C"/"2F"); fill_knockout_participants should upgrade them.
+    import src.knockout_slots as ks
+    monkeypatch.setattr(ks, "all_slot_teams", lambda: {"1C": "Brazil", "2F": "Croatia"})
+
+    fixtures = pd.DataFrame(
+        [
+            {"official_match_number": 76, "home_team": "1C", "away_team": "2F"},
+            {"official_match_number": 5, "home_team": "France", "away_team": "Senegal"},
+        ]
+    )
+    out = fill_knockout_participants(fixtures)
+
+    assert out.loc[0, "home_team"] == "Brazil"
+    assert out.loc[0, "away_team"] == "Croatia"
+    # Non-knockout group rows are untouched.
+    assert out.loc[1, "home_team"] == "France"
+
+
+def test_fill_keeps_placeholder_when_slot_unresolved(monkeypatch):
+    import src.knockout_slots as ks
+    monkeypatch.setattr(ks, "all_slot_teams", lambda: {})  # nothing resolvable yet
+
+    fixtures = pd.DataFrame([{"official_match_number": 89, "home_team": "Winner M74", "away_team": "Winner M77"}])
+    out = fill_knockout_participants(fixtures)
+
+    assert out.loc[0, "home_team"] == "Winner M74"
+    assert out.loc[0, "away_team"] == "Winner M77"

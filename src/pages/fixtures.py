@@ -11,6 +11,7 @@ from src.city_backgrounds import city_background_card_data_uri, city_background_
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
 from src.football_data_service import cached_matches, hourly_fixture_refresh_key
+from src.knockout_slots import fill_knockout_participants
 from src.match_details_service import get_match_details
 from src.match_odds_service import refresh_match_odds_if_available
 from src.navigation import remember_detail_origin, return_to_detail_origin
@@ -89,7 +90,7 @@ def render() -> None:
 @st.cache_data(show_spinner=False)
 def _fixture_data(refresh_key: str) -> tuple[pd.DataFrame, str]:
     try:
-        return enrich_fixture_participants(apply_official_match_reference(cached_matches())), ""
+        return fill_knockout_participants(enrich_fixture_participants(apply_official_match_reference(cached_matches()))), ""
     except FootballDataError as exc:
         return _local_fixture_fallback(), f"{exc} Using fallback fixture data. Scores and standings may not be current."
     except Exception as exc:
@@ -125,7 +126,7 @@ def _local_fixture_fallback() -> pd.DataFrame:
     )
     fixtures["match_id"] = fixtures["official_match_number"].map(lambda value: f"M{int(value)}" if pd.notna(value) else "")
     fixtures["local_date"] = pd.to_datetime(fixtures["utc_date"], utc=True, errors="coerce").dt.date.astype(str)
-    return fixtures
+    return fill_knockout_participants(fixtures)
 
 
 def _filter_fixtures(fixtures: pd.DataFrame) -> pd.DataFrame:

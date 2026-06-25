@@ -34,6 +34,48 @@ def all_slot_teams() -> dict[str, str]:
     return {**group_slot_teams(), **third_place_slot_teams()}
 
 
+def fill_knockout_participants(fixtures: pd.DataFrame) -> pd.DataFrame:
+    """Replace placeholder knockout team names with the teams the bracket resolves.
+
+    Runs the same resolution the Bracket page uses (group standings, third-place
+    allocation, and winner propagation) over a fixtures frame and writes the real
+    names back into ``home_team``/``away_team`` for matches 73-104. Slots that are
+    still undecided keep their placeholder (e.g. "Winner M74", "1C"), and rows that
+    already carry a real team are left untouched. This keeps the Fixtures page --
+    including the card opened from a bracket click -- in step with the bracket.
+    """
+    if fixtures.empty:
+        return fixtures
+    key = "official_match_number" if "official_match_number" in fixtures.columns else "match_number"
+    if key not in fixtures.columns:
+        return fixtures
+
+    # Lazy import: bracket_renderer pulls in page modules; keep this importable in
+    # plain tests and avoid an import-time cycle with the bracket page.
+    from src.pages.bracket_renderer import _build_match_models
+
+    models = _build_match_models(fixtures, {}, all_slot_teams())
+    updated = fixtures.copy()
+    for column in ("home_team", "away_team"):
+        if column in updated.columns:
+            updated[column] = updated[column].astype("object")
+
+    for index, row in updated.iterrows():
+        number = row.get(key)
+        if pd.isna(number):
+            continue
+        model = models.get(int(number))
+        if not model:
+            continue
+        for column, participant in (
+            ("home_team", model["participants"][0]),
+            ("away_team", model["participants"][1]),
+        ):
+            if column in updated.columns and not participant["placeholder"]:
+                updated.at[index, column] = participant["name"]
+    return updated
+
+
 def group_slot_teams() -> dict[str, str]:
     """Map resolvable group slots to team names, e.g. ``{"1A": "USA", "2A": "Mexico"}``.
 
