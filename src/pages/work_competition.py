@@ -270,7 +270,6 @@ def _leaderboard_card(row: dict) -> str:
         f'<div class="intralox-name">{html.escape(row["person"])}</div>'
         f'<div class="intralox-score">{row["total_score"]:.1f}</div>'
         '</div>'
-        f'<div class="intralox-move">{html.escape(row["movement"])}</div>'
         f'<div class="intralox-pots">{pot_cells}</div>'
         '</div>'
         f'<div class="intralox-total"><small>{row["teams_left"]} alive</small></div>'
