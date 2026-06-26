@@ -12,12 +12,16 @@ POT_MULTIPLIERS = {
     4: 2.00,
 }
 
+# Points for reaching the Round of 32 (qualifying out of the group), awarded to
+# every team whose group run put them into the knockout bracket.
+QUALIFY_BONUS = 3
+
 KNOCKOUT_POINTS = {
-    "won_round_of_32": 4,
-    "won_round_of_16": 8,
-    "won_quarterfinal": 16,
-    "won_semifinal": 32,
-    "won_final": 64,
+    "won_round_of_32": 5,
+    "won_round_of_16": 5,
+    "won_quarterfinal": 5,
+    "won_semifinal": 5,
+    "won_final": 10,
 }
 
 APP_TIMEZONE = ZoneInfo("America/Chicago")
@@ -59,6 +63,10 @@ class TeamScore:
         return 0
 
     @property
+    def qualify_bonus(self) -> int:
+        return QUALIFY_BONUS if self.advanced else 0
+
+    @property
     def knockout_points(self) -> dict[str, int]:
         return {
             key: points if getattr(self, key) else 0
@@ -67,7 +75,12 @@ class TeamScore:
 
     @property
     def base_score(self) -> int:
-        return self.group_result_points + self.group_finish_bonus + sum(self.knockout_points.values())
+        return (
+            self.group_result_points
+            + self.group_finish_bonus
+            + self.qualify_bonus
+            + sum(self.knockout_points.values())
+        )
 
     @property
     def adjusted_score(self) -> float:
