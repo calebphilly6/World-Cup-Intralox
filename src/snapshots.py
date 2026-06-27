@@ -50,57 +50,114 @@ def export_core_snapshots(db_path: Path = DB_PATH, snapshot_dir: Path = SNAPSHOT
 
 
 def load_core_snapshots(db_path: Path = DB_PATH, snapshot_dir: Path = SNAPSHOT_DIR) -> dict[str, int]:
-    """Load committed core CSV snapshots into the runtime SQLite database."""
+    """Load committed core CSV snapshots into the runtime SQLite database.
+
+    Reboot-safe by design. The earlier version deleted every core table up front
+    and then read each CSV, so a CSV that read back empty for any reason (a not
+    yet hydrated OneDrive placeholder, a half written file, a parse error) wiped
+    the table and left it empty. It also short-circuited whenever the stored
+    snapshot id matched the CSV hash, so a database that was already empty but
+    stamped (e.g. a persisted hosted container stamped during an earlier broken
+    load) stayed empty on every subsequent reboot.
+
+    This version reads and validates every CSV *before* touching the database,
+    only replaces a table when its CSV actually parsed with rows, and reloads
+    even on a hash match when an essential table is empty in the database while
+    its CSV has data.
+    """
     available = [table for table in CORE_SNAPSHOT_TABLES if (snapshot_dir / f"{table}.csv").exists()]
     if not available:
         return {}
     snapshot_id = _snapshot_id(snapshot_dir)
 
+    # Read and validate everything up front so the database is never mutated on
+    # the strength of a CSV that turned out to be empty or unreadable.
+    frames: dict[str, pd.DataFrame] = {}
+    read_error = False
+    for table in available:
+        path = snapshot_dir / f"{table}.csv"
+        try:
+            df = pd.read_csv(path)
+        except pd.errors.EmptyDataError:
+            df = pd.DataFrame()
+        except Exception:
+            # A genuinely unreadable file (e.g. an online-only placeholder). Leave
+            # the existing table untouched and force a retry on the next launch by
+            # not stamping the snapshot id.
+            read_error = True
+            continue
+        if not df.empty:
+            df = df.where(pd.notna(df), None)
+            if table == "standings":
+                df = _valid_standings_rows(df)
+        frames[table] = df
+
+    # Tables we are willing to actually swap: only those whose CSV parsed with
+    # rows. Empty/unreadable CSVs never clear an existing populated table.
+    loadable = [table for table in CORE_SNAPSHOT_TABLES if not frames.get(table, pd.DataFrame()).empty]
+
     loaded: dict[str, int] = {}
     with get_connection(db_path) as conn:
         current = conn.execute("SELECT value FROM app_metadata WHERE key = ?", (METADATA_KEY,)).fetchone()
-        if current and current["value"] == snapshot_id:
+        hash_matches = bool(current) and current["value"] == snapshot_id
+        if hash_matches and not _essential_tables_need_reload(conn, loadable, frames):
             return {}
 
         conn.execute("PRAGMA foreign_keys = OFF")
         for table in reversed(CORE_SNAPSHOT_TABLES):
-            if table in available:
+            if table in loadable:
                 conn.execute(f"DELETE FROM {table}")
 
         for table in CORE_SNAPSHOT_TABLES:
-            if table not in available:
+            if table not in loadable:
                 continue
-            path = snapshot_dir / f"{table}.csv"
-            try:
-                df = pd.read_csv(path)
-            except pd.errors.EmptyDataError:
-                df = pd.DataFrame()
-            if not df.empty:
-                df = df.where(pd.notna(df), None)
-                if table == "standings":
-                    df = _valid_standings_rows(df)
-            if not df.empty:
-                df.to_sql(table, conn, if_exists="append", index=False)
+            df = frames[table]
+            df.to_sql(table, conn, if_exists="append", index=False)
             loaded[table] = len(df)
 
         try:
-            for table in available:
+            for table in loadable:
                 conn.execute("DELETE FROM sqlite_sequence WHERE name = ?", (table,))
         except Exception:
             pass
-        conn.execute(
-            """
-            INSERT INTO app_metadata (key, value)
-            VALUES (?, ?)
-            ON CONFLICT(key) DO UPDATE SET
-                value = excluded.value,
-                updated_at = CURRENT_TIMESTAMP
-            """,
-            (METADATA_KEY, snapshot_id),
-        )
+
+        # Only stamp the snapshot id once every CSV was readable. If any file
+        # failed to read, leave the marker so the next launch retries the load.
+        if not read_error:
+            conn.execute(
+                """
+                INSERT INTO app_metadata (key, value)
+                VALUES (?, ?)
+                ON CONFLICT(key) DO UPDATE SET
+                    value = excluded.value,
+                    updated_at = CURRENT_TIMESTAMP
+                """,
+                (METADATA_KEY, snapshot_id),
+            )
         conn.commit()
         conn.execute("PRAGMA foreign_keys = ON")
     return loaded
+
+
+# Tables that must hold data for the app to be usable. If one of these is empty
+# in the database while its CSV snapshot has rows, reload even on a hash match so
+# an already-empty (but stamped) database recovers on the next launch.
+ESSENTIAL_SNAPSHOT_TABLES = ("teams", "fifa_rankings", "global_fifa_rankings", "fixtures", "groups")
+
+
+def _essential_tables_need_reload(conn, loadable: list[str], frames: dict[str, pd.DataFrame]) -> bool:
+    for table in ESSENTIAL_SNAPSHOT_TABLES:
+        if table not in loadable:
+            continue
+        if frames.get(table, pd.DataFrame()).empty:
+            continue
+        try:
+            count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+        except Exception:
+            return True
+        if not count:
+            return True
+    return False
 
 
 def core_snapshots_available(snapshot_dir: Path = SNAPSHOT_DIR) -> bool:
