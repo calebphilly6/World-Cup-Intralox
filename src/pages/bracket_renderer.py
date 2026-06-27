@@ -147,15 +147,23 @@ def _build_match_models(
         row = fixture_map.get(match_number)
         participants = []
         for index, slot in enumerate(match["slots"]):
-            raw_value = _participant_from_row(row, index)
-            if is_real_team(raw_value):
-                # The feed (or sticky cache) already named this team -- it is the
-                # official assignment, so it wins over our computed standings.
-                display = str(raw_value).strip()
+            resolved = slot_teams.get(slot)
+            if resolved:
+                # Our own group-standings / third-place resolution is authoritative
+                # for the Round-of-32 entry slots (1A, 2B, 3ABCDF, ...). The
+                # football-data feed seeds these intermittently and sometimes wrongly
+                # -- duplicating teams or placing them in the wrong tie -- so our
+                # computed value wins for any slot we can resolve ourselves.
+                display = resolved
             else:
-                # Fill group-winner/runner-up slots from our own standings before
-                # falling back to winner-propagation or the bare placeholder.
-                display = slot_teams.get(slot) or _resolve_slot(slot, winners, losers)
+                # Slots we cannot resolve (Winner/Loser propagation in later rounds):
+                # take a real team the feed/fixture names, else propagate the winner,
+                # else keep the bare placeholder.
+                raw_value = _participant_from_row(row, index)
+                if is_real_team(raw_value):
+                    display = str(raw_value).strip()
+                else:
+                    display = _resolve_slot(slot, winners, losers)
             participants.append(_participant_model(display, flag_lookup))
 
         scores = _score_pair(row)

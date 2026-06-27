@@ -29,14 +29,17 @@ def test_group_slots_resolve_from_standings_when_feed_blank():
     assert models[74]["participants"][1]["placeholder"] is True
 
 
-def test_feed_team_wins_over_standings():
+def test_own_resolution_wins_over_feed_for_resolvable_slots():
+    # The football-data feed seeds knockout slots intermittently and sometimes
+    # incorrectly (e.g. "Argentina" in 2A when our standings say USA), which is
+    # what duplicated/misplaced teams on the bracket. For any slot we can resolve
+    # ourselves, our computed value must win over the feed's.
     fixtures = pd.DataFrame(
         [{"official_match_number": 73, "home_team": "Argentina", "away_team": None}]
     )
-    # Standings would say USA, but the feed's official assignment must win.
     models = _build_match_models(fixtures, {}, {"2A": "USA", "2B": "Mexico"})
 
-    assert _name(models, 73, 0) == "Argentina"
+    assert _name(models, 73, 0) == "USA"
     assert _name(models, 73, 1) == "Mexico"
 
 
