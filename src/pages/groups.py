@@ -539,6 +539,15 @@ def _styles() -> None:
         .group-table td:first-child {
             text-align: left;
         }
+        /* Fixed layout so every group's Team column is the same width and the
+           number columns line up from group to group regardless of name length. */
+        .group-detail-shell .group-table {
+            table-layout: fixed;
+        }
+        .group-detail-shell .group-table th:first-child,
+        .group-detail-shell .group-table td:first-child {
+            width: 40%;
+        }
         .table-team {
             display: inline-flex;
             align-items: center;
