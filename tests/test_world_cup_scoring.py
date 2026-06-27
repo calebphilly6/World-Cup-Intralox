@@ -18,7 +18,6 @@ class WorldCupScoringTests(unittest.TestCase):
             pot=1,
             group_wins=3,
             group_finish=1,
-            advanced=True,
             won_round_of_32=True,
             won_round_of_16=True,
             won_quarterfinal=True,
@@ -26,9 +25,9 @@ class WorldCupScoringTests(unittest.TestCase):
             won_final=True,
         )
 
-        # group 9 + finish 3 + qualify 3 + knockout (5+5+5+5+10) = 45
-        self.assertEqual(score.base_score, 45)
-        self.assertEqual(score.adjusted_score, 45)
+        # group 9 + finish 3 + knockout (5+5+5+5+10) = 42
+        self.assertEqual(score.base_score, 42)
+        self.assertEqual(score.adjusted_score, 42)
 
     def test_pot_four_third_place_advance_example_score(self):
         score = TeamScore(
@@ -42,9 +41,9 @@ class WorldCupScoringTests(unittest.TestCase):
             won_round_of_32=True,
         )
 
-        # group (3+1) + finish 1 + qualify 3 + won R32 5 = 13, pot 4 doubles to 26
-        self.assertEqual(score.base_score, 13)
-        self.assertEqual(score.adjusted_score, 26)
+        # group (3+1) + finish 1 + won R32 5 = 10, pot 4 doubles to 20
+        self.assertEqual(score.base_score, 10)
+        self.assertEqual(score.adjusted_score, 20)
 
     def test_leaderboard_orders_by_score_then_teams_left_then_name(self):
         scores = [

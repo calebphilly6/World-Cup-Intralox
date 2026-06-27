@@ -314,7 +314,6 @@ def _score_breakdown_card(score: TeamScore) -> str:
         f'<div><span>Group wins</span><strong>{score.group_wins} x 3 = {score.group_wins * 3}</strong></div>'
         f'<div><span>Group draws</span><strong>{score.group_draws} x 1 = {score.group_draws}</strong></div>'
         f'<div><span>Finish bonus</span><strong>{score.group_finish_bonus}</strong></div>'
-        f'<div><span>Qualified (R32)</span><strong>{score.qualify_bonus}</strong></div>'
         f'<div><span>Win Round of 32</span><strong>{knockout["won_round_of_32"]}</strong></div>'
         f'<div><span>Win Round of 16</span><strong>{knockout["won_round_of_16"]}</strong></div>'
         f'<div><span>Win Quarterfinal</span><strong>{knockout["won_quarterfinal"]}</strong></div>'

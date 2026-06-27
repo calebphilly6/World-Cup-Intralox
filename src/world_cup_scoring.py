@@ -12,10 +12,6 @@ POT_MULTIPLIERS = {
     4: 2.00,
 }
 
-# Points for reaching the Round of 32 (qualifying out of the group), awarded to
-# every team whose group run put them into the knockout bracket.
-QUALIFY_BONUS = 3
-
 KNOCKOUT_POINTS = {
     "won_round_of_32": 5,
     "won_round_of_16": 5,
@@ -63,10 +59,6 @@ class TeamScore:
         return 0
 
     @property
-    def qualify_bonus(self) -> int:
-        return QUALIFY_BONUS if self.advanced else 0
-
-    @property
     def knockout_points(self) -> dict[str, int]:
         return {
             key: points if getattr(self, key) else 0
@@ -78,7 +70,6 @@ class TeamScore:
         return (
             self.group_result_points
             + self.group_finish_bonus
-            + self.qualify_bonus
             + sum(self.knockout_points.values())
         )
 
