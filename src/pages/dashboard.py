@@ -20,6 +20,7 @@ from src.utils.formatting import format_local_time, format_local_time_only
 from src.utils.team_names import display_team_name, team_lookup_keys
 from src.world_cup_scoring import daily_score_refresh_key
 from src.pages.work_competition import _daily_competition_state, _ensure_results_for_world_cup_teams
+from src import team_status
 
 
 WORLD_CUP_FIRST_KICKOFF_UTC = datetime(2026, 6, 11, 19, 0, tzinfo=timezone.utc)
@@ -568,45 +569,70 @@ def _favorite_teams() -> pd.DataFrame:
     if favorites.empty:
         return favorites
 
-    fixtures = fetch_df(
-        """
-        SELECT f.match_number, f.kickoff_utc, f.stage, f.status,
-               f.home_score, f.away_score, m.game_label,
-               ht.id AS home_team_id, ht.name AS home_team,
-               at.id AS away_team_id, at.name AS away_team
-        FROM fixtures f
-        LEFT JOIN teams ht ON ht.id = f.home_team_id
-        LEFT JOIN teams at ON at.id = f.away_team_id
-        LEFT JOIN match_city_reference m ON m.match_number = f.match_number
-        ORDER BY datetime(f.kickoff_utc), f.match_number
-        """
-    )
-    fixtures = enrich_fixture_participants(fixtures)
+    fixtures = _favorites_fixtures()
+    slot_teams = _knockout_slot_teams(hourly_fixture_refresh_key())
+    knockout_keys = team_status.knockout_participant_keys(slot_teams)
+    bracket_complete = team_status.bracket_is_complete(slot_teams)
     now = datetime.now(timezone.utc)
     rows = []
     for _, team in favorites.iterrows():
         team_id = int(team["id"])
-        team_fixtures = _team_fixtures(fixtures, team_id, str(team["Team"]))
-        next_fixture = _next_fixture(team_fixtures, now)
-        is_out = _team_is_out_or_lost(team["qualification_status"], team_fixtures, now, team_id)
+        team_name = str(team["Team"])
+        status = team["qualification_status"]
+        team_fixtures = team_status.fixtures_for_team(fixtures, team_name)
+        next_fixture = team_status.next_fixture(team_fixtures, now)
+        is_out = team_status.is_eliminated(
+            team_fixtures,
+            now,
+            team_name,
+            qualification_status=status,
+            knockout_keys=knockout_keys,
+            bracket_complete=bracket_complete,
+        )
         rows.append(
             {
                 "id": team_id,
-                "Team": display_team_name(team["Team"]),
+                "Team": display_team_name(team_name),
                 "Group": team["Group"],
                 "country_code": team["country_code"],
-                "Next Game": _next_game_label(next_fixture, team_id, team["Team"]),
-                "Round": _favorite_stage_label(is_out, team["qualification_status"], team_fixtures, now, team_id),
+                "Next Game": _next_game_label(next_fixture, team_id, team_name),
+                "Round": _favorite_stage_label(is_out, status, team_fixtures, now, team_id, team_name),
                 "_lost": is_out,
             }
         )
     return pd.DataFrame(rows).sort_values("Team")
 
 
-def _favorite_stage_label(is_out: bool, status: str, fixtures: pd.DataFrame, now: datetime, team_id: int) -> str:
+def _favorites_fixtures() -> pd.DataFrame:
+    """The same live, knockout-resolved fixtures feed the Fixtures and Teams pages
+    use, normalized with a ``kickoff_utc`` column so the favorite cards can read
+    scores and resolved bracket teams (the raw schedule table has neither)."""
+    from src.pages.fixtures import _fixture_data
+
+    try:
+        fixtures, _warning = _fixture_data(hourly_fixture_refresh_key())
+    except Exception:
+        fixtures = pd.DataFrame()
+    return team_status.normalize_feed(fixtures)
+
+
+@st.cache_data(show_spinner=False)
+def _knockout_slot_teams(refresh_key: str) -> dict[str, str]:
+    del refresh_key  # only here to key the cache to the hourly feed refresh
+    try:
+        from src.knockout_slots import all_slot_teams
+
+        return dict(all_slot_teams())
+    except Exception:
+        return {}
+
+
+def _favorite_stage_label(
+    is_out: bool, status: str, fixtures: pd.DataFrame, now: datetime, team_id: int, team_name: str = ""
+) -> str:
     if is_out:
         return "Eliminated"
-    return _current_round(status, fixtures, now, team_id)
+    return team_status.current_round(fixtures, now, team_name, qualification_status=status)
 
 
 def _flag_img(team: str, stored_code=None) -> str:
@@ -622,30 +648,10 @@ def _flag_img(team: str, stored_code=None) -> str:
     )
 
 
-def _team_fixtures(fixtures: pd.DataFrame, team_id: int, team_name: str | None = None) -> pd.DataFrame:
-    if fixtures.empty:
-        return fixtures
-    mask = (fixtures["home_team_id"] == team_id) | (fixtures["away_team_id"] == team_id)
-    if team_name:
-        keys = team_lookup_keys(team_name)
-        mask = mask | fixtures["home_team"].map(normalize_team_key).isin(keys) | fixtures["away_team"].map(normalize_team_key).isin(keys)
-    return fixtures[mask].copy()
-
-
-def _next_fixture(fixtures: pd.DataFrame, now: datetime):
-    if fixtures.empty:
-        return None
-    upcoming = fixtures[fixtures["kickoff_utc"].map(lambda value: _parse_dt(value) >= now)].copy()
-    if upcoming.empty:
-        return None
-    upcoming["_dt"] = upcoming["kickoff_utc"].map(_parse_dt)
-    return upcoming.sort_values(["_dt", "match_number"]).iloc[0]
-
-
 def _next_game_label(fixture, team_id: int, team_name: str = "") -> str:
     if fixture is None:
         return ""
-    if fixture["home_team_id"] == team_id or normalize_team_key(fixture["home_team"]) in team_lookup_keys(team_name):
+    if _fixture_is_home(fixture, team_id, team_name):
         opponent = _team_text(fixture["away_team"])
     else:
         opponent = _team_text(fixture["home_team"])
@@ -653,87 +659,19 @@ def _next_game_label(fixture, team_id: int, team_name: str = "") -> str:
     return f"Next Game: {kickoff_date} vs {opponent}"
 
 
+def _fixture_is_home(fixture, team_id: int, team_name: str = "") -> bool:
+    home_id = fixture.get("home_team_id")
+    if pd.notna(home_id) and home_id == team_id:
+        return True
+    home_name = fixture.get("home_team")
+    if team_name and pd.notna(home_name) and normalize_team_key(home_name) in team_lookup_keys(team_name):
+        return True
+    return False
+
+
 def _next_game_date_label(value) -> str:
     local_date = _parse_dt(value).astimezone(ZoneInfo("America/Chicago"))
     return f"{local_date.strftime('%B')} {local_date.day}"
-
-
-def _current_round(status: str, fixtures: pd.DataFrame, now: datetime, team_id: int) -> str:
-    text = str(status or "").lower()
-    if "champion" in text:
-        return "Champion"
-
-    next_fixture = _next_fixture(fixtures, now)
-    if next_fixture is not None:
-        return _round_label(next_fixture["stage"])
-
-    latest = _latest_fixture(fixtures)
-    if latest is None:
-        return "Group Stage"
-    if _round_label(latest["stage"]) == "Finals" and _won_fixture(latest, team_id):
-        return "Champion"
-    return _round_label(latest["stage"])
-
-
-def _team_is_out_or_lost(status: str, fixtures: pd.DataFrame, now: datetime, team_id: int) -> bool:
-    text = str(status or "").lower()
-    if any(word in text for word in ("out", "eliminated", "knocked")):
-        return True
-    if _next_fixture(fixtures, now) is not None:
-        return False
-    latest = _latest_fixture(fixtures)
-    if latest is None:
-        return False
-    return _is_knockout_stage(latest["stage"]) and _lost_fixture(latest, team_id)
-
-
-def _latest_fixture(fixtures: pd.DataFrame):
-    if fixtures.empty:
-        return None
-    completed = fixtures.dropna(subset=["home_score", "away_score"]).copy()
-    if completed.empty:
-        return None
-    completed["_dt"] = completed["kickoff_utc"].map(_parse_dt)
-    return completed.sort_values(["_dt", "match_number"]).iloc[-1]
-
-
-def _round_label(stage: str) -> str:
-    text = str(stage or "").strip().lower()
-    if "round of 32" in text:
-        return "Round of 32"
-    if "round of 16" in text:
-        return "Round of 16"
-    if "quarter" in text:
-        return "Quarterfinals"
-    if "semi" in text:
-        return "Semifinals"
-    if "final" in text:
-        return "Finals"
-    return "Group Stage"
-
-
-def _is_knockout_stage(stage: str) -> bool:
-    return _round_label(stage) != "Group Stage"
-
-
-def _won_fixture(fixture, team_id: int) -> bool:
-    home_score = fixture["home_score"]
-    away_score = fixture["away_score"]
-    if pd.isna(home_score) or pd.isna(away_score) or home_score == away_score:
-        return False
-    if fixture["home_team_id"] == team_id:
-        return home_score > away_score
-    return away_score > home_score
-
-
-def _lost_fixture(fixture, team_id: int) -> bool:
-    home_score = fixture["home_score"]
-    away_score = fixture["away_score"]
-    if pd.isna(home_score) or pd.isna(away_score) or home_score == away_score:
-        return False
-    if fixture["home_team_id"] == team_id:
-        return home_score < away_score
-    return away_score < home_score
 
 
 def _parse_dt(value) -> datetime:

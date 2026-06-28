@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
 import html
 import pandas as pd
 import streamlit as st
 
+from src import team_status
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
 from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
@@ -36,11 +38,13 @@ def render() -> None:
         st.info("Import teams to start building the field.")
         return
 
+    eliminated_keys = _eliminated_team_keys(hourly_fixture_refresh_key())
+
     selected_id = st.session_state.get("selected_team_id")
     if selected_id:
         selected = teams[teams["id"] == selected_id]
         if not selected.empty:
-            _team_focus(selected.iloc[0])
+            _team_focus(selected.iloc[0], eliminated_keys)
             return
         st.session_state.pop("selected_team_id", None)
 
@@ -49,7 +53,7 @@ def render() -> None:
         cols = st.columns(2)
         for col, (_, team) in zip(cols, sorted_teams.iloc[start:start + 2].iterrows()):
             with col:
-                _team_card(team)
+                _team_card(team, eliminated_keys)
 
 
 def _teams() -> pd.DataFrame:
@@ -81,16 +85,65 @@ def _teams() -> pd.DataFrame:
     return teams
 
 
-def _team_card(team) -> None:
+@st.cache_data(show_spinner=False)
+def _eliminated_team_keys(refresh_key: str) -> frozenset[str]:
+    """Normalized lookup keys for every team that is out of the tournament.
+
+    Uses the same live, knockout-resolved fixtures feed and bracket resolution as
+    the Home favorite cards (see :mod:`src.team_status`) so the two views agree on
+    who is eliminated. Returns an empty set if the feed is unavailable.
+    """
+    try:
+        fixtures, _warning = _fixture_data(refresh_key)
+    except Exception:
+        fixtures = pd.DataFrame()
+    fixtures = team_status.normalize_feed(fixtures)
+    if fixtures.empty:
+        return frozenset()
+
+    try:
+        from src.knockout_slots import all_slot_teams
+
+        slot_teams = dict(all_slot_teams())
+    except Exception:
+        slot_teams = {}
+    knockout_keys = team_status.knockout_participant_keys(slot_teams)
+    bracket_complete = team_status.bracket_is_complete(slot_teams)
+
+    now = datetime.now(timezone.utc)
+    names = fetch_df("SELECT name FROM teams").get("name", pd.Series(dtype=str)).dropna()
+    eliminated: set[str] = set()
+    for name in names:
+        team_fixtures = team_status.fixtures_for_team(fixtures, str(name))
+        if team_status.is_eliminated(
+            team_fixtures,
+            now,
+            str(name),
+            knockout_keys=knockout_keys,
+            bracket_complete=bracket_complete,
+        ):
+            eliminated |= team_lookup_keys(str(name))
+    return frozenset(eliminated)
+
+
+def _team_is_eliminated(team_name, eliminated_keys: frozenset[str]) -> bool:
+    return any(key in eliminated_keys for key in team_lookup_keys(team_name))
+
+
+def _team_card(team, eliminated_keys: frozenset[str] = frozenset()) -> None:
     flag_url = _flag_url(team)
     rank = _display_rank(team["fifa_rank"])
     group = team["group_name"] or "Unassigned"
     star = "★" if int(team["favorite"] or 0) else "☆"
     favorite_label = "Remove favorite" if int(team["favorite"] or 0) else "Make favorite"
+    eliminated = _team_is_eliminated(team["team"], eliminated_keys)
+    card_class = "team-card eliminated" if eliminated else "team-card"
+    badge = '<div class="team-elim-badge">Eliminated</div>' if eliminated else ""
 
     st.markdown(
         f"""
-        <div class="team-card" style="background-image: linear-gradient(90deg, rgba(3,7,18,.76), rgba(3,7,18,.45)), url('{flag_url}');">
+        <div class="{card_class}" style="background-image: linear-gradient(90deg, rgba(3,7,18,.76), rgba(3,7,18,.45)), url('{flag_url}');">
+          {badge}
           <div class="team-card-content">
             <div class="team-name">{team['team']}</div>
             <div class="team-meta">Group {group}</div>
@@ -113,7 +166,7 @@ def _team_card(team) -> None:
                 st.rerun()
 
 
-def _team_focus(team) -> None:
+def _team_focus(team, eliminated_keys: frozenset[str] = frozenset()) -> None:
     fixtures = _fixtures_for_team(team)
     selected_match = st.session_state.get("selected_match_id")
     if selected_match:
@@ -124,9 +177,12 @@ def _team_focus(team) -> None:
         st.session_state.pop("selected_match_id", None)
 
     header_image = team_jersey_header_data_uri(team["team"]) or _flag_url(team)
+    eliminated = _team_is_eliminated(team["team"], eliminated_keys)
+    badge = '<div class="team-focus-elim">Eliminated</div>' if eliminated else ""
     st.markdown(
         f"""
         <div class="team-focus" style="background-image: linear-gradient(90deg, rgba(3,7,18,.92), rgba(3,7,18,.58)), url('{header_image}');">
+          {badge}
           <div class="team-focus-title">{team['team']}</div>
           <div class="team-focus-subtitle">Group {team['group_name'] or 'Unassigned'} | FIFA Rank {_display_rank(team['fifa_rank'])}</div>
         </div>
@@ -757,6 +813,7 @@ def _styles() -> None:
         """
         <style>
         .team-card {
+            position: relative;
             min-height: 190px;
             border-radius: 18px;
             background-size: cover;
@@ -767,6 +824,39 @@ def _styles() -> None:
             align-items: flex-end;
             margin-bottom: .45rem;
             overflow: hidden;
+        }
+        .team-card.eliminated {
+            border-color: rgba(220,38,38,.75);
+            filter: grayscale(.55);
+        }
+        .team-elim-badge {
+            position: absolute;
+            top: .7rem;
+            right: .7rem;
+            z-index: 1;
+            background: #b91c1c;
+            color: #FFFFFF;
+            font-size: .72rem;
+            font-weight: 950;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            padding: .28rem .6rem;
+            border-radius: 999px;
+            box-shadow: 0 6px 16px rgba(0,0,0,.45);
+        }
+        .team-focus-elim {
+            align-self: flex-start;
+            display: inline-block;
+            background: #b91c1c;
+            color: #FFFFFF;
+            font-size: .9rem;
+            font-weight: 950;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            padding: .4rem .85rem;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 22px rgba(0,0,0,.5);
         }
         .team-card-content {
             padding: 1.25rem;
