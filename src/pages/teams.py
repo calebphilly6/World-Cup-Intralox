@@ -8,7 +8,12 @@ import streamlit as st
 from src import team_status
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
-from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
+from src.fixture_display import (
+    enrich_fixture_participants,
+    flag_code_for_team,
+    flag_lookup_with_aliases,
+    format_scoreline,
+)
 from src.football_data_service import hourly_fixture_refresh_key
 from src.jersey_assets import team_jersey_data_uri, team_jersey_header_data_uri
 from src.navigation import remember_detail_origin, return_to_detail_origin
@@ -616,8 +621,9 @@ def _team_fixture_flag(team: str) -> str:
 
 
 def _team_fixture_center(fixture) -> str:
-    if pd.notna(fixture.get("home_score")) and pd.notna(fixture.get("away_score")):
-        return f"{int(fixture['home_score'])} - {int(fixture['away_score'])}"
+    scoreline = format_scoreline(fixture)
+    if scoreline:
+        return scoreline
     return format_local_time(fixture.get("kickoff_utc"))
 
 
@@ -685,8 +691,9 @@ def _fixture_button_label(fixture, team_name: str) -> str:
     opponent = fixture["away_team"] if fixture["home_team"] == team_name else fixture["home_team"]
     opponent = opponent if pd.notna(opponent) and str(opponent).strip() else "TBD"
     venue = fixture["venue"] or "Venue TBD"
-    if pd.notna(fixture["home_score"]) and pd.notna(fixture["away_score"]):
-        score = f"{fixture['home_team']} {int(fixture['home_score'])} - {int(fixture['away_score'])} {fixture['away_team']}"
+    scoreline = format_scoreline(fixture)
+    if scoreline:
+        score = f"{fixture['home_team']} {scoreline} {fixture['away_team']}"
         return f"{score} | {venue}"
     return f"{format_local_time(fixture['kickoff_utc'])} | vs {opponent} | {venue}"
 
@@ -745,12 +752,8 @@ def _match_focus(fixture, team) -> None:
         if background
         else "linear-gradient(135deg, #0b1220, #164e63)"
     )
-    played = pd.notna(fixture["home_score"]) and pd.notna(fixture["away_score"])
-    center = (
-        f"{int(fixture['home_score'])} - {int(fixture['away_score'])}"
-        if played
-        else format_local_time(fixture["kickoff_utc"])
-    )
+    scoreline = format_scoreline(fixture)
+    center = scoreline if scoreline else format_local_time(fixture["kickoff_utc"])
     stage = _fixture_stage_label(fixture)
     st.markdown(
         f"""

@@ -30,17 +30,17 @@ R16_ORDER = R16_LEFT + R16_RIGHT      # 8
 QF_ORDER = QF_LEFT + QF_RIGHT         # 4
 SF_ORDER = SF_LEFT + SF_RIGHT         # 2
 
-CARD_W = 250
+CARD_W = 278
 CARD_H = 132
-FINAL_W = 330
+FINAL_W = 346
 FINAL_H = 168
-THIRD_W = 330
+THIRD_W = 346
 THIRD_H = 120
 
 PITCH = 156          # vertical distance between consecutive first-round cards
 TOP = 14             # top padding inside the canvas
 HEADER_H = 64        # sticky round-label strip height
-COL_STEP = 360       # horizontal distance between rounds
+COL_STEP = 392       # horizontal distance between rounds
 
 COL_X = {
     "r32": 40,
@@ -167,7 +167,8 @@ def _build_match_models(
             participants.append(_participant_model(display, flag_lookup))
 
         scores = _score_pair(row)
-        winner_index = _winner_index(row, scores)
+        penalties = _penalty_pair(row)
+        winner_index = _winner_index(row, scores, penalties)
         if winner_index is not None and participants[winner_index]["name"]:
             winners[match_number] = participants[winner_index]
             losers[match_number] = participants[1 - winner_index]
@@ -180,6 +181,7 @@ def _build_match_models(
             "venue": _clean_venue(match["venue"]),
             "participants": participants,
             "scores": scores,
+            "penalties": penalties,
             "winner_index": winner_index,
         }
     return models
@@ -275,13 +277,34 @@ def _score_pair(row: pd.Series | None) -> tuple[int | None, int | None]:
     return (int(home), int(away))
 
 
-def _winner_index(row: pd.Series | None, scores: tuple[int | None, int | None]) -> int | None:
+def _penalty_pair(row: pd.Series | None) -> tuple[int | None, int | None]:
+    if row is None:
+        return (None, None)
+    home = row.get("home_penalties")
+    away = row.get("away_penalties")
+    if home is None or away is None or pd.isna(home) or pd.isna(away):
+        return (None, None)
+    return (int(home), int(away))
+
+
+def _winner_index(
+    row: pd.Series | None,
+    scores: tuple[int | None, int | None],
+    penalties: tuple[int | None, int | None] = (None, None),
+) -> int | None:
     home_score, away_score = scores
     winner = str(row.get("winner") if row is not None else "").upper()
     if home_score is not None and away_score is not None:
         if home_score > away_score:
             return 0
         if away_score > home_score:
+            return 1
+    # Level after regulation: a penalty shootout decides it.
+    home_pens, away_pens = penalties
+    if home_pens is not None and away_pens is not None:
+        if home_pens > away_pens:
+            return 0
+        if away_pens > home_pens:
             return 1
     if "HOME" in winner:
         return 0
@@ -303,7 +326,13 @@ def _card_html(match_number: int, x: int, y: int, model: dict, final: bool = Fal
         style += f"width:{THIRD_W}px;"
     badge = "Final" if final else "Third Place" if third else _round_badge(model["round"])
     rows = "".join(
-        _team_row(participant, model["scores"][idx], model["winner_index"] == idx, model["winner_index"] is not None)
+        _team_row(
+            participant,
+            model["scores"][idx],
+            model["penalties"][idx],
+            model["winner_index"] == idx,
+            model["winner_index"] is not None,
+        )
         for idx, participant in enumerate(model["participants"])
     )
     meta_left = model["date"]
@@ -321,7 +350,13 @@ def _card_html(match_number: int, x: int, y: int, model: dict, final: bool = Fal
     )
 
 
-def _team_row(participant: dict, score: int | None, winner: bool, has_winner: bool) -> str:
+def _team_row(
+    participant: dict,
+    score: int | None,
+    penalty: int | None,
+    winner: bool,
+    has_winner: bool,
+) -> str:
     classes = ["team-row"]
     if participant["placeholder"]:
         classes.append("placeholder")
@@ -330,6 +365,8 @@ def _team_row(participant: dict, score: int | None, winner: bool, has_winner: bo
     elif has_winner:
         classes.append("loser")
     score_text = "" if score is None else str(score)
+    if score is not None and penalty is not None:
+        score_text += f" ({penalty})"
     note = f'<small>{html.escape(participant["note"])}</small>' if participant["note"] else ""
     return (
         f'<div class="{" ".join(classes)}">'
@@ -589,8 +626,8 @@ def _styles() -> str:
         border-radius: 6px;
         background: rgba(255,255,255,.04);
         display: grid;
-        grid-template-columns: 34px 1fr 26px;
-        gap: 10px;
+        grid-template-columns: 34px minmax(0, 1fr) auto;
+        gap: 8px;
         min-height: 40px;
         padding: 5px 9px 5px 7px;
         transition: background .15s ease;
@@ -663,6 +700,7 @@ def _styles() -> str:
         font-size: 20px;
         font-weight: 800;
         text-align: right;
+        white-space: nowrap;
     }}
     .final-card .match-head span {{
         color: #D6A83A;
@@ -678,7 +716,7 @@ def _styles() -> str:
         margin-bottom: 10px;
     }}
     .final-card .team-row {{
-        grid-template-columns: 40px 1fr 34px;
+        grid-template-columns: 40px minmax(0, 1fr) auto;
         min-height: 46px;
     }}
     .final-card .team-flag,

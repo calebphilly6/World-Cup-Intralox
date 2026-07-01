@@ -26,6 +26,29 @@ TEAM_NAME_ALIASES = {
 }
 
 
+def _coerce_score(value):
+    if value is None or pd.isna(value):
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def format_scoreline(row, *, separator: str = " - ") -> str:
+    """Render a finished match's score, showing a penalty shootout as
+    "1 (4) - 1 (3)" rather than folding the shootout into the goals total."""
+    home = _coerce_score(row.get("home_score"))
+    away = _coerce_score(row.get("away_score"))
+    if home is None or away is None:
+        return ""
+    home_pens = _coerce_score(row.get("home_penalties"))
+    away_pens = _coerce_score(row.get("away_penalties"))
+    if home_pens is not None and away_pens is not None:
+        return f"{home} ({home_pens}){separator}{away} ({away_pens})"
+    return f"{home}{separator}{away}"
+
+
 def enrich_fixture_participants(
     fixtures: pd.DataFrame,
     *,

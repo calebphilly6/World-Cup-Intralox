@@ -10,7 +10,12 @@ import streamlit as st
 from src.database import fetch_df
 from src.city_backgrounds import city_background_card_data_uri
 from src.config import is_shared_core_read_only_mode
-from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
+from src.fixture_display import (
+    enrich_fixture_participants,
+    flag_code_for_team,
+    flag_lookup_with_aliases,
+    format_scoreline,
+)
 from src.football_data_service import cached_matches, hourly_fixture_refresh_key
 from src.navigation import remember_detail_origin
 from src.official_match_reference import apply_official_match_reference, normalize_team_key
@@ -460,7 +465,10 @@ def _display_matches(matches: pd.DataFrame) -> pd.DataFrame:
     display["Score"] = display.apply(_score_text, axis=1)
     stage_source = display["stage"] if "stage" in display else display["Stage"]
     display["Round"] = stage_source.map(_round_stage_label)
-    return display[["#", "kickoff_utc", "Kickoff", "Home", "Away", "Stage", "Round", "City", "Priority", "Score", "home_score", "away_score"]]
+    for column in ("home_penalties", "away_penalties"):
+        if column not in display:
+            display[column] = pd.NA
+    return display[["#", "kickoff_utc", "Kickoff", "Home", "Away", "Stage", "Round", "City", "Priority", "Score", "home_score", "away_score", "home_penalties", "away_penalties"]]
 
 
 def _has_score(row) -> bool:
@@ -468,9 +476,7 @@ def _has_score(row) -> bool:
 
 
 def _score_text(row) -> str:
-    if not _has_score(row):
-        return ""
-    return f"{int(row['home_score'])} - {int(row['away_score'])}"
+    return format_scoreline(row)
 
 
 def _fixtures_from_api() -> pd.DataFrame:
@@ -488,10 +494,10 @@ def _fixtures_from_api() -> pd.DataFrame:
     )
     mapped["Stage"] = mapped.apply(lambda row: _stage_label(row.get("stage"), row.get("group")), axis=1)
     mapped["Priority"] = ""
-    for column in ("home_score", "away_score"):
+    for column in ("home_score", "away_score", "home_penalties", "away_penalties"):
         if column not in mapped:
             mapped[column] = pd.NA
-    return mapped[["#", "kickoff_utc", "Home", "Away", "Stage", "stage", "City", "Priority", "home_score", "away_score"]].sort_values(["kickoff_utc", "#"])
+    return mapped[["#", "kickoff_utc", "Home", "Away", "Stage", "stage", "City", "Priority", "home_score", "away_score", "home_penalties", "away_penalties"]].sort_values(["kickoff_utc", "#"])
 
 
 def _fixtures_from_database() -> pd.DataFrame:

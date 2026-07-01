@@ -9,7 +9,7 @@ from src.api_clients.odds_client import get_api_key
 from data_sources.football_data_client import FootballDataError
 from src.city_backgrounds import city_background_card_data_uri, city_background_data_uri
 from src.database import fetch_df
-from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases
+from src.fixture_display import enrich_fixture_participants, flag_code_for_team, flag_lookup_with_aliases, format_scoreline
 from src.football_data_service import cached_matches, hourly_fixture_refresh_key
 from src.knockout_slots import fill_knockout_participants
 from src.match_details_service import get_match_details
@@ -864,9 +864,7 @@ def _kickoff_time(utc_date, local_time) -> str:
 
 
 def _scoreline(row) -> str:
-    home_score = row.get("home_score")
-    away_score = row.get("away_score")
-    return f"{int(home_score)} - {int(away_score)}"
+    return format_scoreline(row)
 
 
 def _has_score(row) -> bool:

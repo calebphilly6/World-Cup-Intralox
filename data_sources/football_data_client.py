@@ -102,6 +102,41 @@ def get_world_cup_2026_standings() -> dict[str, Any]:
     return football_data_get(f"/competitions/{COMPETITION_CODE}/standings", {"season": SEASON})
 
 
+def _split_penalty_score(score: dict[str, Any]) -> tuple[Any, Any, Any, Any]:
+    """Separate the regulation score from a penalty shootout.
+
+    For matches decided by penalties, football-data.org folds the shootout tally
+    into ``score.fullTime`` -- a 1-1 draw won 4-3 on penalties is reported as
+    5-4. We peel the shootout back out so the app can show "1 (4) - 1 (3)"
+    instead of "5 - 4". Returns (home_score, away_score, home_pens, away_pens);
+    penalties are None for any match not settled by a shootout.
+    """
+    full_time = score.get("fullTime") or {}
+    ft_home = full_time.get("home")
+    ft_away = full_time.get("away")
+
+    duration = str(score.get("duration") or "").upper()
+    penalties = score.get("penalties") or {}
+    pen_home = penalties.get("home")
+    pen_away = penalties.get("away")
+
+    shootout = duration == "PENALTY_SHOOTOUT" or (pen_home is not None and pen_away is not None)
+    if not shootout or pen_home is None or pen_away is None or ft_home is None or ft_away is None:
+        return ft_home, ft_away, None, None
+
+    reg_home = ft_home - pen_home
+    reg_away = ft_away - pen_away
+    # A shootout only happens from a level score, so the regulation goals must
+    # tie. When they do, fullTime folded in the shootout and subtraction recovers
+    # the real score. Otherwise fullTime already holds the regulation score (or
+    # the shapes disagree) -- fall back to it and keep the shootout tally.
+    if reg_home == reg_away and reg_home >= 0:
+        return reg_home, reg_away, pen_home, pen_away
+    if ft_home == ft_away:
+        return ft_home, ft_away, pen_home, pen_away
+    return ft_home, ft_away, None, None
+
+
 def normalize_matches_to_dataframe(matches_json: dict[str, Any]) -> pd.DataFrame:
     rows = []
     for match in matches_json.get("matches", []) or []:
@@ -109,6 +144,7 @@ def normalize_matches_to_dataframe(matches_json: dict[str, Any]) -> pd.DataFrame
         away = match.get("awayTeam") or {}
         score = match.get("score") or {}
         full_time = score.get("fullTime") or {}
+        home_score, away_score, home_penalties, away_penalties = _split_penalty_score(score)
         local_dt = _local_datetime(match.get("utcDate"))
         rows.append(
             {
@@ -127,8 +163,10 @@ def normalize_matches_to_dataframe(matches_json: dict[str, Any]) -> pd.DataFrame
                 "away_team": away.get("name"),
                 "away_team_short": away.get("shortName"),
                 "away_team_tla": away.get("tla"),
-                "home_score": full_time.get("home"),
-                "away_score": full_time.get("away"),
+                "home_score": home_score,
+                "away_score": away_score,
+                "home_penalties": home_penalties,
+                "away_penalties": away_penalties,
                 "winner": score.get("winner"),
                 "last_updated": match.get("lastUpdated"),
             }

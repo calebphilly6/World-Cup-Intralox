@@ -28,10 +28,26 @@ from src.tournament_odds_service import refresh_tournament_odds_if_available
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 LOGO_PATH = PROJECT_ROOT / "assets" / "world_cup_2026_logo.png"
+FAVICON_PATH = PROJECT_ROOT / "assets" / "favicon.png"
+
+
+def _page_icon():
+    """Browser-tab favicon: prefer the custom face favicon, then the tournament
+    logo, then a soccer-ball emoji so the tab always has an icon."""
+    for path in (FAVICON_PATH, LOGO_PATH):
+        if path.exists():
+            try:
+                from PIL import Image
+
+                return Image.open(path)
+            except Exception:
+                continue
+    return "⚽"
 
 
 st.set_page_config(
     page_title="World Cup 2026 Command Center",
+    page_icon=_page_icon(),
     layout="wide",
     initial_sidebar_state="collapsed",
 )
